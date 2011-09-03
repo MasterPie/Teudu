@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Timers;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace Teudu.InfoDisplay
 {
@@ -21,35 +22,23 @@ namespace Teudu.InfoDisplay
     /// </summary>
     public partial class MainWindow : Window
     {
-        ScaleTransform scaler;
-        TransformGroup transformer;
-        Timer timer;
         public MainWindow()
         {
             InitializeComponent();
-
-            
-
-            timer = new Timer(2000);
-            timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
-            transformer = new TransformGroup();
-            scaler = new ScaleTransform(1, 1);
-            transformer.Children.Add(scaler);
-            
-            //Board.RenderTransform = transformer;
-
-            //timer.Start();
+            ((ViewModel)this.DataContext).SwipeHappened += new EventHandler<SwipeEventArgs>(MainWindow_SwipeHappened);
         }
 
-        void timer_Elapsed(object sender, ElapsedEventArgs e)
+        void MainWindow_SwipeHappened(object sender, SwipeEventArgs e)
         {
-            System.Random rand = new Random();
-            Dispatcher.BeginInvoke((Action)delegate
-            {
-                scaler.ScaleX = scaler.ScaleY = rand.Next(1,6);
-            });
-            
-            
+            RaiseShiftEvent();
         }
+
+        private void RaiseShiftEvent()
+        {
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(EventBoard.ShiftEvent);
+            Board.RaiseEvent(newEventArgs);
+        }
+
+
     }
 }

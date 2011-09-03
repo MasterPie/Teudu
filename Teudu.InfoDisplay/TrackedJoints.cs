@@ -7,13 +7,14 @@ namespace Teudu.InfoDisplay
 {
     public struct Arm
     {
+        private const double SCALE_FACTOR = 0.1;
         public double HandX, HandY, HandZ;
         public double ElbowX, ElbowY, ElbowZ;
         public double ShoulderX, ShoulderY, ShoulderZ;
 
-        public bool HandAlmostParallel
+        public bool ArmAlmostStraight
         {
-            get { return ((MaxArmSpan - CurrentArmSpan) <= 50); } //TODO: Adjust alpha
+            get { return ((MaxArmSpan - CurrentArmSpan) <= 20); } //TODO: Adjust alpha
         }
 
         public double MaxArmSpan
@@ -34,6 +35,16 @@ namespace Teudu.InfoDisplay
 
                 return foreArmLength + backArmLength;
             }
+        }
+
+        public double HandOffsetX
+        {
+            get { return HandX * SCALE_FACTOR; }
+        }
+
+        public double HandOffsetY
+        {
+            get { return HandY * SCALE_FACTOR; }
         }
 
         public double CurrentArmSpan

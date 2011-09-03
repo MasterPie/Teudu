@@ -3,25 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Research.Kinect.Nui;
+using Kinect.Toolbox;
+
 using System.Diagnostics;
 
 namespace Teudu.InfoDisplay
 {
     public class UserKinectService : IKinectService
     {
-        Runtime runtime; 
+        Runtime runtime;
+        SwipeGestureDetector swipeDetector;
+        
+        
         public void Initialize() 
-        { 
+        {
+            swipeDetector = new SwipeGestureDetector();
+            //swipeDetector.MinimalPeriodBetweenGestures = 750;
+            swipeDetector.OnGestureDetected += new Action<string>(swipeDetector_OnGestureDetected);
             runtime = new Runtime(); 
             runtime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(runtime_SkeletonFrameReady);
+
             try
             {
                 runtime.Initialize(RuntimeOptions.UseSkeletalTracking);
                 Trace.WriteLine("Kinect initialized");
+                
             }
             catch (Exception)
             {
                 Trace.WriteLine("Error while initializing Kinect");
+            }
+        }
+
+        void swipeDetector_OnGestureDetected(string obj)
+        {
+            if (SwipeHappened != null)
+            {
+                if (obj.Equals("SwipeToLeft"))
+                    SwipeHappened(this, new SwipeEventArgs() { Swipe = SwipeType.SwipeLeft });
+
+                if (obj.Equals("SwipeToRight"))
+                    SwipeHappened(this, new SwipeEventArgs() { Swipe = SwipeType.SwipeRight });
             }
         }        
         
@@ -43,6 +65,16 @@ namespace Teudu.InfoDisplay
             var rightElbowPosition = skeleton.Joints[JointID.ElbowRight].Position;
             var leftShoulderPosition = skeleton.Joints[JointID.ShoulderLeft].Position;
             var rightShoulderPosition = skeleton.Joints[JointID.ShoulderRight].Position;
+
+            /*
+             * Apparently, doing this check is expensive
+             */
+            //if(skeleton.Joints[JointID.HandRight].TrackingState == JointTrackingState.Tracked)
+            //    swipeDetector.Add(rightHandPosition, runtime.SkeletonEngine);
+            //else
+            //    swipeDetector.Add(leftHandPosition, runtime.SkeletonEngine);
+
+            swipeDetector.Add(rightHandPosition, runtime.SkeletonEngine);
             
             if (this.SkeletonUpdated != null) 
             { 
@@ -69,5 +101,6 @@ namespace Teudu.InfoDisplay
         }        
         
         public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+        public event EventHandler<SwipeEventArgs> SwipeHappened;
     }
 }
