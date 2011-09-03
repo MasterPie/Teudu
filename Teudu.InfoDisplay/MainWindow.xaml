@@ -1,51 +1,13 @@
 ﻿<Window x:Class="Teudu.InfoDisplay.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
         Title="MainWindow" Height="768" Width="1024"
-        WindowState="Maximized"
+        
         DataContext="{Binding ViewModel, Source={StaticResource loader}}">
     <Grid>
-        <WrapPanel Name="Board" Orientation="Vertical">
+        <teudu:EventBoard x:Name="Board">
             
-            <Rectangle Width="200" Height="300" Fill="Tomato" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Aqua" ></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Orange" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Red" ></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Green" ></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="BlueViolet" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" ></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="Blue" ></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Tomato" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" ></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Lavender" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Red" ></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Gainsboro" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Aqua" ></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Orange" ></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Green" ></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="BlueViolet" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Red" ></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Green" ></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="BlueViolet" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" ></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="Blue" ></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Tomato" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" ></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Lavender" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Red" ></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Gainsboro" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Aqua" ></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Orange" ></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Green" ></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="BlueViolet" ></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" ></Rectangle>
-            <WrapPanel.RenderTransform>
-                <TransformGroup>
-                    <TranslateTransform X="{Binding Path=DominantHandOffsetX}" Y="{Binding Path=DominantHandOffsetY}"/>
-                    <ScaleTransform ScaleX="{Binding Path=HandsDistance, Mode=OneWay, FallbackValue=1}" ScaleY="{Binding Path=HandsDistance, Mode=OneWay, FallbackValue=1}" CenterX="900" CenterY="500"/>
-                </TransformGroup>
-            </WrapPanel.RenderTransform>
-        </WrapPanel>
+        </teudu:EventBoard>
     </Grid>
 </Window>

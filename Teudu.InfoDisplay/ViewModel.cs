@@ -5,24 +5,45 @@ using System.Text;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Diagnostics;
+using System.Timers;
+using System.Windows;
+using System.Windows.Media.Animation;
 
 namespace Teudu.InfoDisplay
 {
     public class ViewModel: INotifyPropertyChanged
     {
+        private const double PAN_TO_OFFSET = 200;
+        private const int MAX_SCALE = 5;
+        private const int MIN_SCALE = 1;
+        private bool isZoomStart = false;
+
         IKinectService kinectService;
-        
+
         public ViewModel(IKinectService kinectService) 
         {
-            this.RightHandOffsetX = 100;
-            this.RightHandOffsetY = 100; 
             this.kinectService = kinectService; 
             this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+            this.kinectService.SwipeHappened += new EventHandler<SwipeEventArgs>(kinectService_SwipeHappened);
 
             leftArm = new Arm();
             rightArm = new Arm();
             torso = new Torso();
-        }        
+        }
+
+        void kinectService_SwipeHappened(object sender, SwipeEventArgs e)
+        {
+            if (!ViewChangeMode.Equals(HandsState.Panning))
+                return;
+
+            SetTargetCoords(e);
+            this.OnPropertyChanged("TargetX");
+            this.OnPropertyChanged("TargetY");
+            Trace.WriteLineIf(e.Swipe.Equals(SwipeType.SwipeLeft), "Swipe Left");
+            Trace.WriteLineIf(e.Swipe.Equals(SwipeType.SwipeRight), "Swipe Right");
+            if (SwipeHappened != null)
+                SwipeHappened(this, e);
+        }
         
         void kinectService_SkeletonUpdated(object sender, SkeletonEventArgs e) 
         { 
@@ -51,19 +72,28 @@ namespace Teudu.InfoDisplay
                 this.leftArm.ShoulderZ = e.LeftShoulderPosition.Z;
 
                 this.torso.Y = midpointY - (e.TorsoPosition.Y * 500);
-
                 if (ViewChangeMode.Equals(HandsState.Panning))
                 {
                     this.OnPropertyChanged("DominantHandOffsetX");
                     this.OnPropertyChanged("DominantHandOffsetY");
-                    //Trace.WriteLine("Hand (" + DominantHandOffsetX + ", " + DominantHandOffsetY + ")");
+                    lastScale = ScaleLevel;
+                    isZoomStart = true;
                 }
                 else if (ViewChangeMode.Equals(HandsState.Zooming))
-                    this.OnPropertyChanged("HandsDistance");
+                {
+                    if (isZoomStart)
+                        startHandDistance = HandsDistance;
+
+                    ScaleLevel = lastScale + (HandsDistance - startHandDistance);
+                    this.OnPropertyChanged("ScaleLevel");
+                    isZoomStart = false;
+                }
                 else
                 {
-                    Trace.WriteLine("-");
+                    lastScale = ScaleLevel;
+                    isZoomStart = true;
                 }
+                
                 //Trace.WriteLine("Left arm length:" + leftArm.MaxArmSpan + ", curr:" + leftArm.CurrentArmSpan);
                 //Trace.WriteLineIf(leftArm.HandAlmostParallel, "Left arm almost straight!");
 
@@ -72,7 +102,34 @@ namespace Teudu.InfoDisplay
 
         Arm leftArm;
         Arm rightArm;
-        Torso torso;       
+        Torso torso;
+
+        private void SetTargetCoords(SwipeEventArgs e)
+        {
+            switch (e.Swipe)
+            {
+                case SwipeType.SwipeLeft:
+                    TargetX = lastX - PAN_TO_OFFSET;
+                    break;
+                case SwipeType.SwipeRight:
+                    TargetX = lastX + PAN_TO_OFFSET;
+                    break;
+            }
+        }
+
+        double lastX, lastY, currX, currY;
+
+        public double TargetX
+        {
+            set { lastX = TargetX; currX = value; Trace.WriteLine("Moving to: " + value);}
+            get { return currX; }
+        }
+
+        public double TargetY
+        {
+            set { lastY = TargetY; currY = value; }
+            get { return currY; }
+        }
 
         public HandsState ViewChangeMode
         {
@@ -81,7 +138,7 @@ namespace Teudu.InfoDisplay
                 HandsState currentState;
                 if (LeftHandActive && RightHandActive)
                     currentState = HandsState.Zooming;
-                else if (LeftHandActive || RightHandActive)
+                else if (!LeftHandActive || !RightHandActive)
                     currentState = HandsState.Panning;
                 else
                     currentState = HandsState.Resting;
@@ -90,14 +147,21 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        double lastScale, scale;
+        public double ScaleLevel
+        {
+            set { if(value >= MIN_SCALE && value <= MAX_SCALE) scale = value; }
+            get { return scale; }
+        }
+
         public bool LeftHandActive
         {
-            get { return LeftHandAboveTorso && leftArm.HandAlmostParallel; }
+            get { return LeftHandAboveTorso && leftArm.ArmAlmostStraight; }
         }
 
         public bool RightHandActive
         {
-            get { return RightHandAboveTorso && rightArm.HandAlmostParallel; }
+            get { return RightHandAboveTorso && rightArm.ArmAlmostStraight; }
         }
 
         public Arm DominantHand
@@ -111,6 +175,8 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        double startHandDistance;
+
         public double HandsDistance
         {
             get
@@ -121,12 +187,12 @@ namespace Teudu.InfoDisplay
 
         public double DominantHandOffsetX
         {
-            get { return DominantHand.HandX; }
+            get { return DominantHand.HandOffsetX; }
         }
 
         public double DominantHandOffsetY
         {
-            get { return DominantHand.HandY; }
+            get { return DominantHand.HandOffsetY; }
         }
 
         public bool RightHandAboveTorso
@@ -163,7 +229,6 @@ namespace Teudu.InfoDisplay
             set { this.leftArm.HandY = value;}
         }
 
-
         void OnPropertyChanged(string property) 
         { 
             if (this.PropertyChanged != null) 
@@ -175,8 +240,10 @@ namespace Teudu.InfoDisplay
         public void Cleanup() 
         { 
             this.kinectService.SkeletonUpdated -= kinectService_SkeletonUpdated; 
-        }        
-        
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<SwipeEventArgs> SwipeHappened;
+
     }
 }

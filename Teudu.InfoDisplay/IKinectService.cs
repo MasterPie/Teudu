@@ -9,6 +9,7 @@ namespace Teudu.InfoDisplay
     { 
         void Initialize(); 
         void Cleanup(); 
-        event EventHandler<SkeletonEventArgs> SkeletonUpdated;    
+        event EventHandler<SkeletonEventArgs> SkeletonUpdated;   
+        event EventHandler<SwipeEventArgs> SwipeHappened;
     }
 }
