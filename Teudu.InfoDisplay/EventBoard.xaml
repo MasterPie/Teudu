@@ -1,4 +1,5 @@
 ﻿<UserControl x:Class="Teudu.InfoDisplay.EventBoard"
+             x:Name="EventBoardControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,6 +7,24 @@
              xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Storyboard x:Key="SnapAnimation">
+            <DoubleAnimationUsingKeyFrames
+                        x:Name="SnapXAnimate"
+                                Storyboard.TargetName="EventBoardTranslateTransform"
+                                Storyboard.TargetProperty="X"
+                                Duration="0:0:1">
+                <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=SnapToX}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                        x:Name="SnapYAnimate"
+                                Storyboard.TargetName="EventBoardTranslateTransform"
+                                Storyboard.TargetProperty="Y"
+                                Duration="0:0:1">
+                <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}},Path=SnapToY}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger x:Name="PanAnimation" RoutedEvent="teudu:EventBoard.Shift">
             <BeginStoryboard>
@@ -15,6 +34,12 @@
                                 Storyboard.TargetProperty="X"
                                 Duration="0:0:2">
                         <SplineDoubleKeyFrame Value="{Binding Path=TargetX}" KeyTime="0:0:2" KeySpline="0.25,0.5 0.75,1" />
+                    </DoubleAnimationUsingKeyFrames>
+                    <DoubleAnimationUsingKeyFrames
+                                Storyboard.TargetName="EventBoardTranslateTransform"
+                                Storyboard.TargetProperty="Y"
+                                Duration="0:0:2">
+                        <SplineDoubleKeyFrame Value="{Binding Path=TargetY}" KeyTime="0:0:2" KeySpline="0.25,0.5 0.75,1" />
                     </DoubleAnimationUsingKeyFrames>
                 </Storyboard>
             </BeginStoryboard>
@@ -58,9 +83,8 @@
             <Rectangle Width="200" Height="250" Fill="Brown" Margin="2"></Rectangle>
             <WrapPanel.RenderTransform>
                 <TransformGroup>
-                    <TranslateTransform X="{Binding Path=DominantHandOffsetX}" Y="{Binding Path=DominantHandOffsetY}"></TranslateTransform>
+                    <!--<TranslateTransform X="{Binding Path=DominantArmHandOffsetX}" Y="{Binding Path=DominantArmHandOffsetY}"></TranslateTransform>-->
                     <TranslateTransform x:Name="EventBoardTranslateTransform" X="0" Y="0"></TranslateTransform>
-                    <!--<TranslateTransform X="{Binding Path=GridX}" Y="{Binding Path=GridY}"/>-->
                     <ScaleTransform ScaleX="{Binding Path=ScaleLevel, Mode=OneWay, FallbackValue=1}" ScaleY="{Binding Path=ScaleLevel, Mode=OneWay, FallbackValue=1}" CenterX="900" CenterY="500"/>
                 </TransformGroup>
             </WrapPanel.RenderTransform>

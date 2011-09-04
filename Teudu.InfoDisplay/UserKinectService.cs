@@ -18,14 +18,22 @@ namespace Teudu.InfoDisplay
         public void Initialize() 
         {
             swipeDetector = new SwipeGestureDetector();
-            //swipeDetector.MinimalPeriodBetweenGestures = 750;
-            swipeDetector.OnGestureDetected += new Action<string>(swipeDetector_OnGestureDetected);
-            runtime = new Runtime(); 
+            //swipeDetector.MinimalPeriodBetweenGestures = 1000;
+            //swipeDetector.OnGestureDetected += new Action<string>(swipeDetector_OnGestureDetected);
+            runtime = new Runtime();
+            
             runtime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(runtime_SkeletonFrameReady);
 
             try
             {
                 runtime.Initialize(RuntimeOptions.UseSkeletalTracking);
+                //runtime.SkeletonEngine.TransformSmooth = true;
+                //runtime.SkeletonEngine.SmoothParameters = new TransformSmoothParameters()
+                //{
+                //    Smoothing = .75f,
+                //    JitterRadius = 0.05f,
+                //    MaxDeviationRadius = 0.04f
+                //};
                 Trace.WriteLine("Kinect initialized");
                 
             }
@@ -55,12 +63,11 @@ namespace Teudu.InfoDisplay
 
             if (skeleton == null)
                 return;
-            
+
+            var headPosition = skeleton.Joints[JointID.Head].Position;
             var rightHandPosition = skeleton.Joints[JointID.HandRight].Position;
             var leftHandPosition = skeleton.Joints[JointID.HandLeft].Position;
-            var spinePosition = skeleton.Joints[JointID.Spine].Position;
             var torsoPosition = skeleton.Joints[JointID.HipCenter].Position;
-            var chestPosition = skeleton.Joints[JointID.ShoulderCenter].Position;
             var leftElbowPosition = skeleton.Joints[JointID.ElbowLeft].Position;
             var rightElbowPosition = skeleton.Joints[JointID.ElbowRight].Position;
             var leftShoulderPosition = skeleton.Joints[JointID.ShoulderLeft].Position;
@@ -73,8 +80,7 @@ namespace Teudu.InfoDisplay
             //    swipeDetector.Add(rightHandPosition, runtime.SkeletonEngine);
             //else
             //    swipeDetector.Add(leftHandPosition, runtime.SkeletonEngine);
-
-            swipeDetector.Add(rightHandPosition, runtime.SkeletonEngine);
+            //swipeDetector.Add(rightHandPosition, runtime.SkeletonEngine);
             
             if (this.SkeletonUpdated != null) 
             { 
@@ -85,9 +91,8 @@ namespace Teudu.InfoDisplay
                     RightShoulderPosition = rightShoulderPosition,
                     LeftElbowPosition = leftElbowPosition,
                     RightElbowPosition = rightElbowPosition,
-                    SpinePosition = spinePosition,
-                    TorsoPosition = torsoPosition,
-                    ChestPosition = chestPosition
+                    HeadPosition = headPosition,
+                    TorsoPosition = torsoPosition
                 }); 
             } 
         }        

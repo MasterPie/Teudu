@@ -8,6 +8,7 @@ namespace Teudu.InfoDisplay
 {
     public class SkeletonEventArgs : EventArgs 
     {
+        public Vector HeadPosition { get; set; }
         public Vector ChestPosition { get; set; }
         public Vector LeftHandPosition { get; set; }
         public Vector RightHandPosition { get; set; }
