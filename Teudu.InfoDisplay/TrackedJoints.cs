@@ -7,7 +7,7 @@ namespace Teudu.InfoDisplay
 {
     public struct Arm
     {
-        private const double SCALE_FACTOR = 0.1;
+        private const double SCALE_FACTOR = 0.2;
         public double HandX, HandY, HandZ;
         public double ElbowX, ElbowY, ElbowZ;
         public double ShoulderX, ShoulderY, ShoulderZ;
@@ -63,11 +63,11 @@ namespace Teudu.InfoDisplay
 
     public struct Torso
     {
-        double torsoY;
-        public double Y
-        {
-            get { return this.torsoY; }
-            set { this.torsoY = value; }
-        }
+        public double Y, X;
+    }
+
+    public struct Head
+    {
+        public double Y;
     }
 }

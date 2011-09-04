@@ -25,10 +25,10 @@ namespace Teudu.InfoDisplay
         public MainWindow()
         {
             InitializeComponent();
-            ((ViewModel)this.DataContext).SwipeHappened += new EventHandler<SwipeEventArgs>(MainWindow_SwipeHappened);
+            ((ViewModel)this.DataContext).PanRequest += new EventHandler(MainWindow_PanRequest);
         }
 
-        void MainWindow_SwipeHappened(object sender, SwipeEventArgs e)
+        void MainWindow_PanRequest(object sender, EventArgs e)
         {
             RaiseShiftEvent();
         }
@@ -37,6 +37,8 @@ namespace Teudu.InfoDisplay
         {
             RoutedEventArgs newEventArgs = new RoutedEventArgs(EventBoard.ShiftEvent);
             Board.RaiseEvent(newEventArgs);
+
+            //Board.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate() { Board.RaiseEvent(newEventArgs); }));
         }
 
 
