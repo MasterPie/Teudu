@@ -72,6 +72,7 @@ namespace Teudu.InfoDisplay
             var rightElbowPosition = skeleton.Joints[JointID.ElbowRight].Position;
             var leftShoulderPosition = skeleton.Joints[JointID.ShoulderLeft].Position;
             var rightShoulderPosition = skeleton.Joints[JointID.ShoulderRight].Position;
+            var spinePosition = skeleton.Joints[JointID.Spine].Position;
 
             /*
              * Apparently, doing this check is expensive
@@ -91,6 +92,7 @@ namespace Teudu.InfoDisplay
                     RightShoulderPosition = rightShoulderPosition,
                     LeftElbowPosition = leftElbowPosition,
                     RightElbowPosition = rightElbowPosition,
+                    SpinePosition = spinePosition,
                     HeadPosition = headPosition,
                     TorsoPosition = torsoPosition
                 }); 
