@@ -75,6 +75,8 @@ namespace Teudu.InfoDisplay
                 this.leftArm.ShoulderY = midpointY - (e.LeftShoulderPosition.Y * ARM_SCALE_FACTOR_Y);
                 this.leftArm.ShoulderZ = e.LeftShoulderPosition.Z * ARM_SCALE_FACTOR_Z;
 
+                this.spine.Z = e.SpinePosition.Z * ARM_SCALE_FACTOR_Z;
+
                 this.torso.Y = midpointY - (e.TorsoPosition.Y * ARM_SCALE_FACTOR_Y);
                 #endregion
 
@@ -105,6 +107,9 @@ namespace Teudu.InfoDisplay
                     lastScale = ScaleLevel;
                     isZoomStart = true;
                 }
+
+                Trace.WriteLineIf(LeftArmInFront, "Left arm z " + leftArm.HandZ + " , spine z " + spine.Z);
+                Trace.WriteLineIf(RightArmInFront, "Right arm z " + rightArm.HandZ + " , spine z " + spine.Z);
                 
                 //Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
                 //Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
@@ -117,6 +122,7 @@ namespace Teudu.InfoDisplay
         Arm rightArm;
         Torso torso;
         Head head;
+        Spine spine;
 
         bool panPreparing = false;
 
@@ -198,10 +204,17 @@ namespace Teudu.InfoDisplay
 
         public bool IsNearBot
         {
-            get
-            {
-                //return DominantHand.HandY <= torso.Y;}
-                return (DominantHand.HandY > hotSpotBottom) && (DominantHand.HandY <= (hotSpotBottom + hotspotRegionY)); }
+            get{return (DominantHand.HandY > hotSpotBottom) && (DominantHand.HandY <= (hotSpotBottom + hotspotRegionY)); }
+        }
+
+        public bool LeftArmInFront
+        {
+            get { return leftArm.HandZ < (spine.Z - 100); }
+        }
+
+        public bool RightArmInFront
+        {
+            get { return rightArm.HandZ < (spine.Z - 100); }
         }
 
         public HandsState ViewChangeMode
@@ -240,13 +253,17 @@ namespace Teudu.InfoDisplay
         public bool LeftHandActive
         {
             get
-            {return LeftHandAboveTorso && leftArm.ArmAlmostStraight; }
+            {
+                return LeftArmInFront;}
+                //return LeftHandAboveTorso && leftArm.ArmAlmostStraight; }
         }
 
         public bool RightHandActive
         {
             get
-            { return RightHandAboveTorso && rightArm.ArmAlmostStraight; }
+            {
+                return RightArmInFront;}
+                //return RightHandAboveTorso && rightArm.ArmAlmostStraight; }
         }
 
         public Arm DominantHand

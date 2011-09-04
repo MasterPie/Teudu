@@ -66,6 +66,11 @@ namespace Teudu.InfoDisplay
         public double Y, X;
     }
 
+    public struct Spine
+    {
+        public double Z;
+    }
+
     public struct Head
     {
         public double Y;
