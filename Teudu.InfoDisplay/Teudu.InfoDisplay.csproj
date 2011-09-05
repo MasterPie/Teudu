@@ -82,11 +82,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BindableTraceListener.cs" />
+    <Compile Include="Category.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="EventBoard.xaml.cs">
       <DependentUpon>EventBoard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileSourceService.cs" />
     <Compile Include="HandsState.cs" />
+    <Compile Include="ISourceService.cs" />
     <Compile Include="SkeletonEventArgs.cs" />
+    <Compile Include="SourceEventArgs.cs" />
     <Compile Include="SwipeEventArgs.cs" />
     <Compile Include="SwipeType.cs" />
     <Compile Include="TrackedJoints.cs" />

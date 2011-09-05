@@ -15,6 +15,8 @@ namespace Teudu.InfoDisplay
     public class ViewModel: INotifyPropertyChanged
     {
         private const double PAN_TO_OFFSET = 100;
+        private const double SCALE_OFFSET = 250;
+        private const double HEIGHT_OFF_GROUND = 300;
         private double ARM_SCALE_FACTOR_X = (App.Current.MainWindow.Width / 2) * 3;
         private double ARM_SCALE_FACTOR_Y = (App.Current.MainWindow.Height / 2) * 3;
         private double ARM_SCALE_FACTOR_Z = 500; // Distance to tv
@@ -32,16 +34,26 @@ namespace Teudu.InfoDisplay
         private double hotSpotBottom = App.Current.MainWindow.Height - hotspotRegionY;
 
         IKinectService kinectService;
+        ISourceService sourceService;
 
-        public ViewModel(IKinectService kinectService) 
+        public ViewModel(IKinectService kinectService, ISourceService sourceService) 
         {
             this.kinectService = kinectService; 
             this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+
+            this.sourceService = sourceService;
+            this.sourceService.EventsUpdated += new EventHandler<SourceEventArgs>(sourceService_EventsUpdated);
+            this.sourceService.BeginPoll();
 
             leftArm = new Arm();
             rightArm = new Arm();
             head = new Head();
             torso = new Torso();
+        }
+
+        void sourceService_EventsUpdated(object sender, SourceEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         
@@ -51,7 +63,7 @@ namespace Teudu.InfoDisplay
             {
                 #region Set vals
                 var midpointX = App.Current.MainWindow.ActualWidth / 2; 
-                var midpointY = App.Current.MainWindow.ActualHeight / 2 + -300; //TODO: get height off ground
+                var midpointY = App.Current.MainWindow.ActualHeight / 2 + - HEIGHT_OFF_GROUND; //TODO: get height off ground
 
                 this.head.Y = e.HeadPosition.Y * ARM_SCALE_FACTOR_Y;
 
@@ -108,13 +120,13 @@ namespace Teudu.InfoDisplay
                     isZoomStart = true;
                 }
 
-                Trace.WriteLineIf(LeftArmInFront, "Left arm z " + leftArm.HandZ + " , spine z " + spine.Z);
-                Trace.WriteLineIf(RightArmInFront, "Right arm z " + rightArm.HandZ + " , spine z " + spine.Z);
-                
-                //Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
-                //Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
-                //Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
-                //Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
+                //Trace.WriteLineIf(LeftArmInFront, "Left arm z " + leftArm.HandZ + " , spine z " + spine.Z);
+                //Trace.WriteLineIf(RightArmInFront, "Right arm z " + rightArm.HandZ + " , spine z " + spine.Z);
+
+                Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
+                Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
+                Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
+                Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
             } 
         }
 
@@ -283,8 +295,8 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return Math.Sqrt(Math.Pow(this.leftArm.HandX - this.rightArm.HandX, 2) + 
-                    Math.Pow(this.leftArm.HandY - this.rightArm.HandY, 2)) / 250; //TODO no hardcoded factor
+                return Math.Sqrt(Math.Pow(this.leftArm.HandX - this.rightArm.HandX, 2) +
+                    Math.Pow(this.leftArm.HandY - this.rightArm.HandY, 2)) / SCALE_OFFSET;
             }
         }
 
@@ -298,16 +310,18 @@ namespace Teudu.InfoDisplay
             get { return -DominantHand.HandOffsetY; }
         }
 
+        #region deprecated
         public bool RightHandAboveTorso
         {
             get { return this.rightArm.HandY < torso.Y; }
         }
-
         public bool LeftHandAboveTorso
         {
             get { return this.leftArm.HandY < torso.Y; }
         }
+        #endregion
 
+        
         void OnPropertyChanged(string property) 
         { 
             if (this.PropertyChanged != null) 
