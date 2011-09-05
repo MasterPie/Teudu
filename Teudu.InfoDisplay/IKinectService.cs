@@ -7,7 +7,8 @@ namespace Teudu.InfoDisplay
 {
     public interface IKinectService 
     { 
-        void Initialize(); 
+        void Initialize();
+        bool IsIdle { get; }
         void Cleanup(); 
         event EventHandler<SkeletonEventArgs> SkeletonUpdated;   
         event EventHandler<SwipeEventArgs> SwipeHappened;
