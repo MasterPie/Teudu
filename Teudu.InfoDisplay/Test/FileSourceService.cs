@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml;
 using System.Diagnostics;
 
-namespace Teudu.InfoDisplay
+namespace Teudu.InfoDisplay.Test
 {
     public class FileSourceService : ISourceService
     {

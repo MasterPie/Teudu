@@ -3,12 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
         Title="MainWindow" Height="768" Width="1024"
-        
-        
         DataContext="{Binding ViewModel, Source={StaticResource loader}}">
-    <Grid>
-        <teudu:EventBoard x:Name="Board">
-            
-        </teudu:EventBoard>
+    <Grid x:Name="BoardContainer">
     </Grid>
 </Window>

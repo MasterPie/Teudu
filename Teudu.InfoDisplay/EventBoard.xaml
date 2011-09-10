@@ -47,8 +47,7 @@
     </UserControl.Triggers>
     <Grid>
         <WrapPanel Name="Board" Orientation="Vertical">
-
-            <Rectangle Width="200" Height="300" Fill="Tomato" Margin="2"></Rectangle>
+            <!--<Rectangle Width="200" Height="300" Fill="Tomato" Margin="2"></Rectangle>
             <Rectangle Width="200" Height="250" Fill="Aqua" Margin="2"></Rectangle>
             <Rectangle Width="200" Height="190" Fill="Orange" Margin="2"></Rectangle>
             <Rectangle Width="200" Height="250" Fill="Red" Margin="2"></Rectangle>
@@ -80,7 +79,7 @@
             <Rectangle Width="200" Height="190" Fill="Orange" Margin="2"></Rectangle>
             <Rectangle Width="200" Height="190" Fill="Green" Margin="2"></Rectangle>
             <Rectangle Width="200" Height="270" Fill="BlueViolet" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" Margin="2"></Rectangle>
+            <Rectangle Width="200" Height="250" Fill="Brown" Margin="2"></Rectangle>-->
             <WrapPanel.RenderTransform>
                 <TransformGroup>
                     <!--<TranslateTransform X="{Binding Path=DominantArmHandOffsetX}" Y="{Binding Path=DominantArmHandOffsetY}"></TranslateTransform>-->

@@ -19,12 +19,26 @@ namespace Teudu.InfoDisplay
     /// </summary>
     public partial class EventBoard : UserControl
     {
+        private List<Event> events;
         public EventBoard()
         {
             InitializeComponent();
         }
 
-
+        public List<Event> Events
+        {
+            get { return events; }
+            set
+            {
+                events = value;
+                this.Board.Children.Clear();
+                events.ForEach(x => this.Board.Children.Add(new EventControl() { 
+                    Event = x, 
+                    Width = 170,
+                    MaxHeight = 250
+                }));
+            }
+        }
 
         public static readonly RoutedEvent ShiftEvent = EventManager.RegisterRoutedEvent(
        "Shift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));

@@ -22,10 +22,30 @@ namespace Teudu.InfoDisplay
     /// </summary>
     public partial class MainWindow : Window
     {
+        private EventBoard current;
+
         public MainWindow()
         {
             InitializeComponent();
+            ((ViewModel)this.DataContext).ActiveBoardChanged += new EventHandler<BoardEventArgs>(MainWindow_BoardChanged);
             ((ViewModel)this.DataContext).PanRequest += new EventHandler(MainWindow_PanRequest);
+
+            current = ((ViewModel)this.DataContext).CurrentBoard;
+            this.BoardContainer.Children.Add(current);
+        }
+
+        void MainWindow_BoardChanged(object sender, BoardEventArgs e)
+        {
+            BoardChanging(e.Board);
+            
+            this.BoardContainer.Children.Clear();
+            this.BoardContainer.Children.Add(current);
+        }
+
+        private void BoardChanging(EventBoard newBoard)
+        {
+            //do some interesting animation
+            current = newBoard;
         }
 
         void MainWindow_PanRequest(object sender, EventArgs e)
@@ -36,7 +56,7 @@ namespace Teudu.InfoDisplay
         private void RaiseShiftEvent()
         {
             RoutedEventArgs newEventArgs = new RoutedEventArgs(EventBoard.ShiftEvent);
-            Board.RaiseEvent(newEventArgs);
+            current.RaiseEvent(newEventArgs);
 
             //Board.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate() { Board.RaiseEvent(newEventArgs); }));
         }

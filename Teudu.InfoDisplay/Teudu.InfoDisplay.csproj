@@ -82,12 +82,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BindableTraceListener.cs" />
+    <Compile Include="BoardEventArgs.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventBoard.xaml.cs">
       <DependentUpon>EventBoard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FileSourceService.cs" />
+    <Compile Include="EventControl.xaml.cs">
+      <DependentUpon>EventControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Test\FileSourceService.cs" />
     <Compile Include="HandsState.cs" />
     <Compile Include="ISourceService.cs" />
     <Compile Include="SkeletonEventArgs.cs" />
@@ -99,6 +103,10 @@
     <Compile Include="ViewModel.cs" />
     <Compile Include="ViewModelLoader.cs" />
     <Page Include="EventBoard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EventControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -163,6 +171,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1029101434-02.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
