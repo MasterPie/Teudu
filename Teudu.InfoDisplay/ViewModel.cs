@@ -33,6 +33,10 @@ namespace Teudu.InfoDisplay
         private double hotSpotTop = 0;
         private double hotSpotBottom = App.Current.MainWindow.Height - hotspotRegionY;
 
+        private List<Event> events;
+        private List<EventBoard> boards;
+        private EventBoard current;
+
         IKinectService kinectService;
         ISourceService sourceService;
 
@@ -43,17 +47,40 @@ namespace Teudu.InfoDisplay
 
             this.sourceService = sourceService;
             this.sourceService.EventsUpdated += new EventHandler<SourceEventArgs>(sourceService_EventsUpdated);
-            this.sourceService.BeginPoll();
+            
 
             leftArm = new Arm();
             rightArm = new Arm();
             head = new Head();
             torso = new Torso();
+
+            events = new List<Event>();
+
+            boards = new List<EventBoard>();
+            CurrentBoard = new EventBoard();
+            boards.Add(current);
+
+            if (ActiveBoardChanged != null)
+                ActiveBoardChanged(this, new BoardEventArgs() { Board = current });
+
+            this.sourceService.BeginPoll();
         }
 
         void sourceService_EventsUpdated(object sender, SourceEventArgs e)
         {
-            throw new NotImplementedException();
+            events = e.Events;
+            SiftEvents();
+        }
+
+        private void SiftEvents()
+        {
+            current.Events = events;            
+        }
+
+        public EventBoard CurrentBoard
+        {
+            get { return current; }
+            set { current = value; }
         }
 
         
@@ -337,6 +364,7 @@ namespace Teudu.InfoDisplay
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler PanRequest;
+        public event EventHandler<BoardEventArgs> ActiveBoardChanged;
 
     }
 }
