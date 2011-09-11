@@ -51,7 +51,14 @@ namespace Teudu.InfoDisplay
 
         public string Image
         {
-            set { image = value; }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                {
+                    image = "RohanCampaign.jpg";
+                }
+                else
+                    image = value; }
             get { return image; }
         }
 

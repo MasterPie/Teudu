@@ -102,6 +102,7 @@
     <Compile Include="UserKinectService.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="ViewModelLoader.cs" />
+    <Compile Include="WebSourceService.cs" />
     <Page Include="EventBoard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

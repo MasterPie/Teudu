@@ -83,7 +83,8 @@ namespace Teudu.InfoDisplay
             set { current = value; }
         }
 
-        
+        #region Kinect
+
         void kinectService_SkeletonUpdated(object sender, SkeletonEventArgs e) 
         { 
             if (App.Current.MainWindow != null)
@@ -155,6 +156,9 @@ namespace Teudu.InfoDisplay
                 Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
                 Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
             } 
+        #endregion
+
+        
         }
 
         Arm leftArm;
@@ -289,20 +293,16 @@ namespace Teudu.InfoDisplay
             get { return scale; }
         }
 
+        #region Hand States
+
         public bool LeftHandActive
         {
-            get
-            {
-                return LeftArmInFront;}
-                //return LeftHandAboveTorso && leftArm.ArmAlmostStraight; }
+            get{return LeftArmInFront;}
         }
 
         public bool RightHandActive
         {
-            get
-            {
-                return RightArmInFront;}
-                //return RightHandAboveTorso && rightArm.ArmAlmostStraight; }
+            get{return RightArmInFront;}
         }
 
         public Arm DominantHand
@@ -336,6 +336,8 @@ namespace Teudu.InfoDisplay
         {
             get { return -DominantHand.HandOffsetY; }
         }
+
+        #endregion
 
         #region deprecated
         public bool RightHandAboveTorso
