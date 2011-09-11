@@ -9,24 +9,37 @@
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Georgia"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
-            <Setter Property="Foreground" Value="Wheat"></Setter>
+            <Setter Property="Foreground" Value="#FFf3f0e9"></Setter>
         </Style>
         <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                TargetType="TextBlock"
                x:Key="DescriptionText">
-            <Setter Property="FontSize" Value="10"></Setter>
+            <Setter Property="FontSize" Value="5"></Setter>
         </Style>
     </UserControl.Resources>
-    <Grid>
-        <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="None" StretchDirection="Both"></Image>
+    <Grid Background="#FF999933">
+        <!--<Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
         <DockPanel Panel.ZIndex="11" LastChildFill="False">
             <StackPanel DockPanel.Dock="Bottom">
                 <TextBlock x:Name="date" Text="Today, 6PM"></TextBlock>
                 <TextBlock x:Name="title" Text="Title"></TextBlock>
-                <StackPanel x:Name="extendedDetails">
+                <StackPanel x:Name="extendedDetails" Opacity="0">
                     <TextBlock x:Name="description" Text="Description" Height="60" Style="{StaticResource DescriptionText}"></TextBlock>
                 </StackPanel>
             </StackPanel>
-        </DockPanel>
+        </DockPanel>-->
+        <StackPanel>
+            <DockPanel Panel.ZIndex="11" LastChildFill="False">
+                <StackPanel DockPanel.Dock="Bottom">
+                    <TextBlock x:Name="date" Text="Today, 6PM"></TextBlock>
+                    <TextBlock x:Name="title" Text="Title"></TextBlock>
+                    <StackPanel x:Name="extendedDetails">
+                        <TextBlock x:Name="description" Text="Description" Height="30" Style="{StaticResource DescriptionText}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+            <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
+        </StackPanel>
+
     </Grid>
 </UserControl>

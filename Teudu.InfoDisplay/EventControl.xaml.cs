@@ -23,7 +23,8 @@ namespace Teudu.InfoDisplay
 
         public EventControl()
         {
-            InitializeComponent(); ;
+            InitializeComponent();
+            
         }
 
         public Event Event
@@ -36,6 +37,14 @@ namespace Teudu.InfoDisplay
                 this.date.Text = eventModel.Time.ToShortTimeString();
                 //this.image.Source = eventModel.Image;
                 this.description.Text = eventModel.Description;
+
+                BitmapImage src = new BitmapImage();
+                src.BeginInit();
+
+                src.UriSource = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\image_stash\" + this.eventModel.Image);
+                src.CacheOption = BitmapCacheOption.OnLoad;
+                src.EndInit();
+                this.image.Source = src;
             }
         }
     }

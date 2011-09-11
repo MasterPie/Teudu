@@ -4,6 +4,6 @@
         xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
         Title="MainWindow" Height="768" Width="1024"
         DataContext="{Binding ViewModel, Source={StaticResource loader}}">
-    <Grid x:Name="BoardContainer">
+    <Grid x:Name="BoardContainer" Background="#FF464646">
     </Grid>
 </Window>

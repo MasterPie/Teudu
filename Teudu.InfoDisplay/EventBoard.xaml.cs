@@ -35,7 +35,8 @@ namespace Teudu.InfoDisplay
                 events.ForEach(x => this.Board.Children.Add(new EventControl() { 
                     Event = x, 
                     Width = 170,
-                    MaxHeight = 250
+                    MinHeight = 210,
+                    Margin = new Thickness(5)
                 }));
             }
         }
