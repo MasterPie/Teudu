@@ -34,8 +34,8 @@ namespace Teudu.InfoDisplay
         private double hotSpotBottom = App.Current.MainWindow.Height - hotspotRegionY;
 
         private List<Event> events;
-        private List<EventBoard> boards;
-        private EventBoard current;
+        private List<Board> boards;
+        private Board current;
 
         IKinectService kinectService;
         ISourceService sourceService;
@@ -56,12 +56,13 @@ namespace Teudu.InfoDisplay
 
             events = new List<Event>();
 
-            boards = new List<EventBoard>();
-            CurrentBoard = new EventBoard();
+
+            boards = new List<Board>();
+            CurrentBoard = new Board("All");
             boards.Add(current);
 
             if (ActiveBoardChanged != null)
-                ActiveBoardChanged(this, new BoardEventArgs() { Board = current });
+                ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
 
             this.sourceService.BeginPoll();
         }
@@ -69,15 +70,20 @@ namespace Teudu.InfoDisplay
         void sourceService_EventsUpdated(object sender, SourceEventArgs e)
         {
             events = e.Events;
+            CurrentBoard = new Board("All");
+            CurrentBoard.Events = events;
+
+            if (ActiveBoardChanged != null)
+                ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
             SiftEvents();
         }
 
         private void SiftEvents()
         {
-            current.Events = events;            
+            //current.Events = events;  
         }
 
-        public EventBoard CurrentBoard
+        public Board CurrentBoard
         {
             get { return current; }
             set { current = value; }
@@ -135,6 +141,9 @@ namespace Teudu.InfoDisplay
                 }
                 else if (ViewChangeMode == HandsState.Zooming)
                 {
+                    if (ScaleRequest != null)
+                        ScaleRequest(this, new EventArgs());
+
                     if (isZoomStart)
                         startHandDistance = HandsDistance;
 
@@ -252,12 +261,12 @@ namespace Teudu.InfoDisplay
 
         public bool LeftArmInFront
         {
-            get { return leftArm.HandZ < (spine.Z - 100); }
+            get { return leftArm.HandZ < (spine.Z - 150); }
         }
 
         public bool RightArmInFront
         {
-            get { return rightArm.HandZ < (spine.Z - 100); }
+            get { return rightArm.HandZ < (spine.Z - 150); }
         }
 
         public HandsState ViewChangeMode
@@ -365,6 +374,7 @@ namespace Teudu.InfoDisplay
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler ScaleRequest;
         public event EventHandler PanRequest;
         public event EventHandler<BoardEventArgs> ActiveBoardChanged;
 

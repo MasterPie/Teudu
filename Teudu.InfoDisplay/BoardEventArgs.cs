@@ -7,6 +7,6 @@ namespace Teudu.InfoDisplay
 {
     public class BoardEventArgs : EventArgs
     {
-        public EventBoard Board { get; set; }
+        public Board Board { get; set; }
     }
 }

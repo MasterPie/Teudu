@@ -16,7 +16,8 @@ namespace Teudu.InfoDisplay
         public ViewModelLoader() 
         { 
             kinectService = new UserKinectService();
-            sourceService = new Test.FileSourceService("eventstest.xml");
+            //sourceService = new Test.FileSourceService("eventstest.xml");
+            sourceService = new WebSourceService();
             var prop = DesignerProperties.IsInDesignModeProperty; 
             var isInDesignMode = (bool)DependencyPropertyDescriptor
                 .FromProperty(prop, typeof(FrameworkElement))
