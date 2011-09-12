@@ -26,9 +26,13 @@
         </Storyboard>
     </UserControl.Resources>
     <UserControl.Triggers>
-        <EventTrigger x:Name="PanAnimation" RoutedEvent="teudu:EventBoard.Shift">
-            <BeginStoryboard>
-                <Storyboard>
+        <EventTrigger RoutedEvent="teudu:EventBoard.StopShift">
+            <StopStoryboard BeginStoryboardName="PanAnimationBeginStoryboard" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="teudu:EventBoard.Shift">
+            <SeekStoryboard BeginStoryboardName="PanAnimationBeginStoryboard" Offset="0:0:0" Origin="BeginTime"/>
+            <BeginStoryboard x:Name="PanAnimationBeginStoryboard">
+                <Storyboard x:Name="PanAnimationStoryboard">
                     <DoubleAnimationUsingKeyFrames
                                 Storyboard.TargetName="EventBoardTranslateTransform"
                                 Storyboard.TargetProperty="X"
@@ -47,39 +51,6 @@
     </UserControl.Triggers>
     <Grid>
         <WrapPanel Name="Board" Orientation="Vertical">
-            <!--<Rectangle Width="200" Height="300" Fill="Tomato" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Aqua" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Orange" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Red" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Green" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="BlueViolet" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="Blue" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Tomato" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Lavender" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Red" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Gainsboro" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Aqua" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Orange" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Green" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="BlueViolet" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Red" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Green" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="BlueViolet" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="Blue" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Tomato" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Lavender" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Red" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="300" Fill="Gainsboro" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Aqua" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Orange" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="190" Fill="Green" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="270" Fill="BlueViolet" Margin="2"></Rectangle>
-            <Rectangle Width="200" Height="250" Fill="Brown" Margin="2"></Rectangle>-->
             <WrapPanel.RenderTransform>
                 <TransformGroup>
                     <!--<TranslateTransform X="{Binding Path=DominantArmHandOffsetX}" Y="{Binding Path=DominantArmHandOffsetY}"></TranslateTransform>-->

@@ -19,27 +19,38 @@ namespace Teudu.InfoDisplay
     /// </summary>
     public partial class EventBoard : UserControl
     {
-        private List<Event> events;
+        private Board board;
         public EventBoard()
         {
             InitializeComponent();
         }
 
-        public List<Event> Events
+        public Board BoardModel
         {
-            get { return events; }
+            get { return board; }
             set
             {
-                events = value;
+                board = value;
                 this.Board.Children.Clear();
-                events.ForEach(x => this.Board.Children.Add(new EventControl() { 
-                    Event = x, 
+                BoardModel.Events.ForEach(x => this.Board.Children.Add(new EventControl()
+                {
+                    Event = x,
                     Width = 170,
                     MinHeight = 210,
                     Margin = new Thickness(5)
                 }));
             }
         }
+
+
+        //public void Shift2()
+        //{
+        //    PanAnimationStoryboard.Seek(new TimeSpan(0));
+        //    PanAnimationStoryboard.Begin();
+        //}
+
+        public static readonly RoutedEvent StopShiftEvent = EventManager.RegisterRoutedEvent(
+       "StopShift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
 
         public static readonly RoutedEvent ShiftEvent = EventManager.RegisterRoutedEvent(
        "Shift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
@@ -52,6 +63,13 @@ namespace Teudu.InfoDisplay
         {
             add { AddHandler(ShiftEvent, value); }
             remove { RemoveHandler(ShiftEvent, value); }
+        }
+
+        // Provide CLR accessors for the event
+        public event RoutedEventHandler StopShift
+        {
+            add { AddHandler(StopShiftEvent, value); }
+            remove { RemoveHandler(StopShiftEvent, value); }
         }
 
         // Provide CLR accessors for the event

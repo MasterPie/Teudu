@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Configuration;
 
 namespace Teudu.InfoDisplay
 {
@@ -20,11 +21,12 @@ namespace Teudu.InfoDisplay
     public partial class EventControl : UserControl
     {
         private Event eventModel;
+        private string imageDirectory;
 
         public EventControl()
         {
             InitializeComponent();
-            
+            imageDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\" + ConfigurationManager.AppSettings["CachedImageDirectory"]  + @"\";
         }
 
         public Event Event
@@ -41,7 +43,7 @@ namespace Teudu.InfoDisplay
                 BitmapImage src = new BitmapImage();
                 src.BeginInit();
 
-                src.UriSource = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\image_stash\" + this.eventModel.Image);
+                src.UriSource = new Uri(imageDirectory + this.eventModel.Image);
                 src.CacheOption = BitmapCacheOption.OnLoad;
                 src.EndInit();
                 this.image.Source = src;

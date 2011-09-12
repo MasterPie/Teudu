@@ -29,14 +29,20 @@ namespace Teudu.InfoDisplay
             InitializeComponent();
             ((ViewModel)this.DataContext).ActiveBoardChanged += new EventHandler<BoardEventArgs>(MainWindow_BoardChanged);
             ((ViewModel)this.DataContext).PanRequest += new EventHandler(MainWindow_PanRequest);
+            ((ViewModel)this.DataContext).ScaleRequest += new EventHandler(MainWindow_ScaleRequest);
 
-            current = ((ViewModel)this.DataContext).CurrentBoard;
+            current = new EventBoard();//{BoardModel = ((ViewModel)this.DataContext).CurrentBoard};
             this.BoardContainer.Children.Add(current);
+        }
+
+        void MainWindow_ScaleRequest(object sender, EventArgs e)
+        {
+            RaiseStopShiftEvent();
         }
 
         void MainWindow_BoardChanged(object sender, BoardEventArgs e)
         {
-            BoardChanging(e.Board);
+            BoardChanging(new EventBoard() { BoardModel = e.Board });
             
             this.BoardContainer.Children.Clear();
             this.BoardContainer.Children.Add(current);
@@ -51,6 +57,12 @@ namespace Teudu.InfoDisplay
         void MainWindow_PanRequest(object sender, EventArgs e)
         {
             RaiseShiftEvent();
+        }
+
+        private void RaiseStopShiftEvent()
+        {
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(EventBoard.StopShiftEvent);
+            current.RaiseEvent(newEventArgs);
         }
 
         private void RaiseShiftEvent()
