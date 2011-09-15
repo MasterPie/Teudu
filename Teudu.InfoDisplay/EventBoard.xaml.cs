@@ -11,18 +11,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Teudu.InfoDisplay
 {
     /// <summary>
     /// Interaction logic for EventBoard.xaml
     /// </summary>
-    public partial class EventBoard : UserControl
+    public partial class EventBoard : UserControl, INotifyPropertyChanged
     {
         private Board board;
         public EventBoard()
         {
             InitializeComponent();
+            ScaleLevel = 1;
         }
 
         public Board BoardModel
@@ -150,5 +153,57 @@ namespace Teudu.InfoDisplay
         {
             get { return snapY; }
         }
+
+        double scaleLevel = 1;
+        public double ScaleLevel
+        {
+            set { scaleLevel = value; this.OnPropertyChanged("ScaleLevel"); }
+            get { return scaleLevel; }
+        }
+
+        double toX, toY;
+        
+        public double MoveToX
+        {
+            set 
+            {
+                if (value / ScaleLevel >= -(App.Current.MainWindow.Width / 2) && value / ScaleLevel <= (App.Current.MainWindow.Width / 2))
+                {
+                    toX = this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).X + value;
+                    this.OnPropertyChanged("MoveToX");
+                }
+            }
+            get { return toX; }
+        }
+
+        public double MoveToY
+        {
+            set 
+            {
+                if (value / ScaleLevel >= -(App.Current.MainWindow.Height / 2) && value / ScaleLevel <= (App.Current.MainWindow.Height / 2))
+                {
+                    toY = this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).Y + value;
+                    this.OnPropertyChanged("MoveToY");
+                }
+            }
+            get { return toY; }
+        }
+
+        private void PanAnimationStoryboard_Completed(object sender, EventArgs e)
+        {
+            if (PanCompleted != null)
+                PanCompleted(this, new EventArgs());
+        }
+
+        void OnPropertyChanged(string property)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
+        public event EventHandler PanCompleted;
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

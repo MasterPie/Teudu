@@ -93,6 +93,8 @@
     <Compile Include="EventControl.xaml.cs">
       <DependentUpon>EventControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PanEventArgs.cs" />
+    <Compile Include="ScaleEventArgs.cs" />
     <Compile Include="Test\FileSourceService.cs" />
     <Compile Include="HandsState.cs" />
     <Compile Include="ISourceService.cs" />
