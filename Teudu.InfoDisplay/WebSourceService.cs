@@ -36,7 +36,7 @@ namespace Teudu.InfoDisplay
             if (pollTime < 60)
                 pollTime = 60 * 60;
 
-            pollTime = 5;
+            pollTime = 2;
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, pollTime);
@@ -55,7 +55,7 @@ namespace Teudu.InfoDisplay
             if (EventsUpdated != null)
                 EventsUpdated(this, new SourceEventArgs() { Events = (List<Event>)e.Result });
 
-            timer.Start();
+            //timer.Start();
         }
 
         void downloadWorker_DoWork(object sender, DoWorkEventArgs e)

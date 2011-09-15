@@ -9,6 +9,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using System.Threading;
 
 namespace Teudu.InfoDisplay
 {
@@ -23,7 +24,6 @@ namespace Teudu.InfoDisplay
 
         private const int MAX_SCALE = 4;
         private const int MIN_SCALE = 1;
-        private bool isZoomStart = false;
 
         private static double hotspotRegionX = App.Current.MainWindow.Width / 12;
         private static double hotspotRegionY = App.Current.MainWindow.Height / 8;
@@ -48,14 +48,12 @@ namespace Teudu.InfoDisplay
             this.sourceService = sourceService;
             this.sourceService.EventsUpdated += new EventHandler<SourceEventArgs>(sourceService_EventsUpdated);
             
-
             leftArm = new Arm();
             rightArm = new Arm();
             head = new Head();
             torso = new Torso();
 
             events = new List<Event>();
-
 
             boards = new List<Board>();
             CurrentBoard = new Board("All");
@@ -127,43 +125,16 @@ namespace Teudu.InfoDisplay
                 #endregion
 
                 if (ViewChangeMode == HandsState.Panning)
-                {
-                    if (!panPreparing && (IsNearBot || IsNearTop || IsNearLeft || IsNearRight))
-                        PreparePan();
-                    else if(!IsNearBot && !IsNearTop && !IsNearLeft && !IsNearRight)
-                    {
-                        this.OnPropertyChanged("DominantArmHandOffsetX");
-                        this.OnPropertyChanged("DominantArmHandOffsetY");
-                    }
-
-                    lastScale = ScaleLevel;
-                    isZoomStart = true;
-                }
+                    Pan();
                 else if (ViewChangeMode == HandsState.Zooming)
-                {
-                    if (ScaleRequest != null)
-                        ScaleRequest(this, new EventArgs());
-
-                    if (isZoomStart)
-                        startHandDistance = HandsDistance;
-
-                    ScaleLevel = lastScale + (HandsDistance - startHandDistance);
-                    this.OnPropertyChanged("ScaleLevel");
-                    isZoomStart = false;
-                }
-                else
-                {
-                    lastScale = ScaleLevel;
-                    isZoomStart = true;
-                }
-
+                    Scale();
                 //Trace.WriteLineIf(LeftArmInFront, "Left arm z " + leftArm.HandZ + " , spine z " + spine.Z);
                 //Trace.WriteLineIf(RightArmInFront, "Right arm z " + rightArm.HandZ + " , spine z " + spine.Z);
 
-                Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
-                Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
-                Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
-                Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
+                //Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
+                //Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
+                //Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
+                //Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
             } 
         #endregion
 
@@ -176,66 +147,62 @@ namespace Teudu.InfoDisplay
         Head head;
         Spine spine;
 
-        bool panPreparing = false;
-
-        private void PreparePan()
+        private void Pan()
         {
-            panPreparing = true;
-            SetTargetCoords();
-            this.OnPropertyChanged("TargetX");
-            this.OnPropertyChanged("TargetY");
-
-            if (PanRequest != null)
-                PanRequest(this, new EventArgs());
-            
-            panPreparing = false;
-        }
-
-        private void SetTargetCoords()
-        {
-            if (ViewChangeMode != HandsState.Panning)
+            if (!IsNearBot && !IsNearTop && !IsNearLeft && !IsNearRight)
                 return;
 
-            if(IsNearLeft)
-                TargetX = lastX + PAN_TO_OFFSET;
-            if(IsNearRight)
-                TargetX = lastX - PAN_TO_OFFSET;
-            if (IsNearTop)
-                TargetY = lastY + PAN_TO_OFFSET;
-            if (IsNearBot)
-                TargetY = lastY - PAN_TO_OFFSET;
+            Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
+            Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
+            Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
+            Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
 
-            //Trace.WriteLine("Moving to: " + TargetX + " , " + TargetY + " from " + lastX +" , " + lastY);
-        }
-        double lastX = 0.0;
-        double lastY = 0.0;
-        double currX, currY;
-
-        public double TargetX
-        {
-            set 
-            { 
-                if (value / ScaleLevel >= -(App.Current.MainWindow.Width / 2) && value / ScaleLevel <= (App.Current.MainWindow.Width / 2)) 
-                { 
-                    lastX = TargetX; 
-                    currX = value / ScaleLevel; 
-                } 
-            }
-            get { return currX; }
+            NotifyPanSubscribers();
         }
 
-        public double TargetY
+        private void Scale()
         {
-            set 
-            {
-                if (value / ScaleLevel >= -(App.Current.MainWindow.Height / 2) && value / ScaleLevel <= (App.Current.MainWindow.Height / 2))
+            NotifyScaleSubscribers();
+        }
+
+        private void NotifyScaleSubscribers()
+        {
+            double scaleLevel = Math.Log(this.HandsDistance, 3);
+            if (scaleLevel >= 5)
+                scaleLevel = 5;
+            if (scaleLevel <= 1)
+                scaleLevel = 1;
+            //ScaleLevel = lastScale + (HandsDistance - startHandDistance);
+            if (ScaleRequest != null)
+                ScaleRequest(this, new ScaleEventArgs()
                 {
-                    lastY = TargetY;
-                    currY = value / ScaleLevel;
-                }
-            }
-            get { return currY; }
+                    ScaleLevel = scaleLevel
+                });
         }
+
+        private void NotifyPanSubscribers()
+        {
+            double xOffset, yOffset;
+            xOffset = yOffset = 0;
+
+            if (IsNearLeft)
+                xOffset = PAN_TO_OFFSET;
+            if (IsNearRight)
+                xOffset = -PAN_TO_OFFSET;
+            if (IsNearTop)
+                yOffset = PAN_TO_OFFSET;
+            if (IsNearBot)
+                yOffset = -PAN_TO_OFFSET;
+
+            if (PanRequest != null)
+                PanRequest(this, new PanEventArgs()
+                {
+                    HorizontalOffset = xOffset,
+                    VerticalOffset = yOffset
+                });
+        }
+
+
 
         public bool IsNearLeft
         {
@@ -249,24 +216,22 @@ namespace Teudu.InfoDisplay
 
         public bool IsNearTop
         {
-            get {
-                //return DominantHand.HandY > head.Y;}
-                return (DominantHand.HandY >= hotSpotTop) && (DominantHand.HandY < (hotSpotTop + hotspotRegionY)); }
+            get { return (DominantHand.HandY >= hotSpotTop) && (DominantHand.HandY < (hotSpotTop + hotspotRegionY)); }
         }
 
         public bool IsNearBot
         {
-            get{return (DominantHand.HandY > hotSpotBottom) && (DominantHand.HandY <= (hotSpotBottom + hotspotRegionY)); }
+            get{ return (DominantHand.HandY > hotSpotBottom) && (DominantHand.HandY <= (hotSpotBottom + hotspotRegionY)); }
         }
 
         public bool LeftArmInFront
         {
-            get { return leftArm.HandZ < (spine.Z - 150); }
+            get { return LeftHandAboveTorso && (leftArm.HandZ < (spine.Z - 100)); }
         }
 
         public bool RightArmInFront
         {
-            get { return rightArm.HandZ < (spine.Z - 150); }
+            get { return RightHandAboveTorso && (rightArm.HandZ < (spine.Z - 100)); }
         }
 
         public HandsState ViewChangeMode
@@ -283,23 +248,6 @@ namespace Teudu.InfoDisplay
 
                 return currentState;
             }
-        }
-
-        double lastScale, scale = 1;
-        public double ScaleLevel
-        {
-            set 
-            { 
-                if(value >= MIN_SCALE && value <= MAX_SCALE) 
-                    scale = value;
-                if (value < MIN_SCALE)
-                    lastScale = MIN_SCALE;
-                if (value > MAX_SCALE)
-                    lastScale = MAX_SCALE;
-
-                Trace.WriteLine("Scale trying set at: " + value);
-            }
-            get { return scale; }
         }
 
         #region Hand States
@@ -324,8 +272,6 @@ namespace Teudu.InfoDisplay
                     return rightArm;
             }
         }
-
-        double startHandDistance;
 
         public double HandsDistance
         {
@@ -374,8 +320,8 @@ namespace Teudu.InfoDisplay
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler ScaleRequest;
-        public event EventHandler PanRequest;
+        public event EventHandler<ScaleEventArgs> ScaleRequest;
+        public event EventHandler<PanEventArgs> PanRequest;
         public event EventHandler<BoardEventArgs> ActiveBoardChanged;
 
     }

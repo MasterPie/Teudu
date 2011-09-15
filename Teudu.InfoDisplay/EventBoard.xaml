@@ -32,18 +32,18 @@
         <EventTrigger RoutedEvent="teudu:EventBoard.Shift">
             <SeekStoryboard BeginStoryboardName="PanAnimationBeginStoryboard" Offset="0:0:0" Origin="BeginTime"/>
             <BeginStoryboard x:Name="PanAnimationBeginStoryboard">
-                <Storyboard x:Name="PanAnimationStoryboard">
+                <Storyboard x:Name="PanAnimationStoryboard" Completed="PanAnimationStoryboard_Completed">
                     <DoubleAnimationUsingKeyFrames
                                 Storyboard.TargetName="EventBoardTranslateTransform"
                                 Storyboard.TargetProperty="X"
                                 Duration="0:0:2">
-                        <SplineDoubleKeyFrame Value="{Binding Path=TargetX}" KeyTime="0:0:2" KeySpline="0.25,0.5 0.75,1" />
+                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToX}" KeyTime="0:0:2" KeySpline="0.25,0.5 0.75,1" />
                     </DoubleAnimationUsingKeyFrames>
                     <DoubleAnimationUsingKeyFrames
                                 Storyboard.TargetName="EventBoardTranslateTransform"
                                 Storyboard.TargetProperty="Y"
                                 Duration="0:0:2">
-                        <SplineDoubleKeyFrame Value="{Binding Path=TargetY}" KeyTime="0:0:2" KeySpline="0.25,0.5 0.75,1" />
+                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToX}" KeyTime="0:0:2" KeySpline="0.25,0.5 0.75,1" />
                     </DoubleAnimationUsingKeyFrames>
                 </Storyboard>
             </BeginStoryboard>
@@ -55,7 +55,7 @@
                 <TransformGroup>
                     <!--<TranslateTransform X="{Binding Path=DominantArmHandOffsetX}" Y="{Binding Path=DominantArmHandOffsetY}"></TranslateTransform>-->
                     <TranslateTransform x:Name="EventBoardTranslateTransform" X="0" Y="0"></TranslateTransform>
-                    <ScaleTransform ScaleX="{Binding Path=ScaleLevel, Mode=OneWay, FallbackValue=1}" ScaleY="{Binding Path=ScaleLevel, Mode=OneWay, FallbackValue=1}" CenterX="900" CenterY="500"/>
+                    <ScaleTransform ScaleX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ScaleLevel}" ScaleY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ScaleLevel}" CenterX="900" CenterY="500"/>
                 </TransformGroup>
             </WrapPanel.RenderTransform>
             

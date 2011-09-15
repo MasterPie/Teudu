@@ -59,15 +59,6 @@ namespace Teudu.InfoDisplay
             var rightShoulderPosition = skeleton.Joints[JointID.ShoulderRight].Position;
             var spinePosition = skeleton.Joints[JointID.Spine].Position;
 
-            /*
-             * Apparently, doing this check is expensive
-             */
-            //if(skeleton.Joints[JointID.HandRight].TrackingState == JointTrackingState.Tracked)
-            //    swipeDetector.Add(rightHandPosition, runtime.SkeletonEngine);
-            //else
-            //    swipeDetector.Add(leftHandPosition, runtime.SkeletonEngine);
-            //swipeDetector.Add(rightHandPosition, runtime.SkeletonEngine);
-
             isTrackingSkeleton = true;
 
             if (this.SkeletonUpdated != null) 
@@ -95,8 +86,6 @@ namespace Teudu.InfoDisplay
         }        
         
         public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
-        public event EventHandler<SwipeEventArgs> SwipeHappened;
-
 
         public bool IsIdle
         {
