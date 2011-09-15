@@ -14,7 +14,7 @@
         <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                TargetType="TextBlock"
                x:Key="DescriptionText">
-            <Setter Property="FontSize" Value="5"></Setter>
+            <Setter Property="FontSize" Value="8"></Setter>
         </Style>
     </UserControl.Resources>
     <Grid Background="#FF999933">

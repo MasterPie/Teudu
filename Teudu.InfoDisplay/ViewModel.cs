@@ -152,10 +152,10 @@ namespace Teudu.InfoDisplay
             if (!IsNearBot && !IsNearTop && !IsNearLeft && !IsNearRight)
                 return;
 
-            Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
-            Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
-            Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
-            Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
+            //Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
+            //Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
+            //Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
+            //Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
 
             NotifyPanSubscribers();
         }
@@ -200,6 +200,8 @@ namespace Teudu.InfoDisplay
                     HorizontalOffset = xOffset,
                     VerticalOffset = yOffset
                 });
+
+            //Thread.Sleep(1000);
         }
 
 
@@ -226,12 +228,12 @@ namespace Teudu.InfoDisplay
 
         public bool LeftArmInFront
         {
-            get { return LeftHandAboveTorso && (leftArm.HandZ < (spine.Z - 100)); }
+            get { return leftArm.ArmAlmostStraight && LeftHandAboveTorso || (leftArm.HandZ < (spine.Z - 100)); }
         }
 
         public bool RightArmInFront
         {
-            get { return RightHandAboveTorso && (rightArm.HandZ < (spine.Z - 100)); }
+            get { return rightArm.ArmAlmostStraight && RightHandAboveTorso || (rightArm.HandZ < (spine.Z - 100)); }
         }
 
         public HandsState ViewChangeMode

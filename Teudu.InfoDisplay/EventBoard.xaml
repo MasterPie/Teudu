@@ -36,14 +36,14 @@
                     <DoubleAnimationUsingKeyFrames
                                 Storyboard.TargetName="EventBoardTranslateTransform"
                                 Storyboard.TargetProperty="X"
-                                Duration="0:0:2">
-                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToX}" KeyTime="0:0:2" KeySpline="0.25,0.5 0.75,1" />
+                                Duration="0:0:1">
+                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToX}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
                     </DoubleAnimationUsingKeyFrames>
                     <DoubleAnimationUsingKeyFrames
                                 Storyboard.TargetName="EventBoardTranslateTransform"
                                 Storyboard.TargetProperty="Y"
-                                Duration="0:0:2">
-                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToX}" KeyTime="0:0:2" KeySpline="0.25,0.5 0.75,1" />
+                                Duration="0:0:1">
+                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToX}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
                     </DoubleAnimationUsingKeyFrames>
                 </Storyboard>
             </BeginStoryboard>
