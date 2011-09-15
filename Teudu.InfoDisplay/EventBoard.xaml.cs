@@ -45,13 +45,6 @@ namespace Teudu.InfoDisplay
             }
         }
 
-
-        //public void Shift2()
-        //{
-        //    PanAnimationStoryboard.Seek(new TimeSpan(0));
-        //    PanAnimationStoryboard.Begin();
-        //}
-
         public static readonly RoutedEvent StopShiftEvent = EventManager.RegisterRoutedEvent(
        "StopShift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
 
@@ -82,10 +75,6 @@ namespace Teudu.InfoDisplay
             remove { RemoveHandler(SnapEvent, value); }
         }
 
-        private void DoubleAnimationUsingKeyFrames_Completed(object sender, EventArgs e)
-        {
-            //SnapToNearestEvent();
-        }
 
         private void SnapToNearestEvent()
         {
@@ -100,8 +89,8 @@ namespace Teudu.InfoDisplay
             Point topCorner = closestElement.TransformToAncestor(Board).Transform(new Point(0, 0));
             deltaX = topCorner.X - centerX;
             deltaY = topCorner.Y - centerY;
-        
-            Point boardCorner = Board.TransformToAncestor(App.Current.MainWindow).Transform(new Point(0,0));
+
+            Point boardCorner = Board.TranslatePoint(new Point(0, 0), App.Current.MainWindow);//Board.TransformToAncestor(App.Current.MainWindow).Transform(new Point(0,0));
 
             snapX = boardCorner.X - deltaX;
             snapY = boardCorner.Y - deltaY;
@@ -125,7 +114,7 @@ namespace Teudu.InfoDisplay
 
             foreach (UIElement element in Board.Children)
             {
-                if (!element.GetType().AssemblyQualifiedName.ToLower().Contains("rectangle"))
+                if (!element.GetType().AssemblyQualifiedName.ToLower().Contains("eventcontrol"))
                     continue;
 
                 Point topCorner = element.TransformToAncestor(Board).Transform(new Point(0, 0));
@@ -191,6 +180,7 @@ namespace Teudu.InfoDisplay
 
         private void PanAnimationStoryboard_Completed(object sender, EventArgs e)
         {
+            //SnapToNearestEvent();
             if (PanCompleted != null)
                 PanCompleted(this, new EventArgs());
         }

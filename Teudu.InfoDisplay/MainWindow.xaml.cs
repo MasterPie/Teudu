@@ -31,10 +31,6 @@ namespace Teudu.InfoDisplay
             ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
             ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
 
-            allowEventHandlingTimer = new Timer();
-            allowEventHandlingTimer.Interval = 1000;
-            allowEventHandlingTimer.Elapsed += new ElapsedEventHandler(allowEventHandlingTimer_Elapsed);
-
             current = new EventBoard();
             current.PanCompleted += new EventHandler(current_PanCompleted);
             this.BoardContainer.Children.Add(current);
@@ -42,7 +38,6 @@ namespace Teudu.InfoDisplay
 
         void current_PanCompleted(object sender, EventArgs e)
         {
-            ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
             ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
         }
 
@@ -51,7 +46,6 @@ namespace Teudu.InfoDisplay
             ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
             ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
 
-            allowEventHandlingTimer.Stop();
         }
 
         void MainWindow_ScaleRequest(object sender, ScaleEventArgs e)
@@ -95,22 +89,17 @@ namespace Teudu.InfoDisplay
             ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
             ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
 
-            //allowEventHandlingTimer.Start();
         }
 
         private void RaiseShiftEvent()
         {
             ((ViewModel)this.DataContext).PanRequest -= new EventHandler<PanEventArgs>(MainWindow_PanRequest);
-            ((ViewModel)this.DataContext).ScaleRequest -= new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
 
             RoutedEventArgs newEventArgs = new RoutedEventArgs(EventBoard.ShiftEvent);
             current.RaiseEvent(newEventArgs);
 
-            //allowEventHandlingTimer.Start();
             //Board.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate() { Board.RaiseEvent(newEventArgs); }));
         }
-
-        Timer allowEventHandlingTimer;
 
         
     }
