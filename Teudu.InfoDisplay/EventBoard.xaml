@@ -49,8 +49,8 @@
             </BeginStoryboard>
         </EventTrigger>
     </UserControl.Triggers>
-    <Grid>
-        <WrapPanel Name="Board" Orientation="Vertical">
+    <Canvas>
+        <WrapPanel Name="Board" Orientation="Vertical" Height="680" Panel.ZIndex="1">
             <WrapPanel.RenderTransform>
                 <TransformGroup>
                     <!--<TranslateTransform X="{Binding Path=DominantArmHandOffsetX}" Y="{Binding Path=DominantArmHandOffsetY}"></TranslateTransform>-->
@@ -60,5 +60,5 @@
             </WrapPanel.RenderTransform>
             
         </WrapPanel>
-    </Grid>
+    </Canvas>
 </UserControl>

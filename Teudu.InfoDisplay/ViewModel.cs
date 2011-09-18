@@ -17,10 +17,10 @@ namespace Teudu.InfoDisplay
     {
         private const double PAN_TO_OFFSET = 100;
         private const double SCALE_OFFSET = 250;
-        private const double HEIGHT_OFF_GROUND = 300;
-        private double ARM_SCALE_FACTOR_X = (App.Current.MainWindow.Width / 2) * 3;
-        private double ARM_SCALE_FACTOR_Y = (App.Current.MainWindow.Height / 2) * 3;
-        private double ARM_SCALE_FACTOR_Z = 500; // Distance to tv
+        private const double HEIGHT_OFF_GROUND = 0;//300;
+        private double ARM_SCALE_FACTOR_X = 1;//(App.Current.MainWindow.Width / 2) * 3;
+        private double ARM_SCALE_FACTOR_Y = 1;//(App.Current.MainWindow.Height / 2) * 3;
+        private double ARM_SCALE_FACTOR_Z = 1;//500; // Distance to tv
 
         private const int MAX_SCALE = 4;
         private const int MIN_SCALE = 1;
@@ -35,7 +35,7 @@ namespace Teudu.InfoDisplay
 
         private List<Event> events;
         private List<Board> boards;
-        private Board current;
+        private Board currentBoard;
 
         IKinectService kinectService;
         ISourceService sourceService;
@@ -56,8 +56,8 @@ namespace Teudu.InfoDisplay
             events = new List<Event>();
 
             boards = new List<Board>();
-            CurrentBoard = new Board("All");
-            boards.Add(current);
+            CurrentBoard = new Board("Hot");
+            boards.Add(currentBoard);
 
             if (ActiveBoardChanged != null)
                 ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
@@ -83,8 +83,8 @@ namespace Teudu.InfoDisplay
 
         public Board CurrentBoard
         {
-            get { return current; }
-            set { current = value; }
+            get { return currentBoard; }
+            set { currentBoard = value; }
         }
 
         #region Kinect
@@ -99,40 +99,44 @@ namespace Teudu.InfoDisplay
 
                 this.head.Y = e.HeadPosition.Y * ARM_SCALE_FACTOR_Y;
 
-                this.rightArm.HandX = midpointX + (e.RightHandPosition.X * ARM_SCALE_FACTOR_X);
-                this.rightArm.HandY = midpointY - (e.RightHandPosition.Y * ARM_SCALE_FACTOR_Y);
+                this.rightArm.HandX = (e.RightHandPosition.X * ARM_SCALE_FACTOR_X);
+                this.rightArm.HandY = (e.RightHandPosition.Y * ARM_SCALE_FACTOR_Y);
                 this.rightArm.HandZ = e.RightHandPosition.Z * ARM_SCALE_FACTOR_Z;
-                this.rightArm.ElbowX = midpointX + (e.RightElbowPosition.X * ARM_SCALE_FACTOR_X);
-                this.rightArm.ElbowY = midpointY - (e.RightElbowPosition.Y * ARM_SCALE_FACTOR_Y);
+                this.rightArm.ElbowX = (e.RightElbowPosition.X * ARM_SCALE_FACTOR_X);
+                this.rightArm.ElbowY = (e.RightElbowPosition.Y * ARM_SCALE_FACTOR_Y);
                 this.rightArm.ElbowZ = e.RightElbowPosition.Z * ARM_SCALE_FACTOR_Z;
-                this.rightArm.ShoulderX = midpointX + (e.RightShoulderPosition.X * ARM_SCALE_FACTOR_X);
-                this.rightArm.ShoulderY = midpointY - (e.RightShoulderPosition.Y * ARM_SCALE_FACTOR_Y);
+                this.rightArm.ShoulderX = (e.RightShoulderPosition.X * ARM_SCALE_FACTOR_X);
+                this.rightArm.ShoulderY = (e.RightShoulderPosition.Y * ARM_SCALE_FACTOR_Y);
                 this.rightArm.ShoulderZ = e.RightShoulderPosition.Z * ARM_SCALE_FACTOR_Z;
 
-                this.leftArm.HandX = midpointX + (e.LeftHandPosition.X * ARM_SCALE_FACTOR_X);
-                this.leftArm.HandY = midpointY - (e.LeftHandPosition.Y * ARM_SCALE_FACTOR_Y);
+                this.leftArm.HandX = (e.LeftHandPosition.X * ARM_SCALE_FACTOR_X);
+                this.leftArm.HandY = (e.LeftHandPosition.Y * ARM_SCALE_FACTOR_Y);
                 this.leftArm.HandZ = e.LeftHandPosition.Z * ARM_SCALE_FACTOR_Z;
-                this.leftArm.ElbowX = midpointX + (e.LeftElbowPosition.X * ARM_SCALE_FACTOR_X);
-                this.leftArm.ElbowY = midpointY - (e.LeftElbowPosition.Y * ARM_SCALE_FACTOR_Y);
+                this.leftArm.ElbowX = (e.LeftElbowPosition.X * ARM_SCALE_FACTOR_X);
+                this.leftArm.ElbowY = (e.LeftElbowPosition.Y * ARM_SCALE_FACTOR_Y);
                 this.leftArm.ElbowZ = e.LeftElbowPosition.Z * ARM_SCALE_FACTOR_Z;
-                this.leftArm.ShoulderX = midpointX + (e.LeftShoulderPosition.X * ARM_SCALE_FACTOR_X);
-                this.leftArm.ShoulderY = midpointY - (e.LeftShoulderPosition.Y * ARM_SCALE_FACTOR_Y);
+                this.leftArm.ShoulderX = (e.LeftShoulderPosition.X * ARM_SCALE_FACTOR_X);
+                this.leftArm.ShoulderY = (e.LeftShoulderPosition.Y * ARM_SCALE_FACTOR_Y);
                 this.leftArm.ShoulderZ = e.LeftShoulderPosition.Z * ARM_SCALE_FACTOR_Z;
 
                 this.spine.Z = e.SpinePosition.Z * ARM_SCALE_FACTOR_Z;
 
-                this.torso.Y = midpointY - (e.TorsoPosition.Y * ARM_SCALE_FACTOR_Y);
+                this.torso.Y = (e.TorsoPosition.Y * ARM_SCALE_FACTOR_Y);
                 #endregion
+
+                //Trace.WriteLine("Right arm is " + rightArm.HandZ);
 
                 if (ViewChangeMode == HandsState.Panning)
                     Pan();
-                else if (ViewChangeMode == HandsState.Zooming)
-                    Scale();
+                //else if (ViewChangeMode == HandsState.Zooming)
+                //    Scale();
                 //Trace.WriteLineIf(LeftArmInFront, "Left arm z " + leftArm.HandZ + " , spine z " + spine.Z);
                 //Trace.WriteLineIf(RightArmInFront, "Right arm z " + rightArm.HandZ + " , spine z " + spine.Z);
 
-                //Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
-                //Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
+                Trace.WriteLineIf(RightHandActive, "Right HAND active " + rightArm.HandZ + "("+rightArm.HandX + "," + rightArm.HandY + ")");
+
+                Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
+                Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
                 //Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
                 //Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
             } 
@@ -201,7 +205,7 @@ namespace Teudu.InfoDisplay
                     VerticalOffset = yOffset
                 });
 
-            //Thread.Sleep(1000);
+            //Thread.Sleep(500);
         }
 
 
@@ -233,7 +237,8 @@ namespace Teudu.InfoDisplay
 
         public bool RightArmInFront
         {
-            get { return rightArm.ArmAlmostStraight && RightHandAboveTorso || (rightArm.HandZ < (spine.Z - 100)); }
+            get { return rightArm.HandZ < 1.25; }
+                //rightArm.ArmAlmostStraight && RightHandAboveTorso || (rightArm.HandZ < (spine.Z - 100)); }
         }
 
         public HandsState ViewChangeMode
