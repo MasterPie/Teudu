@@ -93,6 +93,10 @@
     <Compile Include="EventControl.xaml.cs">
       <DependentUpon>EventControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventDetailsControl.xaml.cs">
+      <DependentUpon>EventDetailsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HoveredEventArgs.cs" />
     <Compile Include="PanEventArgs.cs" />
     <Compile Include="ScaleEventArgs.cs" />
     <Compile Include="Test\FileSourceService.cs" />
@@ -112,6 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EventControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EventDetailsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

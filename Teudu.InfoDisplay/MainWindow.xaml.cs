@@ -33,7 +33,9 @@ namespace Teudu.InfoDisplay
 
             current = new EventBoard();
             current.PanCompleted += new EventHandler(current_PanCompleted);
+            current.HoveredEventChanged +=new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
             this.BoardContainer.Children.Add(current);
+            
         }
 
         void current_PanCompleted(object sender, EventArgs e)
@@ -56,7 +58,7 @@ namespace Teudu.InfoDisplay
 
         void MainWindow_BoardChanged(object sender, BoardEventArgs e)
         {
-            BoardChanging(new EventBoard() { BoardModel = e.Board });
+            BoardChanging(new EventBoard() { BoardModel = e.Board});
             
             this.BoardContainer.Children.Clear();
             this.BoardContainer.Children.Add(current);
@@ -66,8 +68,17 @@ namespace Teudu.InfoDisplay
         {
             //do some interesting animation
             current.PanCompleted -= new EventHandler(current_PanCompleted);
+            current.HoveredEventChanged -= new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
             current = newBoard;
             current.PanCompleted += new EventHandler(current_PanCompleted);
+            current.HoveredEventChanged +=new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
+            current.TrackCenterEvent();
+        }
+
+        void current_HoveredEventChanged(object sender, HoveredEventArgs e)
+        {
+            this.EventDetails.EventTitle.Text = e.CurrentEvent.Name;
+            this.EventDetails.EventDescription.Text = e.CurrentEvent.Description;
         }
 
         void MainWindow_PanRequest(object sender, PanEventArgs e)

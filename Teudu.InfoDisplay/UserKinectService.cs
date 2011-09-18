@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Research.Kinect.Nui;
+using Coding4Fun.Kinect.Wpf;
 
 using System.Diagnostics;
 
@@ -49,15 +50,15 @@ namespace Teudu.InfoDisplay
             if (skeleton == null)
                 return;
 
-            var headPosition = skeleton.Joints[JointID.Head].Position;
-            var rightHandPosition = skeleton.Joints[JointID.HandRight].Position;
-            var leftHandPosition = skeleton.Joints[JointID.HandLeft].Position;
-            var torsoPosition = skeleton.Joints[JointID.HipCenter].Position;
-            var leftElbowPosition = skeleton.Joints[JointID.ElbowLeft].Position;
-            var rightElbowPosition = skeleton.Joints[JointID.ElbowRight].Position;
-            var leftShoulderPosition = skeleton.Joints[JointID.ShoulderLeft].Position;
-            var rightShoulderPosition = skeleton.Joints[JointID.ShoulderRight].Position;
-            var spinePosition = skeleton.Joints[JointID.Spine].Position;
+            var headPosition = skeleton.Joints[JointID.Head].ScaleTo(1920, 1080, 0.4f, 0.4f).Position;
+            var rightHandPosition = skeleton.Joints[JointID.HandRight].ScaleTo(1920,1080, 0.4f, 0.4f).Position;
+            var leftHandPosition = skeleton.Joints[JointID.HandLeft].ScaleTo(1920, 1080, 0.4f, 0.4f).Position;
+            var torsoPosition = skeleton.Joints[JointID.HipCenter].ScaleTo(1920, 1080, 0.4f, 0.4f).Position;
+            var leftElbowPosition = skeleton.Joints[JointID.ElbowLeft].ScaleTo(1920, 1080, 0.4f, 0.4f).Position;
+            var rightElbowPosition = skeleton.Joints[JointID.ElbowRight].ScaleTo(1920, 1080, 0.4f, 0.4f).Position;
+            var leftShoulderPosition = skeleton.Joints[JointID.ShoulderLeft].ScaleTo(1920, 1080, 0.4f, 0.4f).Position;
+            var rightShoulderPosition = skeleton.Joints[JointID.ShoulderRight].ScaleTo(1920, 1080, 0.4f, 0.4f).Position;
+            var spinePosition = skeleton.Joints[JointID.Spine].ScaleTo(1920, 1080, 0.4f, 0.4f).Position;
 
             isTrackingSkeleton = true;
 

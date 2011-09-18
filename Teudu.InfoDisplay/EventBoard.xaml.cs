@@ -39,10 +39,19 @@ namespace Teudu.InfoDisplay
                 {
                     Event = x,
                     Width = 170,
-                    MinHeight = 210,
                     Margin = new Thickness(5)
                 }));
+                TrackCenterEvent();
             }
+        }
+
+        public void TrackCenterEvent()
+        {
+            EventControl centerEvent = GetCentermostEvent();
+            if (centerEvent != null)
+                HoveredEvent = centerEvent.Event;
+
+            HoveredEvent = BoardModel.Events[0];
         }
 
         public static readonly RoutedEvent StopShiftEvent = EventManager.RegisterRoutedEvent(
@@ -78,7 +87,7 @@ namespace Teudu.InfoDisplay
 
         private void SnapToNearestEvent()
         {
-            UIElement closestElement = GetCentermostElement();
+            UIElement closestElement = GetCentermostEvent();
             double centerX = (double)App.Current.MainWindow.ActualWidth / 2;
             double centerY = (double)App.Current.MainWindow.ActualHeight / 2;
             double deltaX, deltaY;
@@ -101,15 +110,14 @@ namespace Teudu.InfoDisplay
             
         }
 
-        private UIElement GetCentermostElement()
+        private EventControl GetCentermostEvent()
         {
-            UIElement closestElement = null;
+            EventControl closestElement = null;
             double centerX = (double)Board.Parent.GetValue(ActualWidthProperty) / 2;
-            double centerY = (double)Board.Parent.GetValue(ActualHeightProperty) / 2;
+            double centerY = ((double)Board.Parent.GetValue(ActualHeightProperty) / 2) + 100;
 
             double deltaX,deltaY;
             deltaX = deltaY = centerX + centerY;
-
             
 
             foreach (UIElement element in Board.Children)
@@ -118,13 +126,15 @@ namespace Teudu.InfoDisplay
                     continue;
 
                 Point topCorner = element.TransformToAncestor(Board).Transform(new Point(0, 0));
+                double elementCenterX = topCorner.X + (double)element.GetValue(ActualWidthProperty) / 2;
+                double elementCenterY = topCorner.Y + (double)element.GetValue(ActualHeightProperty) / 2;
 
                 if (Math.Abs(topCorner.X - centerX) < deltaX || Math.Abs(topCorner.Y - centerY) < deltaY)
                 {
                     deltaX = Math.Abs(topCorner.X - centerX);
                     deltaY = Math.Abs(topCorner.Y - centerY);
 
-                    closestElement = element;
+                    closestElement = (EventControl)element;
                 }
             }
 
@@ -178,8 +188,18 @@ namespace Teudu.InfoDisplay
             get { return toY; }
         }
 
+        Event currentEvent;
+        public Event HoveredEvent
+        {
+            get { return currentEvent; }
+            set { currentEvent = value; if(HoveredEventChanged != null) HoveredEventChanged(this, new HoveredEventArgs(){CurrentEvent = currentEvent});  }
+        }
+
         private void PanAnimationStoryboard_Completed(object sender, EventArgs e)
         {
+            EventControl centerEvent = GetCentermostEvent();
+            if (centerEvent != null)
+                HoveredEvent = centerEvent.Event;
             //SnapToNearestEvent();
             if (PanCompleted != null)
                 PanCompleted(this, new EventArgs());
@@ -195,5 +215,6 @@ namespace Teudu.InfoDisplay
 
         public event EventHandler PanCompleted;
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<HoveredEventArgs> HoveredEventChanged;
     }
 }
