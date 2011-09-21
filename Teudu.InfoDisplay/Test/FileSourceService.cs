@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Teudu.InfoDisplay.Test
 {
@@ -12,6 +13,7 @@ namespace Teudu.InfoDisplay.Test
     {
         private string eventsFile;
         private XmlDocument doc;
+        private BackgroundWorker downloadWorker;
 
         public FileSourceService(string file)
         {
@@ -19,20 +21,35 @@ namespace Teudu.InfoDisplay.Test
         }
         public void Initialize()
         {
-            doc = new XmlDocument();   
+            doc = new XmlDocument();
+            downloadWorker = new BackgroundWorker();
+            downloadWorker.DoWork += new DoWorkEventHandler(downloadWorker_DoWork);
+            downloadWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(downloadWorker_RunWorkerCompleted);
+        }
+
+        void downloadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (EventsUpdated != null)
+                EventsUpdated(this, new SourceEventArgs()
+                {
+                    Events = (List<Event>)e.Result
+                });
+        }
+
+        void downloadWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            List<Event> events = ReadEvents();
+            e.Result = events;
         }
 
         public void BeginPoll()
         {
             doc.Load(eventsFile);
 
-            List<Event> events = ReadEvents();
+            downloadWorker.RunWorkerAsync();
+           
 
-            if (EventsUpdated != null)
-                EventsUpdated(this, new SourceEventArgs()
-                {
-                    Events = events
-                });
+            
         }
 
         private List<Event> ReadEvents()
@@ -87,7 +104,7 @@ namespace Teudu.InfoDisplay.Test
 
         public void Cleanup()
         {
-            throw new NotImplementedException();
+            
         }
 
 

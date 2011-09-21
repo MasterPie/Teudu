@@ -15,7 +15,7 @@ namespace Teudu.InfoDisplay
 {
     public class ViewModel: INotifyPropertyChanged
     {
-        private const double PAN_TO_OFFSET = 100;
+        private const double PAN_TO_OFFSET = 50;
         private const double SCALE_OFFSET = 250;
         private const double HEIGHT_OFF_GROUND = 0;//300;
         private double ARM_SCALE_FACTOR_X = 1;//(App.Current.MainWindow.Width / 2) * 3;
@@ -35,7 +35,7 @@ namespace Teudu.InfoDisplay
 
         private List<Event> events;
         private List<Board> boards;
-        private Board currentBoard;
+        private int currBoard = 0;
 
         IKinectService kinectService;
         ISourceService sourceService;
@@ -56,8 +56,8 @@ namespace Teudu.InfoDisplay
             events = new List<Event>();
 
             boards = new List<Board>();
-            CurrentBoard = new Board("Hot");
-            boards.Add(currentBoard);
+            currBoard = 0;
+            boards.Add(new Board("Hot"));
 
             if (ActiveBoardChanged != null)
                 ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
@@ -68,11 +68,11 @@ namespace Teudu.InfoDisplay
         void sourceService_EventsUpdated(object sender, SourceEventArgs e)
         {
             events = e.Events;
-            CurrentBoard = new Board("All");
             CurrentBoard.Events = events;
 
             if (ActiveBoardChanged != null)
                 ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
+            currBoard = 0;
             SiftEvents();
         }
 
@@ -83,8 +83,47 @@ namespace Teudu.InfoDisplay
 
         public Board CurrentBoard
         {
-            get { return currentBoard; }
-            set { currentBoard = value; }
+            get { return boards[currBoard]; }
+        }
+
+        public Board PreviousBoard
+        {
+            get
+            {
+                if (currBoard <= 0)
+                    return null;
+                return boards[currBoard-1]; 
+            }
+        }
+
+        public Board NextBoard
+        {
+            get
+            {
+                if (currBoard < boards.Count)
+                    return null;
+                return boards[currBoard+1]; 
+            }
+        }
+
+        public void AdvanceBoard()
+        {
+            if (currBoard < boards.Count - 1)
+            {
+                currBoard++;
+                if (ActiveBoardChanged != null)
+                    ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
+            }
+        }
+
+        public void RegressBoard()
+        {
+            if (currBoard > 0)
+            {
+                currBoard--;
+                if (ActiveBoardChanged != null)
+                    ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
+            }
         }
 
         #region Kinect
@@ -127,16 +166,20 @@ namespace Teudu.InfoDisplay
                 //Trace.WriteLine("Right arm is " + rightArm.HandZ);
 
                 if (ViewChangeMode == HandsState.Panning)
+                {
+                    //this.OnPropertyChanged("DominantArmHandOffsetX");
+                    //this.OnPropertyChanged("DominantArmHandOffsetY");
                     Pan();
+                }
                 //else if (ViewChangeMode == HandsState.Zooming)
                 //    Scale();
                 //Trace.WriteLineIf(LeftArmInFront, "Left arm z " + leftArm.HandZ + " , spine z " + spine.Z);
                 //Trace.WriteLineIf(RightArmInFront, "Right arm z " + rightArm.HandZ + " , spine z " + spine.Z);
 
-                Trace.WriteLineIf(RightHandActive, "Right HAND active " + rightArm.HandZ + "("+rightArm.HandX + "," + rightArm.HandY + ")");
+                //Trace.WriteLineIf(RightHandActive, "Right HAND active " + rightArm.HandZ + "("+rightArm.HandX + "," + rightArm.HandY + ")");
 
-                Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
-                Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
+                //Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
+                //Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
                 //Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
                 //Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
             } 
@@ -291,12 +334,12 @@ namespace Teudu.InfoDisplay
 
         public double DominantArmHandOffsetX
         {
-            get { return -DominantHand.HandOffsetX; }
+            get { return -DominantHand.HandOffsetX * 7; }
         }
 
         public double DominantArmHandOffsetY
         {
-            get { return -DominantHand.HandOffsetY; }
+            get { return -DominantHand.HandOffsetY * 7; }
         }
 
         #endregion

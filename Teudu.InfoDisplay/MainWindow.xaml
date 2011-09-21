@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
         Title="Teudu" Height="1080" Width="1920"
-        DataContext="{Binding ViewModel, Source={StaticResource loader}}" WindowStyle="None" WindowState="Maximized" Cursor="None" Topmost="True" ResizeMode="NoResize">
+        DataContext="{Binding ViewModel, Source={StaticResource loader}}" WindowStyle="None" WindowState="Maximized" Cursor="None" ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Georgia"></Setter>
@@ -23,19 +23,21 @@
             <Setter Property="Opacity" Value="0.3"></Setter>
         </Style>
     </Window.Resources>
-    <StackPanel Background="#FF464646">
-        <Grid Height="100" Panel.ZIndex="100" Background="#FF464646">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="33*" />
-                <ColumnDefinition Width="33*" />
-                <ColumnDefinition Width="33*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="BoardPrevTitle" Text="Arts" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="0"/>
-            <TextBlock x:Name="BoardTitle" Text="{Binding Path=CurrentBoard.Name}" Style="{StaticResource BoardTitleText}" Grid.Column="1"/><!--{Binding Path=CurrentBoard.Name}-->
-            <TextBlock x:Name="BoardNextTitle" Text="Service" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>
-        </Grid>
-        <Canvas x:Name="BoardContainer" Height="680" MaxHeight="680"/>
-        <teudu:EventDetailsControl x:Name="EventDetails" Height="100" Background="#999933"/>
-    </StackPanel>
-    
+    <Grid>
+        <StackPanel Background="#FF464646" Panel.ZIndex="80">
+            <Grid Height="100" Panel.ZIndex="80" Background="#FF464646">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="33*" />
+                    <ColumnDefinition Width="33*" />
+                    <ColumnDefinition Width="33*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="BoardPrevTitle" Text="Arts" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="0"/>
+                <TextBlock x:Name="BoardTitle" Text="{Binding Path=CurrentBoard.Name}" Style="{StaticResource BoardTitleText}" Grid.Column="1"/>
+                <TextBlock x:Name="BoardNextTitle" Text="Service" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>
+            </Grid>
+            <Canvas x:Name="BoardContainer" Height="680" MaxHeight="680" Panel.ZIndex="1"/>
+            <teudu:EventDetailsControl x:Name="EventDetails" Height="100" Background="#999933" Panel.ZIndex="80"/>
+        </StackPanel>
+        <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
+    </Grid>
 </Window>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
+using Kinect.Toolbox;
 
 using System.Diagnostics;
 
@@ -11,11 +12,13 @@ namespace Teudu.InfoDisplay
 {
     public class UserKinectService : IKinectService
     {
+        
         Runtime runtime;
         bool isTrackingSkeleton;
         
         public void Initialize() 
         {
+           
             runtime = new Runtime();
             
             runtime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(runtime_SkeletonFrameReady);
