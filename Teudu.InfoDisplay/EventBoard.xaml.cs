@@ -42,16 +42,21 @@ namespace Teudu.InfoDisplay
                     Margin = new Thickness(5)
                 }));
                 TrackCenterEvent();
+                //SnapToNearestEvent();
             }
         }
 
         public void TrackCenterEvent()
         {
+            this.Dispatcher.BeginInvoke(new Action(this.TrackCenterEvent_work), System.Windows.Threading.DispatcherPriority.Loaded);
+
+            //HoveredEvent = BoardModel.Events[0];
+        }
+        public void TrackCenterEvent_work()
+        {
             EventControl centerEvent = GetCentermostEvent();
             if (centerEvent != null)
                 HoveredEvent = centerEvent.Event;
-
-            HoveredEvent = BoardModel.Events[0];
         }
 
         public static readonly RoutedEvent StopShiftEvent = EventManager.RegisterRoutedEvent(
@@ -113,8 +118,8 @@ namespace Teudu.InfoDisplay
         private EventControl GetCentermostEvent()
         {
             EventControl closestElement = null;
-            double centerX = (double)Board.Parent.GetValue(ActualWidthProperty) / 2;
-            double centerY = ((double)Board.Parent.GetValue(ActualHeightProperty) / 2) + 100;
+            double centerX = App.Current.MainWindow.ActualWidth / 2;//(double)Board.Parent.GetValue(ActualWidthProperty) / 2;
+            double centerY = App.Current.MainWindow.ActualHeight / 2;// ((double)Board.Parent.GetValue(ActualHeightProperty) / 2);// +100;
 
             double deltaX,deltaY;
             deltaX = deltaY = centerX + centerY;
@@ -125,7 +130,7 @@ namespace Teudu.InfoDisplay
                 if (!element.GetType().AssemblyQualifiedName.ToLower().Contains("eventcontrol"))
                     continue;
 
-                Point topCorner = element.TransformToAncestor(Board).Transform(new Point(0, 0));
+                Point topCorner = element.PointToScreen(new Point(0, 0));
                 double elementCenterX = topCorner.X + (double)element.GetValue(ActualWidthProperty) / 2;
                 double elementCenterY = topCorner.Y + (double)element.GetValue(ActualHeightProperty) / 2;
 
@@ -166,10 +171,14 @@ namespace Teudu.InfoDisplay
         {
             set 
             {
-                if (value / ScaleLevel >= -(App.Current.MainWindow.Width / 2) && value / ScaleLevel <= (App.Current.MainWindow.Width / 2))
+                if ((toX + value) / ScaleLevel >= -((App.Current.MainWindow.Width / 2)+100) && (toX + value) / ScaleLevel <= ((App.Current.MainWindow.Width / 2)+100))
                 {
-                    toX = this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).X + value;
+                    toX += value;//this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).X + value;
                     this.OnPropertyChanged("MoveToX");
+                }
+                else
+                {
+                    Trace.WriteLine("Value is out of bounds: " + value);
                 }
             }
             get { return toX; }
@@ -179,9 +188,9 @@ namespace Teudu.InfoDisplay
         {
             set 
             {
-                if (value / ScaleLevel >= -(App.Current.MainWindow.Height / 2) && value / ScaleLevel <= (App.Current.MainWindow.Height / 2))
+                if ((toY + value) / ScaleLevel >= -(App.Current.MainWindow.Height / 2) && (toY + value + 100) / ScaleLevel <= (App.Current.MainWindow.Height / 2))
                 {
-                    toY = this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).Y + value;
+                    toY += value;// this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).Y + value;
                     this.OnPropertyChanged("MoveToY");
                 }
             }
@@ -216,5 +225,13 @@ namespace Teudu.InfoDisplay
         public event EventHandler PanCompleted;
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<HoveredEventArgs> HoveredEventChanged;
+
+        private void TranslateTransform_Changed(object sender, EventArgs e)
+        {
+            //EventControl centerEvent = GetCentermostEvent();
+            //if (centerEvent != null)
+            //    HoveredEvent = centerEvent.Event;
+            TrackCenterEvent();
+        }
     }
 }

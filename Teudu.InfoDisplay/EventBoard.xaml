@@ -41,19 +41,19 @@
                     </DoubleAnimationUsingKeyFrames>
                     <DoubleAnimationUsingKeyFrames
                                 Storyboard.TargetName="EventBoardTranslateTransform"
-                                Storyboard.TargetProperty="Y"
+                                Storyboard.TargetProperty="Y"       
                                 Duration="0:0:1">
-                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToX}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
+                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToY}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
                     </DoubleAnimationUsingKeyFrames>
                 </Storyboard>
             </BeginStoryboard>
         </EventTrigger>
     </UserControl.Triggers>
     <Canvas>
-        <WrapPanel Name="Board" Orientation="Vertical" Height="680" Panel.ZIndex="1">
+        <WrapPanel Name="Board" Orientation="Vertical" Height="1024" Width="1920" Panel.ZIndex="1">
             <WrapPanel.RenderTransform>
                 <TransformGroup>
-                    <!--<TranslateTransform X="{Binding Path=DominantArmHandOffsetX}" Y="{Binding Path=DominantArmHandOffsetY}"></TranslateTransform>-->
+                    <!--<TranslateTransform X="{Binding Path=DominantArmHandOffsetX}" Y="{Binding Path=DominantArmHandOffsetY}" Changed="TranslateTransform_Changed"></TranslateTransform>-->
                     <TranslateTransform x:Name="EventBoardTranslateTransform" X="0" Y="0"></TranslateTransform>
                     <ScaleTransform ScaleX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ScaleLevel}" ScaleY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ScaleLevel}" CenterX="900" CenterY="500"/>
                 </TransformGroup>
