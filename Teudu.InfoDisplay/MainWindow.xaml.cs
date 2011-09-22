@@ -67,12 +67,19 @@ namespace Teudu.InfoDisplay
         private void BoardChanging(EventBoard newBoard)
         {
             //do some interesting animation
+            current.BoardChanged -= new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
             current.PanCompleted -= new EventHandler(current_PanCompleted);
             current.HoveredEventChanged -= new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
             current = newBoard;
+            current.BoardChanged += new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
             current.PanCompleted += new EventHandler(current_PanCompleted);
             current.HoveredEventChanged +=new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
             current.TrackCenterEvent();
+        }
+
+        void current_BoardChanged(object sender, CategoryChangeEventArgs e)
+        {
+            ((ViewModel)this.DataContext).ChangeBoard(e.Right);
         }
 
         void current_HoveredEventChanged(object sender, HoveredEventArgs e)
