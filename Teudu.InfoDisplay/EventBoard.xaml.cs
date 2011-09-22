@@ -178,6 +178,13 @@ namespace Teudu.InfoDisplay
                 }
                 else
                 {
+                    if (BoardChanged != null)
+                    {
+                        if ((toX + value) / ScaleLevel >= -((App.Current.MainWindow.Width / 2) + 100))
+                            BoardChanged(this, new CategoryChangeEventArgs() { Right = false });
+                        else
+                            BoardChanged(this, new CategoryChangeEventArgs() { Right = true });
+                    }
                     Trace.WriteLine("Value is out of bounds: " + value);
                 }
             }
@@ -206,9 +213,7 @@ namespace Teudu.InfoDisplay
 
         private void PanAnimationStoryboard_Completed(object sender, EventArgs e)
         {
-            EventControl centerEvent = GetCentermostEvent();
-            if (centerEvent != null)
-                HoveredEvent = centerEvent.Event;
+            TrackCenterEvent();
             //SnapToNearestEvent();
             if (PanCompleted != null)
                 PanCompleted(this, new EventArgs());
@@ -225,6 +230,7 @@ namespace Teudu.InfoDisplay
         public event EventHandler PanCompleted;
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<HoveredEventArgs> HoveredEventChanged;
+        public event EventHandler<CategoryChangeEventArgs> BoardChanged;
 
         private void TranslateTransform_Changed(object sender, EventArgs e)
         {

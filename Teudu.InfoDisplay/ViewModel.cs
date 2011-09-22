@@ -41,9 +41,9 @@ namespace Teudu.InfoDisplay
 
         public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService) 
         {
-            categoryChangeTimer = new DispatcherTimer(DispatcherPriority.Loaded);
-            categoryChangeTimer.Tick += new EventHandler(categoryChangeTimer_Tick);
-            categoryChangeTimer.Interval = new TimeSpan(100000000);
+            //categoryChangeTimer = new DispatcherTimer(DispatcherPriority.Loaded);
+            //categoryChangeTimer.Tick += new EventHandler(categoryChangeTimer_Tick);
+            //categoryChangeTimer.Interval = new TimeSpan(100000000); //100000000
 
             this.kinectService = kinectService; 
             //this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
@@ -64,15 +64,13 @@ namespace Teudu.InfoDisplay
             this.sourceService.BeginPoll();
         }
 
-        void categoryChangeTimer_Tick(object sender, EventArgs e)
-        {
-            ChangeBoard();
-        }
 
-
-        private void ChangeBoard()
+        public void ChangeBoard(bool right)
         {
-            AdvanceBoard();
+            if (right)
+                AdvanceBoard();
+            else
+                RegressBoard();
         }
 
         void boardService_ActiveBoardChanged(object sender, BoardEventArgs e)
@@ -88,7 +86,7 @@ namespace Teudu.InfoDisplay
 
         private void NotifyActiveBoardSubscribers()
         {
-            categoryChangeTimer.Stop();
+            //categoryChangeTimer.Stop();
             this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
 
             if (ActiveBoardChanged != null)
@@ -102,7 +100,7 @@ namespace Teudu.InfoDisplay
                 this.OnPropertyChanged("NextBoard");
             if (CurrentBoard != null)
                 this.OnPropertyChanged("CurrentBoard");
-            categoryChangeTimer.Start();
+            //categoryChangeTimer.Start();
         }
 
 
