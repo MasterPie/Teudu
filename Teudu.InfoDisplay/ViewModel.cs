@@ -33,97 +33,112 @@ namespace Teudu.InfoDisplay
         private double hotSpotTop = 0;
         private double hotSpotBottom = App.Current.MainWindow.Height - hotspotRegionY;
 
-        private List<Event> events;
-        private List<Board> boards;
-        private int currBoard = 0;
-
         IKinectService kinectService;
         ISourceService sourceService;
+        IBoardService boardService;
 
-        public ViewModel(IKinectService kinectService, ISourceService sourceService) 
+        private DispatcherTimer categoryChangeTimer;
+
+        public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService) 
         {
+            categoryChangeTimer = new DispatcherTimer(DispatcherPriority.Loaded);
+            categoryChangeTimer.Tick += new EventHandler(categoryChangeTimer_Tick);
+            categoryChangeTimer.Interval = new TimeSpan(100000000);
+
             this.kinectService = kinectService; 
-            this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+            //this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
 
             this.sourceService = sourceService;
             this.sourceService.EventsUpdated += new EventHandler<SourceEventArgs>(sourceService_EventsUpdated);
-            
+
+            this.boardService = boardService;
+            this.boardService.BoardsUpdated += new EventHandler(boardService_BoardsChanged);
+            this.boardService.ActiveBoardChanged += new EventHandler<BoardEventArgs>(boardService_ActiveBoardChanged);
+        
+
             leftArm = new Arm();
             rightArm = new Arm();
             head = new Head();
             torso = new Torso();
 
-            events = new List<Event>();
-
-            boards = new List<Board>();
-            currBoard = 0;
-            boards.Add(new Board("Hot"));
-
-            if (ActiveBoardChanged != null)
-                ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
-
             this.sourceService.BeginPoll();
         }
 
-        void sourceService_EventsUpdated(object sender, SourceEventArgs e)
+        void categoryChangeTimer_Tick(object sender, EventArgs e)
         {
-            events = e.Events;
-            CurrentBoard.Events = events;
+            ChangeBoard();
+        }
+
+
+        private void ChangeBoard()
+        {
+            AdvanceBoard();
+        }
+
+        void boardService_ActiveBoardChanged(object sender, BoardEventArgs e)
+        {
+            NotifyActiveBoardSubscribers();
+        }
+
+        void boardService_BoardsChanged(object sender, EventArgs e)
+        {
+            //reset UI
+            NotifyActiveBoardSubscribers();
+        }
+
+        private void NotifyActiveBoardSubscribers()
+        {
+            categoryChangeTimer.Stop();
+            this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
 
             if (ActiveBoardChanged != null)
                 ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
-            currBoard = 0;
-            SiftEvents();
+
+            this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+
+            if (PreviousBoard != null)
+                this.OnPropertyChanged("PreviousBoard");
+            if (NextBoard != null)
+                this.OnPropertyChanged("NextBoard");
+            if (CurrentBoard != null)
+                this.OnPropertyChanged("CurrentBoard");
+            categoryChangeTimer.Start();
         }
 
-        private void SiftEvents()
+
+        void sourceService_EventsUpdated(object sender, SourceEventArgs e)
         {
-            //current.Events = events;  
+            boardService.Events = e.Events;
         }
 
         public Board CurrentBoard
         {
-            get { return boards[currBoard]; }
+            get 
+            {
+                if (boardService.Current == null)
+                    return new Board("No events");
+                return boardService.Current; 
+            }
         }
 
         public Board PreviousBoard
         {
-            get
-            {
-                if (currBoard <= 0)
-                    return null;
-                return boards[currBoard-1]; 
-            }
+            get { return boardService.Prev; }
         }
 
         public Board NextBoard
         {
-            get
-            {
-                if (currBoard < boards.Count)
-                    return null;
-                return boards[currBoard+1]; 
-            }
+            get {return boardService.Next; }
         }
 
         public void AdvanceBoard()
         {
-            if (currBoard < boards.Count - 1)
-            {
-                currBoard++;
-                if (ActiveBoardChanged != null)
-                    ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
-            }
+            boardService.AdvanceCurrent();
         }
 
         public void RegressBoard()
         {
-            if (currBoard > 0)
-            {
-                currBoard--;
-                if (ActiveBoardChanged != null)
-                    ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
-            }
+            boardService.RegressCurrent();
         }
 
         #region Kinect

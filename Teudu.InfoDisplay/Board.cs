@@ -27,5 +27,10 @@ namespace Teudu.InfoDisplay
             get { return events; }
             set { events = value; }
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -12,12 +12,14 @@ namespace Teudu.InfoDisplay
         static ViewModel viewModelStatic; 
         static IKinectService kinectService;
         static ISourceService sourceService;
+        static IBoardService boardService;
         
         public ViewModelLoader() 
         { 
             kinectService = new UserKinectService();
             //sourceService = new Test.FileSourceService("eventstest.xml");
             sourceService = new WebSourceService();
+            boardService = new MomentaryBoardService();
             var prop = DesignerProperties.IsInDesignModeProperty; 
             var isInDesignMode = (bool)DependencyPropertyDescriptor
                 .FromProperty(prop, typeof(FrameworkElement))
@@ -36,7 +38,7 @@ namespace Teudu.InfoDisplay
             { 
                 if (viewModelStatic == null) 
                 { 
-                    viewModelStatic = new ViewModel(kinectService, sourceService); 
+                    viewModelStatic = new ViewModel(kinectService, sourceService, boardService); 
                 } 
                 return viewModelStatic; 
             } 
@@ -55,6 +57,7 @@ namespace Teudu.InfoDisplay
             } 
             kinectService.Cleanup();
             sourceService.Cleanup();
+            boardService.Cleanup();
         }
     }
 }

@@ -67,5 +67,10 @@ namespace Teudu.InfoDisplay
             set { categories = value; }
             get { return categories; }
         }
+
+        public bool HappeningThisWeek
+        {
+            get { return time.Subtract(DateTime.Today) <= new TimeSpan(7, 0, 0, 0); }
+        }
     }
 }

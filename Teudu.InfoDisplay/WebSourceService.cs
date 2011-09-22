@@ -115,6 +115,9 @@ namespace Teudu.InfoDisplay
 
                             if (detail.Name.ToLower().Equals("image"))
                                 image = detail.InnerText;
+
+                            if (detail.Name.ToLower().Equals("categories"))
+                                detail.InnerText.Split(',').Distinct().ToList().ForEach(x => categories.Add(new Category(x)));
                         }
 
                         string imageLoc = DownloadImage(image, id);
