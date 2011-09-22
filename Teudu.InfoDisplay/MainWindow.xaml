@@ -31,9 +31,9 @@
                     <ColumnDefinition Width="33*" />
                     <ColumnDefinition Width="33*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="BoardPrevTitle" Text="Arts" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="0"/>
+                <TextBlock x:Name="BoardPrevTitle" Text="{Binding Path=PreviousBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="0"/>
                 <TextBlock x:Name="BoardTitle" Text="{Binding Path=CurrentBoard.Name}" Style="{StaticResource BoardTitleText}" Grid.Column="1"/>
-                <TextBlock x:Name="BoardNextTitle" Text="Service" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>
+                <TextBlock x:Name="BoardNextTitle" Text="{Binding Path=NextBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>
             </Grid>
             <Canvas x:Name="BoardContainer" Height="680" MaxHeight="680" Panel.ZIndex="1"/>
             <teudu:EventDetailsControl x:Name="EventDetails" Height="100" Background="#999933" Panel.ZIndex="80"/>
