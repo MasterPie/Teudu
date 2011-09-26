@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using System.Threading;
+using System.Windows.Input;
 
 namespace Teudu.InfoDisplay
 {
@@ -41,9 +42,9 @@ namespace Teudu.InfoDisplay
 
         public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService) 
         {
-            //categoryChangeTimer = new DispatcherTimer(DispatcherPriority.Loaded);
-            //categoryChangeTimer.Tick += new EventHandler(categoryChangeTimer_Tick);
-            //categoryChangeTimer.Interval = new TimeSpan(100000000); //100000000
+            categoryChangeTimer = new DispatcherTimer(DispatcherPriority.Loaded);
+            categoryChangeTimer.Tick += new EventHandler(categoryChangeTimer_Tick);
+            categoryChangeTimer.Interval = new TimeSpan(50000000); //100000000
 
             this.kinectService = kinectService; 
             //this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
@@ -62,6 +63,11 @@ namespace Teudu.InfoDisplay
             torso = new Torso();
 
             this.sourceService.BeginPoll();
+        }
+
+        void categoryChangeTimer_Tick(object sender, EventArgs e)
+        {
+            AdvanceBoard();
         }
 
 
@@ -90,7 +96,7 @@ namespace Teudu.InfoDisplay
             this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
 
             if (ActiveBoardChanged != null)
-                ActiveBoardChanged(this, new BoardEventArgs() { Board = CurrentBoard });
+                ActiveBoardChanged(this, new BoardEventArgs() {Previous = PreviousBoard, Board = CurrentBoard, Next=NextBoard });
 
             this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
 
@@ -260,11 +266,7 @@ namespace Teudu.InfoDisplay
                     HorizontalOffset = xOffset,
                     VerticalOffset = yOffset
                 });
-
-            //Thread.Sleep(500);
         }
-
-
 
         public bool IsNearLeft
         {

@@ -12,13 +12,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Configuration;
+using System.ComponentModel;
 
 namespace Teudu.InfoDisplay
 {
     /// <summary>
     /// Interaction logic for EventControl.xaml
     /// </summary>
-    public partial class EventControl : UserControl
+    public partial class EventControl : UserControl, INotifyPropertyChanged
     {
         private Event eventModel;
         private string imageDirectory;
@@ -27,6 +28,12 @@ namespace Teudu.InfoDisplay
         {
             InitializeComponent();
             imageDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\" + ConfigurationManager.AppSettings["CachedImageDirectory"]  + @"\";
+            this.LayoutUpdated += new EventHandler(EventControl_LayoutUpdated);
+        }
+
+        void EventControl_LayoutUpdated(object sender, EventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(this.VisibleLocation_work), System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
         public Event Event
@@ -49,5 +56,49 @@ namespace Teudu.InfoDisplay
                 this.image.Source = src;
             }
         }
+
+        Point loc = new Point(0, 0);
+
+        public string VisibleLocation
+        {
+            get
+            {
+                return "(" + Math.Round(loc.X, 1) + ", " + Math.Round(loc.Y,1) + ")";               
+            }
+        }
+
+        public void VisibleLocation_work()
+        {
+            double centerX = App.Current.MainWindow.ActualWidth / 2;
+            double centerY = App.Current.MainWindow.ActualHeight / 2;
+
+            Point topCorner = this.PointToScreen(new Point(0, 0));
+            double elementCenterX = topCorner.X + (double)this.GetValue(ActualWidthProperty) / 2;
+            double elementCenterY = topCorner.Y + (double)this.GetValue(ActualHeightProperty) / 2;
+
+            loc = new Point(elementCenterX, elementCenterY);
+            this.OnPropertyChanged("VisibleLocation");
+        }
+
+        public bool IsSelected
+        {
+            set
+            {
+                if (value)
+                    outerBorder.BorderThickness = new Thickness(5);
+                else
+                    outerBorder.BorderThickness = new Thickness(0);
+            }
+        }
+
+        void OnPropertyChanged(string property)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
