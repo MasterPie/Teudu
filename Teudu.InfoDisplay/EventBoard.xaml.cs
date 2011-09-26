@@ -56,12 +56,19 @@ namespace Teudu.InfoDisplay
         {
             EventControl centerEvent = GetCentermostEvent();
             if (centerEvent != null)
+            {
                 HoveredEvent = centerEvent.Event;
+                centerEvent.IsSelected = true;
+                currentSelected = centerEvent;
+            }
+            else
+            {
+                HoveredEvent = null;
+                currentSelected = null;
+            }
 
             if (currentSelected != null)
                 currentSelected.IsSelected = false;
-            centerEvent.IsSelected = true;
-            currentSelected = centerEvent;
         }
 
 
@@ -129,26 +136,32 @@ namespace Teudu.InfoDisplay
 
             double deltaX,deltaY;
             deltaX = deltaY = centerX + centerY;
-            
 
-            foreach (UIElement element in Board.Children)
+            try
             {
-                if (!element.GetType().AssemblyQualifiedName.ToLower().Contains("eventcontrol"))
-                    continue;
-
-                Point topCorner = element.PointToScreen(new Point(0, 0));
-                double elementCenterX = topCorner.X + (double)element.GetValue(ActualWidthProperty) / 2;
-                double elementCenterY = topCorner.Y + (double)element.GetValue(ActualHeightProperty) / 2;
-
-                //Point topCorner = ((EventControl)element).VisibleLocation;
-
-                if (Math.Abs(elementCenterX - centerX) < deltaX || Math.Abs(elementCenterY - centerY) < deltaY)
+                foreach (UIElement element in Board.Children)
                 {
-                    deltaX = Math.Abs(topCorner.X - centerX);
-                    deltaY = Math.Abs(topCorner.Y - centerY);
+                    if (!element.GetType().AssemblyQualifiedName.ToLower().Contains("eventcontrol"))
+                        continue;
 
-                    closestElement = (EventControl)element;
+                    Point topCorner = element.PointToScreen(new Point(0, 0));
+                    double elementCenterX = topCorner.X + (double)element.GetValue(ActualWidthProperty) / 2;
+                    double elementCenterY = topCorner.Y + (double)element.GetValue(ActualHeightProperty) / 2;
+
+                    //Point topCorner = ((EventControl)element).VisibleLocation;
+
+                    if (Math.Abs(elementCenterX - centerX) < deltaX || Math.Abs(elementCenterY - centerY) < deltaY)
+                    {
+                        deltaX = Math.Abs(topCorner.X - centerX);
+                        deltaY = Math.Abs(topCorner.Y - centerY);
+
+                        closestElement = (EventControl)element;
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                closestElement = null;
             }
 
             return closestElement;

@@ -36,9 +36,9 @@
                 <TextBlock x:Name="BoardNextTitle" Text="{Binding Path=NextBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>
             </Grid>
             <Canvas x:Name="BoardContainer" Height="680" MaxHeight="680" Panel.ZIndex="1"/>
-            <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=VisibleLocation}" Panel.ZIndex="80"/>
+            <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=VisibleLocation}" Panel.ZIndex="80"/>-->
             <teudu:EventDetailsControl x:Name="EventDetails" Height="100" Background="#999933" Panel.ZIndex="80"/>
         </StackPanel>
-        <!--<TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>-->
+        <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
     </Grid>
 </Window>

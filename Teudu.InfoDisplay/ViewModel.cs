@@ -68,6 +68,7 @@ namespace Teudu.InfoDisplay
         void categoryChangeTimer_Tick(object sender, EventArgs e)
         {
             AdvanceBoard();
+            categoryChangeTimer.Stop();
         }
 
 
@@ -92,7 +93,7 @@ namespace Teudu.InfoDisplay
 
         private void NotifyActiveBoardSubscribers()
         {
-            //categoryChangeTimer.Stop();
+            categoryChangeTimer.Stop();
             this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
 
             if (ActiveBoardChanged != null)
@@ -106,7 +107,7 @@ namespace Teudu.InfoDisplay
                 this.OnPropertyChanged("NextBoard");
             if (CurrentBoard != null)
                 this.OnPropertyChanged("CurrentBoard");
-            //categoryChangeTimer.Start();
+            categoryChangeTimer.Start();
         }
 
 
