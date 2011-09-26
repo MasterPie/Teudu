@@ -28,7 +28,7 @@ namespace Teudu.InfoDisplay
         {
             InitializeComponent();
             imageDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\" + ConfigurationManager.AppSettings["CachedImageDirectory"]  + @"\";
-            this.LayoutUpdated += new EventHandler(EventControl_LayoutUpdated);
+            //this.LayoutUpdated += new EventHandler(EventControl_LayoutUpdated);
         }
 
         void EventControl_LayoutUpdated(object sender, EventArgs e)

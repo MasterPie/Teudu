@@ -32,7 +32,6 @@ namespace Teudu.InfoDisplay
             ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
 
             current = new EventBoard();
-            current.Initialized += new EventHandler(current_Initialized);
             this.BoardContainer.Children.Add(current);
             
         }
@@ -65,19 +64,12 @@ namespace Teudu.InfoDisplay
         private void BoardChanging(EventBoard newBoard)
         {
             //do some interesting animation
-            current.Initialized -= new EventHandler(current_Initialized);
             current.BoardChanged -= new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
             current.PanCompleted -= new EventHandler(current_PanCompleted);
             current.HoveredEventChanged -= new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
             current = newBoard;
             this.BoardContainer.Children.Clear();
             this.BoardContainer.Children.Add(current);
-            current.Initialized += new EventHandler(current_Initialized);
-        }
-
-        void current_Initialized(object sender, EventArgs e)
-        {
-            current.TrackCenterEvent();
             current.BoardChanged += new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
             current.PanCompleted += new EventHandler(current_PanCompleted);
             current.HoveredEventChanged += new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
@@ -90,8 +82,16 @@ namespace Teudu.InfoDisplay
 
         void current_HoveredEventChanged(object sender, HoveredEventArgs e)
         {
-            this.EventDetails.EventTitle.Text = e.CurrentEvent.Name;
-            this.EventDetails.EventDescription.Text = e.CurrentEvent.Description;
+            if (e.CurrentEvent != null)
+            {
+                this.EventDetails.EventTitle.Text = e.CurrentEvent.Name;
+                this.EventDetails.EventDescription.Text = e.CurrentEvent.Description;
+            }
+            else
+            {
+                this.EventDetails.EventTitle.Text = "";
+                this.EventDetails.EventDescription.Text = "";
+            }
         }
 
         void MainWindow_PanRequest(object sender, PanEventArgs e)
