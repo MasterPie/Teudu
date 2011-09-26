@@ -32,8 +32,7 @@ namespace Teudu.InfoDisplay
             ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
 
             current = new EventBoard();
-            current.PanCompleted += new EventHandler(current_PanCompleted);
-            current.HoveredEventChanged +=new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
+            current.Initialized += new EventHandler(current_Initialized);
             this.BoardContainer.Children.Add(current);
             
         }
@@ -60,21 +59,28 @@ namespace Teudu.InfoDisplay
         {
             BoardChanging(new EventBoard() { BoardModel = e.Board});
             
-            this.BoardContainer.Children.Clear();
-            this.BoardContainer.Children.Add(current);
+            
         }
 
         private void BoardChanging(EventBoard newBoard)
         {
             //do some interesting animation
+            current.Initialized -= new EventHandler(current_Initialized);
             current.BoardChanged -= new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
             current.PanCompleted -= new EventHandler(current_PanCompleted);
             current.HoveredEventChanged -= new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
             current = newBoard;
+            this.BoardContainer.Children.Clear();
+            this.BoardContainer.Children.Add(current);
+            current.Initialized += new EventHandler(current_Initialized);
+        }
+
+        void current_Initialized(object sender, EventArgs e)
+        {
+            current.TrackCenterEvent();
             current.BoardChanged += new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
             current.PanCompleted += new EventHandler(current_PanCompleted);
-            current.HoveredEventChanged +=new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
-            current.TrackCenterEvent();
+            current.HoveredEventChanged += new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
         }
 
         void current_BoardChanged(object sender, CategoryChangeEventArgs e)
@@ -119,6 +125,14 @@ namespace Teudu.InfoDisplay
             //Board.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate() { Board.RaiseEvent(newEventArgs); }));
         }
 
-        
+        public string VisibleLocation
+        {
+            get
+            {
+                double centerX = this.ActualWidth / 2;
+                double centerY = this.ActualHeight / 2;
+                return "(" + centerX + ", " + centerY + ")";
+            }
+        }        
     }
 }

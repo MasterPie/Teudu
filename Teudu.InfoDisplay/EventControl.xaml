@@ -28,18 +28,20 @@
                 </StackPanel>
             </StackPanel>
         </DockPanel>-->
-        <StackPanel>
-            <DockPanel Panel.ZIndex="11" LastChildFill="False">
-                <StackPanel DockPanel.Dock="Bottom">
-                    <TextBlock x:Name="date" Text="Today, 6PM" Visibility="Collapsed"></TextBlock>
-                    <TextBlock x:Name="title" Text="Title" Visibility="Collapsed"></TextBlock>
-                    <StackPanel x:Name="extendedDetails" Visibility="Collapsed">
-                        <TextBlock x:Name="description" Text="Description" Height="30" Style="{StaticResource DescriptionText}"></TextBlock>
+        <Border x:Name="outerBorder" BorderBrush="#990000">
+            <StackPanel>
+                <DockPanel Panel.ZIndex="11" LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Bottom">
+                        <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=VisibleLocation}"/>-->
+                        <TextBlock x:Name="date" Text="Today, 6PM" Visibility="Collapsed"></TextBlock>
+                        <TextBlock x:Name="title" Text="Title" Visibility="Collapsed"></TextBlock>
+                        <StackPanel x:Name="extendedDetails" Visibility="Collapsed">
+                            <TextBlock x:Name="description" Text="Description" Height="30" Style="{StaticResource DescriptionText}"></TextBlock>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </DockPanel>
-            <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
-        </StackPanel>
-
+                </DockPanel>
+                <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

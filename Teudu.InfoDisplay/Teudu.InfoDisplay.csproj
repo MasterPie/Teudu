@@ -87,6 +87,7 @@
     <Compile Include="BoardEventArgs.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="CategoryChangeEventArgs.cs" />
+    <Compile Include="DelegateCommand.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventBoard.xaml.cs">
       <DependentUpon>EventBoard.xaml</DependentUpon>

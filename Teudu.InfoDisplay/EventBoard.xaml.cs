@@ -39,7 +39,7 @@ namespace Teudu.InfoDisplay
                 {
                     Event = x,
                     Width = 170,
-                    Margin = new Thickness(5)
+                    Margin = new Thickness(10)
                 }));
                 TrackCenterEvent();
                 //SnapToNearestEvent();
@@ -49,15 +49,21 @@ namespace Teudu.InfoDisplay
         public void TrackCenterEvent()
         {
             this.Dispatcher.BeginInvoke(new Action(this.TrackCenterEvent_work), System.Windows.Threading.DispatcherPriority.Loaded);
-
-            //HoveredEvent = BoardModel.Events[0];
         }
+
+        EventControl currentSelected;
         public void TrackCenterEvent_work()
         {
             EventControl centerEvent = GetCentermostEvent();
             if (centerEvent != null)
                 HoveredEvent = centerEvent.Event;
+
+            if (currentSelected != null)
+                currentSelected.IsSelected = false;
+            centerEvent.IsSelected = true;
+            currentSelected = centerEvent;
         }
+
 
         public static readonly RoutedEvent StopShiftEvent = EventManager.RegisterRoutedEvent(
        "StopShift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
@@ -134,7 +140,9 @@ namespace Teudu.InfoDisplay
                 double elementCenterX = topCorner.X + (double)element.GetValue(ActualWidthProperty) / 2;
                 double elementCenterY = topCorner.Y + (double)element.GetValue(ActualHeightProperty) / 2;
 
-                if (Math.Abs(topCorner.X - centerX) < deltaX || Math.Abs(topCorner.Y - centerY) < deltaY)
+                //Point topCorner = ((EventControl)element).VisibleLocation;
+
+                if (Math.Abs(elementCenterX - centerX) < deltaX || Math.Abs(elementCenterY - centerY) < deltaY)
                 {
                     deltaX = Math.Abs(topCorner.X - centerX);
                     deltaY = Math.Abs(topCorner.Y - centerY);
