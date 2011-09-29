@@ -85,6 +85,9 @@
     <Compile Include="BindableTraceListener.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="BoardEventArgs.cs" />
+    <Compile Include="BoardNavigatorControl.xaml.cs">
+      <DependentUpon>BoardNavigatorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Category.cs" />
     <Compile Include="CategoryChangeEventArgs.cs" />
     <Compile Include="DelegateCommand.cs" />
@@ -115,6 +118,10 @@
     <Compile Include="ViewModel.cs" />
     <Compile Include="ViewModelLoader.cs" />
     <Compile Include="WebSourceService.cs" />
+    <Page Include="BoardNavigatorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EventBoard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
