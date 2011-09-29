@@ -22,6 +22,12 @@
                x:Key="BoardTitleTextInactive">
             <Setter Property="Opacity" Value="0.3"></Setter>
         </Style>
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+               TargetType="TextBlock"
+               x:Key="BoardTitleTextMetro">
+            <Setter Property="FontSize" Value="72"></Setter>
+            <Setter Property="Opacity" Value="0.5"></Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <StackPanel Background="#FF464646" Panel.ZIndex="80">
@@ -35,9 +41,10 @@
                 <TextBlock x:Name="BoardTitle" Text="{Binding Path=CurrentBoard.Name}" Style="{StaticResource BoardTitleText}" Grid.Column="1"/>
                 <TextBlock x:Name="BoardNextTitle" Text="{Binding Path=NextBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>
             </Grid>
-            <Canvas x:Name="BoardContainer" Height="680" MaxHeight="680" Panel.ZIndex="1"/>
+            <Canvas x:Name="BoardContainer" Height="630" MaxHeight="630" Panel.ZIndex="10"/>
             <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=VisibleLocation}" Panel.ZIndex="80"/>-->
-            <teudu:EventDetailsControl x:Name="EventDetails" Height="100" Background="#999933" Panel.ZIndex="80"/>
+            <teudu:EventDetailsControl x:Name="EventDetails" Height="150" Background="#999933" Panel.ZIndex="80"/>
+            <TextBlock Text="{Binding Path=CurrentBoard.Name}" Panel.ZIndex="5" Margin="50,-780,50,0" Style="{StaticResource BoardTitleTextMetro}"/>
         </StackPanel>
         <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
     </Grid>
