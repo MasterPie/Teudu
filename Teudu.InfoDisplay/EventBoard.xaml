@@ -7,58 +7,10 @@
              xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <Storyboard x:Key="SnapAnimation">
-            <DoubleAnimationUsingKeyFrames
-                        x:Name="SnapXAnimate"
-                                Storyboard.TargetName="EventBoardTranslateTransform"
-                                Storyboard.TargetProperty="X"
-                                Duration="0:0:1">
-                <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=SnapToX}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames
-                        x:Name="SnapYAnimate"
-                                Storyboard.TargetName="EventBoardTranslateTransform"
-                                Storyboard.TargetProperty="Y"
-                                Duration="0:0:1">
-                <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}},Path=SnapToY}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-    </UserControl.Resources>
-    <UserControl.Triggers>
-        <EventTrigger RoutedEvent="teudu:EventBoard.StopShift">
-            <StopStoryboard BeginStoryboardName="PanAnimationBeginStoryboard" />
-        </EventTrigger>
-        <EventTrigger RoutedEvent="teudu:EventBoard.Shift">
-            <SeekStoryboard BeginStoryboardName="PanAnimationBeginStoryboard" Offset="0:0:0" Origin="BeginTime"/>
-            <BeginStoryboard x:Name="PanAnimationBeginStoryboard">
-                <Storyboard x:Name="PanAnimationStoryboard" Completed="PanAnimationStoryboard_Completed">
-                    <DoubleAnimationUsingKeyFrames
-                                Storyboard.TargetName="EventBoardTranslateTransform"
-                                Storyboard.TargetProperty="X"
-                                Duration="0:0:1">
-                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToX}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames
-                                Storyboard.TargetName="EventBoardTranslateTransform"
-                                Storyboard.TargetProperty="Y"       
-                                Duration="0:0:1">
-                        <SplineDoubleKeyFrame Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=MoveToY}" KeyTime="0:0:1" KeySpline="0.25,0.5 0.75,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                </Storyboard>
-            </BeginStoryboard>
-        </EventTrigger>
-    </UserControl.Triggers>
     <Canvas>
-        <WrapPanel Name="Board" Orientation="Vertical" Height="1024" Width="1920" Panel.ZIndex="1">
-            <WrapPanel.RenderTransform>
-                <TransformGroup>
-                    <!--<TranslateTransform X="{Binding Path=DominantArmHandOffsetX}" Y="{Binding Path=DominantArmHandOffsetY}" Changed="TranslateTransform_Changed"></TranslateTransform>-->
-                    <TranslateTransform x:Name="EventBoardTranslateTransform" X="0" Y="0"></TranslateTransform>
-                    <ScaleTransform ScaleX="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ScaleLevel}" ScaleY="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ScaleLevel}" CenterX="900" CenterY="500"/>
-                </TransformGroup>
-            </WrapPanel.RenderTransform>
-            
-        </WrapPanel>
+        <WrapPanel Name="Board" Orientation="Vertical" Panel.ZIndex="1" 
+                   Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                   Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
     </Canvas>
+        
 </UserControl>

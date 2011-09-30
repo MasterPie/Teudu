@@ -68,10 +68,6 @@ namespace Teudu.InfoDisplay
             if (currBoard < boards.Count - 1)
             {
                 currBoard++;
-
-                if (ActiveBoardChanged != null)
-                    ActiveBoardChanged(this, new BoardEventArgs() { Board = Current });
-
                 return true;
             }
             return false;
@@ -82,8 +78,6 @@ namespace Teudu.InfoDisplay
             if (currBoard > 0)
             {
                 currBoard--;
-                if (ActiveBoardChanged != null)
-                    ActiveBoardChanged(this, new BoardEventArgs() { Board = Current });
                 return true;
             }
             return false;

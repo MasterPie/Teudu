@@ -30,21 +30,22 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <StackPanel Background="#FF464646" Panel.ZIndex="80">
-            <Grid Height="100" Panel.ZIndex="80" Background="#FF464646">
+        <StackPanel Background="#FF674c56" Panel.ZIndex="80">
+            <Grid Height="100" Panel.ZIndex="80">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="33*" />
                     <ColumnDefinition Width="33*" />
                     <ColumnDefinition Width="33*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="BoardPrevTitle" Text="{Binding Path=PreviousBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="0"/>
+                <!--<TextBlock x:Name="BoardPrevTitle" Text="{Binding Path=PreviousBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="0"/>
                 <TextBlock x:Name="BoardTitle" Text="{Binding Path=CurrentBoard.Name}" Style="{StaticResource BoardTitleText}" Grid.Column="1"/>
-                <TextBlock x:Name="BoardNextTitle" Text="{Binding Path=NextBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>
+                <TextBlock x:Name="BoardNextTitle" Text="{Binding Path=NextBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>-->
             </Grid>
-            <Canvas x:Name="BoardContainer" Height="630" MaxHeight="630" Panel.ZIndex="10"/>
+            <teudu:BoardNavigatorControl x:Name="BoardNavigator" Width="1920" Height="680" Panel.ZIndex="10"/>
+            <!--<Canvas x:Name="BoardContainer" Height="630" MaxHeight="630" Panel.ZIndex="10"/>-->
             <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=VisibleLocation}" Panel.ZIndex="80"/>-->
-            <teudu:EventDetailsControl x:Name="EventDetails" Height="150" Background="#999933" Panel.ZIndex="80"/>
-            <TextBlock Text="{Binding Path=CurrentBoard.Name}" Panel.ZIndex="5" Margin="50,-780,50,0" Style="{StaticResource BoardTitleTextMetro}"/>
+            <teudu:EventDetailsControl x:Name="EventDetails" Height="100" Background="#999933" Panel.ZIndex="80"/>
+            <!--<TextBlock Text="{Binding Path=CurrentBoard.Name}" Panel.ZIndex="5" Margin="50,-780,50,0" Style="{StaticResource BoardTitleTextMetro}"/>-->
         </StackPanel>
         <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
     </Grid>

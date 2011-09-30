@@ -23,16 +23,16 @@ namespace Teudu.InfoDisplay
         private double ARM_SCALE_FACTOR_Y = 1;//(App.Current.MainWindow.Height / 2) * 3;
         private double ARM_SCALE_FACTOR_Z = 1;//500; // Distance to tv
 
-        private const int MAX_SCALE = 4;
-        private const int MIN_SCALE = 1;
+        //private const int MAX_SCALE = 4;
+        //private const int MIN_SCALE = 1;
 
-        private static double hotspotRegionX = App.Current.MainWindow.Width / 12;
-        private static double hotspotRegionY = App.Current.MainWindow.Height / 8;
+        //private static double hotspotRegionX = App.Current.MainWindow.Width / 12;
+        //private static double hotspotRegionY = App.Current.MainWindow.Height / 8;
 
-        private double hotspotLeft = 0;
-        private double hotSpotRight = App.Current.MainWindow.Width - hotspotRegionX;
-        private double hotSpotTop = 0;
-        private double hotSpotBottom = App.Current.MainWindow.Height - hotspotRegionY;
+        //private double hotspotLeft = 0;
+        //private double hotSpotRight = App.Current.MainWindow.Width - hotspotRegionX;
+        //private double hotSpotTop = 0;
+        //private double hotSpotBottom = App.Current.MainWindow.Height - hotspotRegionY;
 
         IKinectService kinectService;
         ISourceService sourceService;
@@ -42,19 +42,18 @@ namespace Teudu.InfoDisplay
 
         public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService) 
         {
-            categoryChangeTimer = new DispatcherTimer(DispatcherPriority.Loaded);
-            categoryChangeTimer.Tick += new EventHandler(categoryChangeTimer_Tick);
-            categoryChangeTimer.Interval = new TimeSpan(50000000); //100000000
+            //categoryChangeTimer = new DispatcherTimer(DispatcherPriority.Loaded);
+            //categoryChangeTimer.Tick += new EventHandler(categoryChangeTimer_Tick);
+            //categoryChangeTimer.Interval = new TimeSpan(50000000); //100000000
 
             this.kinectService = kinectService; 
-            //this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
 
             this.sourceService = sourceService;
             this.sourceService.EventsUpdated += new EventHandler<SourceEventArgs>(sourceService_EventsUpdated);
 
             this.boardService = boardService;
             this.boardService.BoardsUpdated += new EventHandler(boardService_BoardsChanged);
-            this.boardService.ActiveBoardChanged += new EventHandler<BoardEventArgs>(boardService_ActiveBoardChanged);
+            //this.boardService.ActiveBoardChanged += new EventHandler<BoardEventArgs>(boardService_ActiveBoardChanged);
         
 
             leftArm = new Arm();
@@ -65,50 +64,48 @@ namespace Teudu.InfoDisplay
             this.sourceService.BeginPoll();
         }
 
-        void categoryChangeTimer_Tick(object sender, EventArgs e)
-        {
-            AdvanceBoard();
-            categoryChangeTimer.Stop();
-        }
+        //void categoryChangeTimer_Tick(object sender, EventArgs e)
+        //{
+        //    AdvanceBoard();
+        //    categoryChangeTimer.Stop();
+        //}
 
-
-        public void ChangeBoard(bool right)
-        {
-            if (right)
-                AdvanceBoard();
-            else
-                RegressBoard();
-        }
-
-        void boardService_ActiveBoardChanged(object sender, BoardEventArgs e)
-        {
-            NotifyActiveBoardSubscribers();
-        }
+        //void boardService_ActiveBoardChanged(object sender, BoardEventArgs e)
+        //{
+        //    //NotifyActiveBoardSubscribers();
+        //}
 
         void boardService_BoardsChanged(object sender, EventArgs e)
         {
-            //reset UI
-            NotifyActiveBoardSubscribers();
+            NotifyBoardSubscribers();
         }
 
-        private void NotifyActiveBoardSubscribers()
+        private void NotifyBoardSubscribers()
         {
-            //categoryChangeTimer.Stop();
             this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
-
-            if (ActiveBoardChanged != null)
-                ActiveBoardChanged(this, new BoardEventArgs() {Previous = PreviousBoard, Board = CurrentBoard, Next=NextBoard });
-
+            if (BoardsUpdated != null)
+                BoardsUpdated(this, new BoardEventArgs() { BoardService = this.boardService});
             this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
-
-            if (PreviousBoard != null)
-                this.OnPropertyChanged("PreviousBoard");
-            if (NextBoard != null)
-                this.OnPropertyChanged("NextBoard");
-            if (CurrentBoard != null)
-                this.OnPropertyChanged("CurrentBoard");
-            //categoryChangeTimer.Start();
         }
+
+        //private void NotifyActiveBoardSubscribers()
+        //{
+        //    //categoryChangeTimer.Stop();
+        //    this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+
+        //    //if (ActiveBoardChanged != null)
+        //    //    ActiveBoardChanged(this, new BoardEventArgs() {Previous = PreviousBoard, Board = CurrentBoard, Next=NextBoard });
+
+        //    this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+
+        //    if (PreviousBoard != null)
+        //        this.OnPropertyChanged("PreviousBoard");
+        //    if (NextBoard != null)
+        //        this.OnPropertyChanged("NextBoard");
+        //    if (CurrentBoard != null)
+        //        this.OnPropertyChanged("CurrentBoard");
+        //    //categoryChangeTimer.Start();
+        //}
 
 
         void sourceService_EventsUpdated(object sender, SourceEventArgs e)
@@ -116,35 +113,35 @@ namespace Teudu.InfoDisplay
             boardService.Events = e.Events;
         }
 
-        public Board CurrentBoard
-        {
-            get 
-            {
-                if (boardService.Current == null)
-                    return new Board("No events");
-                return boardService.Current; 
-            }
-        }
+        //public Board CurrentBoard
+        //{
+        //    get 
+        //    {
+        //        if (boardService.Current == null)
+        //            return new Board("No events");
+        //        return boardService.Current; 
+        //    }
+        //}
 
-        public Board PreviousBoard
-        {
-            get { return boardService.Prev; }
-        }
+        //public Board PreviousBoard
+        //{
+        //    get { return boardService.Prev; }
+        //}
 
-        public Board NextBoard
-        {
-            get {return boardService.Next; }
-        }
+        //public Board NextBoard
+        //{
+        //    get {return boardService.Next; }
+        //}
 
-        public void AdvanceBoard()
-        {
-            boardService.AdvanceCurrent();
-        }
+        //public void AdvanceBoard()
+        //{
+        //    boardService.AdvanceCurrent();
+        //}
 
-        public void RegressBoard()
-        {
-            boardService.RegressCurrent();
-        }
+        //public void RegressBoard()
+        //{
+        //    boardService.RegressCurrent();
+        //}
 
         #region Kinect
 
@@ -187,9 +184,9 @@ namespace Teudu.InfoDisplay
 
                 if (ViewChangeMode == HandsState.Panning)
                 {
-                    //this.OnPropertyChanged("DominantArmHandOffsetX");
-                    //this.OnPropertyChanged("DominantArmHandOffsetY");
-                    Pan();
+                    this.OnPropertyChanged("DominantArmHandOffsetX");
+                    this.OnPropertyChanged("DominantArmHandOffsetY");
+                    //Pan();
                 }
                 //else if (ViewChangeMode == HandsState.Zooming)
                 //    Scale();
@@ -214,80 +211,80 @@ namespace Teudu.InfoDisplay
         Head head;
         Spine spine;
 
-        private void Pan()
-        {
-            if (!IsNearBot && !IsNearTop && !IsNearLeft && !IsNearRight)
-                return;
+        //private void Pan()
+        //{
+        //    if (!IsNearBot && !IsNearTop && !IsNearLeft && !IsNearRight)
+        //        return;
 
-            //Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
-            //Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
-            //Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
-            //Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
+        //    //Trace.WriteLineIf(IsNearLeft, "Left at" + DominantHand.HandX);
+        //    //Trace.WriteLineIf(IsNearRight, "Right at" + DominantHand.HandX);
+        //    //Trace.WriteLineIf(IsNearTop, "Top at" + DominantHand.HandY);
+        //    //Trace.WriteLineIf(IsNearBot, "Bot at" + DominantHand.HandY);
 
-            NotifyPanSubscribers();
-        }
+        //    NotifyPanSubscribers();
+        //}
 
-        private void Scale()
-        {
-            NotifyScaleSubscribers();
-        }
+        //private void Scale()
+        //{
+        //    NotifyScaleSubscribers();
+        //}
 
-        private void NotifyScaleSubscribers()
-        {
-            double scaleLevel = Math.Log(this.HandsDistance, 3);
-            if (scaleLevel >= 5)
-                scaleLevel = 5;
-            if (scaleLevel <= 1)
-                scaleLevel = 1;
-            //ScaleLevel = lastScale + (HandsDistance - startHandDistance);
-            if (ScaleRequest != null)
-                ScaleRequest(this, new ScaleEventArgs()
-                {
-                    ScaleLevel = scaleLevel
-                });
-        }
+        //private void NotifyScaleSubscribers()
+        //{
+        //    double scaleLevel = Math.Log(this.HandsDistance, 3);
+        //    if (scaleLevel >= 5)
+        //        scaleLevel = 5;
+        //    if (scaleLevel <= 1)
+        //        scaleLevel = 1;
+        //    //ScaleLevel = lastScale + (HandsDistance - startHandDistance);
+        //    if (ScaleRequest != null)
+        //        ScaleRequest(this, new ScaleEventArgs()
+        //        {
+        //            ScaleLevel = scaleLevel
+        //        });
+        //}
 
-        private void NotifyPanSubscribers()
-        {
-            double xOffset, yOffset;
-            xOffset = yOffset = 0;
+        //private void NotifyPanSubscribers()
+        //{
+        //    double xOffset, yOffset;
+        //    xOffset = yOffset = 0;
 
-            if (IsNearLeft)
-                xOffset = PAN_TO_OFFSET;
-            if (IsNearRight)
-                xOffset = -PAN_TO_OFFSET;
-            if (IsNearTop)
-                yOffset = PAN_TO_OFFSET;
-            if (IsNearBot)
-                yOffset = -PAN_TO_OFFSET;
+        //    if (IsNearLeft)
+        //        xOffset = PAN_TO_OFFSET;
+        //    if (IsNearRight)
+        //        xOffset = -PAN_TO_OFFSET;
+        //    if (IsNearTop)
+        //        yOffset = PAN_TO_OFFSET;
+        //    if (IsNearBot)
+        //        yOffset = -PAN_TO_OFFSET;
 
-            if (PanRequest != null)
-                PanRequest(this, new PanEventArgs()
-                {
-                    HorizontalOffset = xOffset,
-                    VerticalOffset = yOffset
-                });
-        }
+        //    if (PanRequest != null)
+        //        PanRequest(this, new PanEventArgs()
+        //        {
+        //            HorizontalOffset = xOffset,
+        //            VerticalOffset = yOffset
+        //        });
+        //}
 
-        public bool IsNearLeft
-        {
-            get { return (DominantHand.HandX >= hotspotLeft) && (DominantHand.HandX < (hotspotLeft + hotspotRegionX)); }
-        }
+        //public bool IsNearLeft
+        //{
+        //    get { return (DominantHand.HandX >= hotspotLeft) && (DominantHand.HandX < (hotspotLeft + hotspotRegionX)); }
+        //}
 
-        public bool IsNearRight
-        {
-            get { return (DominantHand.HandX > hotSpotRight) && (DominantHand.HandX <= (hotSpotRight + hotspotRegionX)); }
-        }
+        //public bool IsNearRight
+        //{
+        //    get { return (DominantHand.HandX > hotSpotRight) && (DominantHand.HandX <= (hotSpotRight + hotspotRegionX)); }
+        //}
 
-        public bool IsNearTop
-        {
-            get { return (DominantHand.HandY >= hotSpotTop) && (DominantHand.HandY < (hotSpotTop + hotspotRegionY)); }
-        }
+        //public bool IsNearTop
+        //{
+        //    get { return (DominantHand.HandY >= hotSpotTop) && (DominantHand.HandY < (hotSpotTop + hotspotRegionY)); }
+        //}
 
-        public bool IsNearBot
-        {
-            get{ return (DominantHand.HandY > hotSpotBottom) && (DominantHand.HandY <= (hotSpotBottom + hotspotRegionY)); }
-        }
+        //public bool IsNearBot
+        //{
+        //    get{ return (DominantHand.HandY > hotSpotBottom) && (DominantHand.HandY <= (hotSpotBottom + hotspotRegionY)); }
+        //}
 
         public bool LeftArmInFront
         {
@@ -350,12 +347,12 @@ namespace Teudu.InfoDisplay
 
         public double DominantArmHandOffsetX
         {
-            get { return -DominantHand.HandOffsetX * 7; }
+            get { return DominantHand.HandOffsetX; }
         }
 
         public double DominantArmHandOffsetY
         {
-            get { return -DominantHand.HandOffsetY * 7; }
+            get { return DominantHand.HandOffsetY; }
         }
 
         #endregion
@@ -388,7 +385,7 @@ namespace Teudu.InfoDisplay
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ScaleEventArgs> ScaleRequest;
         public event EventHandler<PanEventArgs> PanRequest;
-        public event EventHandler<BoardEventArgs> ActiveBoardChanged;
+        public event EventHandler<BoardEventArgs> BoardsUpdated;
 
     }
 }

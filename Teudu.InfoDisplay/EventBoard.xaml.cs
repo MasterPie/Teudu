@@ -25,7 +25,7 @@ namespace Teudu.InfoDisplay
         public EventBoard()
         {
             InitializeComponent();
-            ScaleLevel = 1;
+            //ScaleLevel = 1;
         }
 
         public Board BoardModel
@@ -35,13 +35,13 @@ namespace Teudu.InfoDisplay
             {
                 board = value;
                 this.Board.Children.Clear();
-                BoardModel.Events.ForEach(x => this.Board.Children.Add(new EventControl()
+                BoardModel.Events.Take<Event>(15).ToList().ForEach(x => this.Board.Children.Add(new EventControl()
                 {
                     Event = x,
                     Width = 170,
                     Margin = new Thickness(10)
                 }));
-                TrackCenterEvent();
+                //TrackCenterEvent();
                 //SnapToNearestEvent();
             }
         }
@@ -71,36 +71,35 @@ namespace Teudu.InfoDisplay
                 currentSelected.IsSelected = false;
         }
 
+       // public static readonly RoutedEvent StopShiftEvent = EventManager.RegisterRoutedEvent(
+       //"StopShift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
 
-        public static readonly RoutedEvent StopShiftEvent = EventManager.RegisterRoutedEvent(
-       "StopShift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
+       // public static readonly RoutedEvent ShiftEvent = EventManager.RegisterRoutedEvent(
+       //"Shift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
 
-        public static readonly RoutedEvent ShiftEvent = EventManager.RegisterRoutedEvent(
-       "Shift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
+       // public static readonly RoutedEvent SnapEvent = EventManager.RegisterRoutedEvent(
+       //"Snap", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
 
-        public static readonly RoutedEvent SnapEvent = EventManager.RegisterRoutedEvent(
-       "Snap", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
+       // // Provide CLR accessors for the event
+       // public event RoutedEventHandler Shift
+       // {
+       //     add { AddHandler(ShiftEvent, value); }
+       //     remove { RemoveHandler(ShiftEvent, value); }
+       // }
 
-        // Provide CLR accessors for the event
-        public event RoutedEventHandler Shift
-        {
-            add { AddHandler(ShiftEvent, value); }
-            remove { RemoveHandler(ShiftEvent, value); }
-        }
+       // // Provide CLR accessors for the event
+       // public event RoutedEventHandler StopShift
+       // {
+       //     add { AddHandler(StopShiftEvent, value); }
+       //     remove { RemoveHandler(StopShiftEvent, value); }
+       // }
 
-        // Provide CLR accessors for the event
-        public event RoutedEventHandler StopShift
-        {
-            add { AddHandler(StopShiftEvent, value); }
-            remove { RemoveHandler(StopShiftEvent, value); }
-        }
-
-        // Provide CLR accessors for the event
-        public event RoutedEventHandler Snap
-        {
-            add { AddHandler(SnapEvent, value); }
-            remove { RemoveHandler(SnapEvent, value); }
-        }
+       // // Provide CLR accessors for the event
+       // public event RoutedEventHandler Snap
+       // {
+       //     add { AddHandler(SnapEvent, value); }
+       //     remove { RemoveHandler(SnapEvent, value); }
+       // }
 
 
         private void SnapToNearestEvent()
@@ -119,8 +118,8 @@ namespace Teudu.InfoDisplay
 
             Point boardCorner = Board.TranslatePoint(new Point(0, 0), App.Current.MainWindow);//Board.TransformToAncestor(App.Current.MainWindow).Transform(new Point(0,0));
 
-            snapX = boardCorner.X - deltaX;
-            snapY = boardCorner.Y - deltaY;
+            //snapX = boardCorner.X - deltaX;
+            //snapY = boardCorner.Y - deltaY;
 
             System.Windows.Media.Animation.Storyboard sbdSnapAnimation = (System.Windows.Media.Animation.Storyboard)FindResource("SnapAnimation");
             sbdSnapAnimation.Begin(this);
@@ -167,63 +166,63 @@ namespace Teudu.InfoDisplay
             return closestElement;
         }
 
-        double snapX, snapY;
+        //double snapX, snapY;
 
-        public double SnapToX
-        {
-            get { return snapX; }
-        }
+        //public double SnapToX
+        //{
+        //    get { return snapX; }
+        //}
 
-        public double SnapToY
-        {
-            get { return snapY; }
-        }
+        //public double SnapToY
+        //{
+        //    get { return snapY; }
+        //}
 
-        double scaleLevel = 1;
-        public double ScaleLevel
-        {
-            set { scaleLevel = value; this.OnPropertyChanged("ScaleLevel"); }
-            get { return scaleLevel; }
-        }
+        //double scaleLevel = 1;
+        //public double ScaleLevel
+        //{
+        //    set { scaleLevel = value; this.OnPropertyChanged("ScaleLevel"); }
+        //    get { return scaleLevel; }
+        //}
 
-        double toX, toY;
+        //double toX, toY;
         
-        public double MoveToX
-        {
-            set 
-            {
-                if ((toX + value) / ScaleLevel >= -((App.Current.MainWindow.Width / 2)+100) && (toX + value) / ScaleLevel <= ((App.Current.MainWindow.Width / 2)+100))
-                {
-                    toX += value;//this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).X + value;
-                    this.OnPropertyChanged("MoveToX");
-                }
-                else
-                {
-                    if (BoardChanged != null)
-                    {
-                        if ((toX + value) / ScaleLevel >= -((App.Current.MainWindow.Width / 2) + 100))
-                            BoardChanged(this, new CategoryChangeEventArgs() { Right = false });
-                        else
-                            BoardChanged(this, new CategoryChangeEventArgs() { Right = true });
-                    }
-                    Trace.WriteLine("Value is out of bounds: " + value);
-                }
-            }
-            get { return toX; }
-        }
+        //public double MoveToX
+        //{
+        //    set 
+        //    {
+        //        if ((toX + value) / ScaleLevel >= -((App.Current.MainWindow.Width / 2)+100) && (toX + value) / ScaleLevel <= ((App.Current.MainWindow.Width / 2)+100))
+        //        {
+        //            toX += value;//this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).X + value;
+        //            this.OnPropertyChanged("MoveToX");
+        //        }
+        //        else
+        //        {
+        //            if (BoardChanged != null)
+        //            {
+        //                if ((toX + value) / ScaleLevel >= -((App.Current.MainWindow.Width / 2) + 100))
+        //                    BoardChanged(this, new CategoryChangeEventArgs() { Right = false });
+        //                else
+        //                    BoardChanged(this, new CategoryChangeEventArgs() { Right = true });
+        //            }
+        //            Trace.WriteLine("Value is out of bounds: " + value);
+        //        }
+        //    }
+        //    get { return toX; }
+        //}
 
-        public double MoveToY
-        {
-            set 
-            {
-                if ((toY + value) / ScaleLevel >= -(App.Current.MainWindow.Height / 2) && (toY + value + 100) / ScaleLevel <= (App.Current.MainWindow.Height / 2))
-                {
-                    toY += value;// this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).Y + value;
-                    this.OnPropertyChanged("MoveToY");
-                }
-            }
-            get { return toY; }
-        }
+        //public double MoveToY
+        //{
+        //    set 
+        //    {
+        //        if ((toY + value) / ScaleLevel >= -(App.Current.MainWindow.Height / 2) && (toY + value + 100) / ScaleLevel <= (App.Current.MainWindow.Height / 2))
+        //        {
+        //            toY += value;// this.TranslatePoint(new Point(0, 0), App.Current.MainWindow).Y + value;
+        //            this.OnPropertyChanged("MoveToY");
+        //        }
+        //    }
+        //    get { return toY; }
+        //}
 
         Event currentEvent;
         public Event HoveredEvent
