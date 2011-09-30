@@ -14,7 +14,6 @@ namespace Teudu.InfoDisplay
         {
             double offset = (double)value;
             double actualPosition = Double.Parse((string)parameter);
-
             return offset + actualPosition;
         }
 

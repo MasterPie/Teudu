@@ -33,7 +33,7 @@ namespace Teudu.InfoDisplay
                 boardMaster = value;
                 Current = boardMaster.Current;
                 Next = boardMaster.Next;
-                JumpToCenter();
+                //JumpToCenter();
                 //begin monitoring
             }
         }
@@ -105,9 +105,9 @@ namespace Teudu.InfoDisplay
 
         private void JumpToCenter()
         {
-            TranslateTransform shift = new TranslateTransform(-this.ActualWidth, 0);
-            BoardContainer.RenderTransform = shift;
-            //Canvas.SetLeft(BoardContainer, -this.ActualWidth);
+            //TranslateTransform shift = new TranslateTransform(-this.ActualWidth, 0);
+            //BoardContainer.RenderTransform = shift;
+            Canvas.SetLeft(BoardContainer, -this.ActualWidth);
         }
 
         public Point BoardContainerOffset
@@ -144,10 +144,12 @@ namespace Teudu.InfoDisplay
 
         private void TranslateTransform_Changed(object sender, EventArgs e)
         {
-            if (GoNext())
-                Advance();
-            else if (GoPrevious())
-                Regress();
+            //System.Diagnostics.Trace.WriteLine("mid of board :" + BoardMidLocation().X);
+
+            //if (GoNext())
+            //    Advance();
+            //else if (GoPrevious())
+            //    Regress();
         }
     }
 }

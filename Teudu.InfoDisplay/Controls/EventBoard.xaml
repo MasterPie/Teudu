@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Canvas>
-        <WrapPanel Name="Board" Orientation="Vertical" Panel.ZIndex="1" 
+        <WrapPanel Name="Board" Orientation="Vertical" Panel.ZIndex="1"
                    Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                    Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
     </Canvas>
