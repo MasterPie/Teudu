@@ -27,7 +27,14 @@ namespace Teudu.InfoDisplay
         private IBoardService boardMaster;
         public IBoardService BoardMaster
         {
-            set { boardMaster = value; }
+            set 
+            { 
+                //stop monitoring interactions
+                boardMaster = value;
+                Current = boardMaster.Current;
+                Next = boardMaster.Next;
+                //begin monitoring
+            }
         }
 
         private Board prev, current, next;
@@ -36,7 +43,14 @@ namespace Teudu.InfoDisplay
             set
             {
                 prev = value;
+                this.Dispatcher.BeginInvoke(new Action(this.LoadPreviousBoard), System.Windows.Threading.DispatcherPriority.Loaded);
             }
+        }
+
+        private void LoadPreviousBoard()
+        {
+            //do slick animation
+            PreviousBoard.BoardModel = prev;
         }
 
         public Board Current
@@ -44,6 +58,7 @@ namespace Teudu.InfoDisplay
             set
             {
                 current = value;
+                CurrentBoard.BoardModel = current;
             }
         }
 
@@ -52,30 +67,44 @@ namespace Teudu.InfoDisplay
             set
             {
                 next = value;
+                this.Dispatcher.BeginInvoke(new Action(this.LoadNextBoard), System.Windows.Threading.DispatcherPriority.Loaded);
             }
         }
 
-        private void Advance(Board nextBoard)
+        private void LoadNextBoard()
         {
+            //do slick animation
+            NextBoard.BoardModel = next;
+        }
+
+        private void Advance()
+        {
+            if (!boardMaster.AdvanceCurrent())
+                return;
             //animation => refresh prev, next boards
             Current = next;
             //jump to current board
+            JumpToCenter();
             Previous = current;
-            Next = next;
+            Next = boardMaster.Next;
+            
         }
 
-        private void Regress(Board prevBoard)
+        private void Regress()
         {
+            if (!boardMaster.RegressCurrent())
+                return;
             //animation, completed => refresh prev, next boards
             Current = prev;
             //jump to current board
+            JumpToCenter();
             Next = current;
-            Previous = prevBoard;
+            Previous = boardMaster.Prev;
         }
 
         private void JumpToCenter()
         {
-            ///TODO: implement
+            Canvas.SetLeft(BoardContainer, -this.ActualWidth);
         }
 
         private double x, y;
@@ -90,12 +119,26 @@ namespace Teudu.InfoDisplay
 
         private bool GoPrevious()
         {
-            return false;
+            //Point containerCenter = this.TransformToAncestor(App.Current.MainWindow).Transform(new Point(BoardContainer.ActualWidth/2,0));
+            return BoardMidLocation().X > BoardContainer.ActualWidth/2;
         }
 
         private bool GoNext()
         {
-            return false;
+            return BoardMidLocation().X < 0;
+        }
+
+        private Point BoardMidCoords()
+        {
+            double midY = this.BoardContainer.ActualHeight / 2;
+            double midX = this.BoardContainer.ActualWidth / 2;
+
+            return new Point(midX, midY);
+        }
+
+        private Point BoardMidLocation()
+        {
+            return BoardContainer.TransformToAncestor(this).Transform(BoardMidCoords());
         }
     }
 }

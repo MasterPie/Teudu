@@ -6,9 +6,9 @@
              xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Horizontal">
-        <teudu:EventBoard x:Name="PreviousBoard"/>
-        <teudu:EventBoard x:Name="CurrentBoard"/>
-        <teudu:EventBoard x:Name="NextBoard"/>
+    <StackPanel Orientation="Horizontal" x:Name="BoardContainer">
+        <teudu:EventBoard x:Name="PreviousBoard" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <teudu:EventBoard x:Name="CurrentBoard" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <teudu:EventBoard x:Name="NextBoard" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
     </StackPanel>
 </UserControl>
