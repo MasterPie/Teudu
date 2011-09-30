@@ -33,6 +33,7 @@ namespace Teudu.InfoDisplay
                 boardMaster = value;
                 Current = boardMaster.Current;
                 Next = boardMaster.Next;
+                JumpToCenter();
                 //begin monitoring
             }
         }
@@ -80,7 +81,7 @@ namespace Teudu.InfoDisplay
         private void Advance()
         {
             if (!boardMaster.AdvanceCurrent())
-                return;
+                return; 
             //animation => refresh prev, next boards
             Current = next;
             //jump to current board
@@ -104,17 +105,17 @@ namespace Teudu.InfoDisplay
 
         private void JumpToCenter()
         {
-            Canvas.SetLeft(BoardContainer, -this.ActualWidth);
+            TranslateTransform shift = new TranslateTransform(-this.ActualWidth, 0);
+            BoardContainer.RenderTransform = shift;
+            //Canvas.SetLeft(BoardContainer, -this.ActualWidth);
         }
 
-        private double x, y;
-        public double XOffset
+        public Point BoardContainerOffset
         {
-            set { x = value; }
-        }
-        public double YOffset
-        {
-            set { y = value; }
+            get
+            {
+                return BoardContainer.TransformToAncestor(this).Transform(new Point(0, 0));
+            }
         }
 
         private bool GoPrevious()
@@ -125,7 +126,7 @@ namespace Teudu.InfoDisplay
 
         private bool GoNext()
         {
-            return BoardMidLocation().X < 0;
+            return (BoardMidLocation().X + this.ActualWidth) < 0; ///TODO: change to be based on event width
         }
 
         private Point BoardMidCoords()
@@ -139,6 +140,14 @@ namespace Teudu.InfoDisplay
         private Point BoardMidLocation()
         {
             return BoardContainer.TransformToAncestor(this).Transform(BoardMidCoords());
+        }
+
+        private void TranslateTransform_Changed(object sender, EventArgs e)
+        {
+            if (GoNext())
+                Advance();
+            else if (GoPrevious())
+                Regress();
         }
     }
 }

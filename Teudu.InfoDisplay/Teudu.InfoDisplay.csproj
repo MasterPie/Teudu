@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="HoveredEventArgs.cs" />
     <Compile Include="IBoardService.cs" />
+    <Compile Include="OffsetNavigatorConverter.cs" />
     <Compile Include="PanEventArgs.cs" />
     <Compile Include="MomentaryBoardService.cs" />
     <Compile Include="ScaleEventArgs.cs" />

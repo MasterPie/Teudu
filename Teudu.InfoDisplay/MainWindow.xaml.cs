@@ -22,63 +22,69 @@ namespace Teudu.InfoDisplay
     /// </summary>
     public partial class MainWindow : Window
     {
-        private EventBoard current;
+        //private EventBoard current;
 
         public MainWindow()
         {
             InitializeComponent();
-            ((ViewModel)this.DataContext).ActiveBoardChanged += new EventHandler<BoardEventArgs>(MainWindow_BoardChanged);
-            ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
-            ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
+            //((ViewModel)this.DataContext).ActiveBoardChanged += new EventHandler<BoardEventArgs>(MainWindow_BoardChanged);
+            //((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
+            //((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
+            ((ViewModel)this.DataContext).BoardsUpdated += new EventHandler<BoardEventArgs>(MainWindow_BoardsUpdated);
 
-            current = new EventBoard();
-            this.BoardContainer.Children.Add(current);
+            //current = new EventBoard();
+            //this.BoardContainer.Children.Add(current);
             
         }
 
-        void current_PanCompleted(object sender, EventArgs e)
+        void MainWindow_BoardsUpdated(object sender, BoardEventArgs e)
         {
-            ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
+            this.BoardNavigator.BoardMaster = e.BoardService;
         }
 
-        void allowEventHandlingTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
-            ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
+        //void current_PanCompleted(object sender, EventArgs e)
+        //{
+        //    ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
+        //}
 
-        }
+        //void allowEventHandlingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        //{
+        //    ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
+        //    ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
 
-        void MainWindow_ScaleRequest(object sender, ScaleEventArgs e)
-        {
-            RaiseStopShiftEvent(); 
-            current.ScaleLevel = e.ScaleLevel;
-        }
+        //}
 
-        void MainWindow_BoardChanged(object sender, BoardEventArgs e)
-        {
-            BoardChanging(new EventBoard() { BoardModel = e.Board});
+        //void MainWindow_ScaleRequest(object sender, ScaleEventArgs e)
+        //{
+        //    RaiseStopShiftEvent(); 
+        //    current.ScaleLevel = e.ScaleLevel;
+        //}
+
+        //void MainWindow_BoardChanged(object sender, BoardEventArgs e)
+        //{
+        //    //BoardChanging(new EventBoard() { BoardModel = e.Board});
+
             
-            
-        }
+        //}
 
-        private void BoardChanging(EventBoard newBoard)
-        {
-            //do some interesting animation
-            current.BoardChanged -= new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
-            current.PanCompleted -= new EventHandler(current_PanCompleted);
-            current.HoveredEventChanged -= new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
-            current = newBoard;
-            this.BoardContainer.Children.Clear();
-            this.BoardContainer.Children.Add(current);
-            current.BoardChanged += new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
-            current.PanCompleted += new EventHandler(current_PanCompleted);
-            current.HoveredEventChanged += new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
-        }
+        //private void BoardChanging(EventBoard newBoard)
+        //{
+        //    //do some interesting animation
+        //    current.BoardChanged -= new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
+        //    current.PanCompleted -= new EventHandler(current_PanCompleted);
+        //    current.HoveredEventChanged -= new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
+        //    current = newBoard;
+        //    //this.BoardContainer.Children.Clear();
+        //    //this.BoardContainer.Children.Add(current);
+        //    current.BoardChanged += new EventHandler<CategoryChangeEventArgs>(current_BoardChanged);
+        //    current.PanCompleted += new EventHandler(current_PanCompleted);
+        //    current.HoveredEventChanged += new EventHandler<HoveredEventArgs>(current_HoveredEventChanged);
+        //}
 
-        void current_BoardChanged(object sender, CategoryChangeEventArgs e)
-        {
-            ((ViewModel)this.DataContext).ChangeBoard(e.Right);
-        }
+        //void current_BoardChanged(object sender, CategoryChangeEventArgs e)
+        //{
+        //    ((ViewModel)this.DataContext).ChangeBoard(e.Right);
+        //}
 
         void current_HoveredEventChanged(object sender, HoveredEventArgs e)
         {
@@ -94,36 +100,36 @@ namespace Teudu.InfoDisplay
             }
         }
 
-        void MainWindow_PanRequest(object sender, PanEventArgs e)
-        {
-            current.MoveToX = e.HorizontalOffset;
-            current.MoveToY = e.VerticalOffset;
+        //void MainWindow_PanRequest(object sender, PanEventArgs e)
+        //{
+        //    current.MoveToX = e.HorizontalOffset;
+        //    current.MoveToY = e.VerticalOffset;
             
-            RaiseShiftEvent();
-        }
+        //    RaiseShiftEvent();
+        //}
 
-        private void RaiseStopShiftEvent()
-        {
-            ((ViewModel)this.DataContext).PanRequest -= new EventHandler<PanEventArgs>(MainWindow_PanRequest);
-            ((ViewModel)this.DataContext).ScaleRequest -= new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
+        //private void RaiseStopShiftEvent()
+        //{
+        //    ((ViewModel)this.DataContext).PanRequest -= new EventHandler<PanEventArgs>(MainWindow_PanRequest);
+        //    ((ViewModel)this.DataContext).ScaleRequest -= new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
 
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(EventBoard.StopShiftEvent);
-            current.RaiseEvent(newEventArgs);
+        //    RoutedEventArgs newEventArgs = new RoutedEventArgs(EventBoard.StopShiftEvent);
+        //    current.RaiseEvent(newEventArgs);
 
-            ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
-            ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
+        //    ((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
+        //    ((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
 
-        }
+        //}
 
-        private void RaiseShiftEvent()
-        {
-            ((ViewModel)this.DataContext).PanRequest -= new EventHandler<PanEventArgs>(MainWindow_PanRequest);
+        //private void RaiseShiftEvent()
+        //{
+        //    ((ViewModel)this.DataContext).PanRequest -= new EventHandler<PanEventArgs>(MainWindow_PanRequest);
 
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(EventBoard.ShiftEvent);
-            current.RaiseEvent(newEventArgs);
+        //    RoutedEventArgs newEventArgs = new RoutedEventArgs(EventBoard.ShiftEvent);
+        //    current.RaiseEvent(newEventArgs);
 
-            //Board.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate() { Board.RaiseEvent(newEventArgs); }));
-        }
+        //    //Board.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate() { Board.RaiseEvent(newEventArgs); }));
+        //}
 
         public string VisibleLocation
         {
