@@ -347,12 +347,12 @@ namespace Teudu.InfoDisplay
 
         public double DominantArmHandOffsetX
         {
-            get { return DominantHand.HandOffsetX; }
+            get { return -DominantHand.HandOffsetX*7; }
         }
 
         public double DominantArmHandOffsetY
         {
-            get { return DominantHand.HandOffsetY; }
+            get { return -DominantHand.HandOffsetY*7; }
         }
 
         #endregion

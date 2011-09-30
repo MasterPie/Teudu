@@ -82,56 +82,57 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BindableTraceListener.cs" />
-    <Compile Include="Board.cs" />
-    <Compile Include="BoardEventArgs.cs" />
-    <Compile Include="BoardNavigatorControl.xaml.cs">
+    <Compile Include="Debug\BindableTraceListener.cs" />
+    <Compile Include="Models\Board.cs" />
+    <Compile Include="Eventing\BoardEventArgs.cs" />
+    <Compile Include="Controls\BoardNavigatorControl.xaml.cs">
       <DependentUpon>BoardNavigatorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Category.cs" />
-    <Compile Include="CategoryChangeEventArgs.cs" />
-    <Compile Include="DelegateCommand.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="EventBoard.xaml.cs">
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Eventing\CategoryChangeEventArgs.cs" />
+    <Compile Include="Eventing\DelegateCommand.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Controls\EventBoard.xaml.cs">
       <DependentUpon>EventBoard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventControl.xaml.cs">
+    <Compile Include="Controls\EventControl.xaml.cs">
       <DependentUpon>EventControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventDetailsControl.xaml.cs">
+    <Compile Include="Controls\EventDetailsControl.xaml.cs">
       <DependentUpon>EventDetailsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HoveredEventArgs.cs" />
+    <Compile Include="Eventing\HoveredEventArgs.cs" />
     <Compile Include="IBoardService.cs" />
+    <Compile Include="KinectTools.cs" />
     <Compile Include="OffsetNavigatorConverter.cs" />
-    <Compile Include="PanEventArgs.cs" />
-    <Compile Include="MomentaryBoardService.cs" />
-    <Compile Include="ScaleEventArgs.cs" />
-    <Compile Include="Test\FileSourceService.cs" />
-    <Compile Include="HandsState.cs" />
+    <Compile Include="Eventing\PanEventArgs.cs" />
+    <Compile Include="Models\MomentaryBoardService.cs" />
+    <Compile Include="Eventing\ScaleEventArgs.cs" />
+    <Compile Include="Debug\FileSourceService.cs" />
+    <Compile Include="Models\HandsState.cs" />
     <Compile Include="ISourceService.cs" />
-    <Compile Include="SkeletonEventArgs.cs" />
-    <Compile Include="SourceEventArgs.cs" />
-    <Compile Include="SwipeEventArgs.cs" />
+    <Compile Include="Eventing\SkeletonEventArgs.cs" />
+    <Compile Include="Eventing\SourceEventArgs.cs" />
+    <Compile Include="Eventing\SwipeEventArgs.cs" />
     <Compile Include="SwipeType.cs" />
     <Compile Include="TrackedJoints.cs" />
-    <Compile Include="UserKinectService.cs" />
+    <Compile Include="Models\UserKinectService.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="ViewModelLoader.cs" />
-    <Compile Include="WebSourceService.cs" />
-    <Page Include="BoardNavigatorControl.xaml">
+    <Compile Include="Data\WebSourceService.cs" />
+    <Page Include="Controls\BoardNavigatorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventBoard.xaml">
+    <Page Include="Controls\EventBoard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventControl.xaml">
+    <Page Include="Controls\EventControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventDetailsControl.xaml">
+    <Page Include="Controls\EventDetailsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

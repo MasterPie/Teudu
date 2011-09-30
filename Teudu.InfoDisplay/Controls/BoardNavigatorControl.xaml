@@ -17,19 +17,19 @@
         <teudu:EventBoard x:Name="CurrentBoard"
                         Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                         Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0"/>
-        <teudu:EventBoard x:Name="NextBoard"
+            <teudu:EventBoard x:Name="NextBoard"
                         Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                         Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0"/>
-        <StackPanel.RenderTransform>
-            <TransformGroup>
-                <TranslateTransform X="{Binding Path=DominantArmHandOffsetX, 
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <!--<TranslateTransform X="-420" Y="0"></TranslateTransform>-->
+                    <TranslateTransform X="{Binding Path=DominantArmHandOffsetX,
                                         Converter={StaticResource offsetConverter},
                                         ConverterParameter=-1920}" 
                                     Y="{Binding Path=DominantArmHandOffsetY}"
                                     Changed="TranslateTransform_Changed"></TranslateTransform>
-                <TranslateTransform x:Name="EventBoardTranslateTransform" X="0" Y="0"></TranslateTransform>
-            </TransformGroup>
-        </StackPanel.RenderTransform>
-    </StackPanel>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+        </StackPanel>
     </Canvas>
 </UserControl>
