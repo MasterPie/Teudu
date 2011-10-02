@@ -8,28 +8,76 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <teudu:OffsetNavigatorConverter x:Key="offsetConverter"/>
+        <Storyboard x:Key="AdvanceAnimation" x:Name="AdvanceAnimation">
+            <DoubleAnimationUsingKeyFrames
+                Storyboard.TargetName="PanPosition"
+                Storyboard.TargetProperty="X" IsAdditive="True"
+                Duration="0:0:1" FillBehavior="Stop" Completed="AdvanceAnimation_Completed">
+                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="-3840" KeySpline="0.25,0.5,0.75,1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                Storyboard.TargetName="PanPosition"
+                Storyboard.TargetProperty="Y" IsAdditive="True"
+                Duration="0:0:1" FillBehavior="Stop">
+                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="0" KeySpline="0.25,0.5,0.75,1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe WP"></Setter>
+            <Setter Property="FontSize" Value="32"></Setter>
+            <Setter Property="Foreground" Value="#FFF3F0e9"></Setter>
+        </Style>
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+               TargetType="TextBlock"
+               x:Key="BoardTitleText">
+            <Setter Property="Typography.Capitals" Value="Titling"></Setter>
+            <Setter Property="FontFamily" Value="Segoe WP Bold"></Setter>
+            <Setter Property="FontSize" Value="150"></Setter>
+            <Setter Property="Margin" Value="0,0,100,0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
+        </Style>
+        <Style BasedOn="{StaticResource BoardTitleText}"
+               TargetType="TextBlock"
+               x:Key="BoardTitleTextInactive">
+            <Setter Property="Opacity" Value="0.3"></Setter>
+        </Style>
     </UserControl.Resources>
     <Canvas>
-    <StackPanel Orientation="Horizontal" x:Name="BoardContainer">
-        <teudu:EventBoard x:Name="PreviousBoard" 
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical" Background="#FF100C44" Panel.ZIndex="80">
+                <teudu:BoardsStatisticsControl x:Name="BoardStats" Width="1920" Height="50" Margin="25,0,0,0" />
+                <Grid Width="1920" Height="150" Background="#FF100C44" Margin="25,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*" />
+                        <ColumnDefinition Width="50*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="BoardTitle" Text="Current" Style="{StaticResource BoardTitleText}" Grid.Column="0"/>
+                    <TextBlock x:Name="BoardNextTitle" Text="Next" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="1"/>
+                </Grid>
+            </StackPanel>
+            <Canvas>
+                <StackPanel Orientation="Horizontal" x:Name="BoardContainer" Panel.ZIndex="60">
+                    <teudu:EventBoard x:Name="PreviousBoard" 
+                            Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                            Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0,0,0" />
+                    <teudu:EventBoard x:Name="CurrentBoard"
+                            Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                            Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,0,0"/>
+                    <teudu:EventBoard x:Name="NextBoard"
                         Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                        Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0" />
-        <teudu:EventBoard x:Name="CurrentBoard"
-                        Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                        Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0"/>
-            <teudu:EventBoard x:Name="NextBoard"
-                        Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                        Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0"/>
-            <StackPanel.RenderTransform>
-                <TransformGroup>
-                    <!--<TranslateTransform X="-420" Y="0"></TranslateTransform>-->
-                    <TranslateTransform X="{Binding Path=DominantArmHandOffsetX,
+                        Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,25,0"/>
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform x:Name="PanPosition" X="{Binding Path=DominantArmHandOffsetX,
                                         Converter={StaticResource offsetConverter},
                                         ConverterParameter=-1920}" 
                                     Y="{Binding Path=DominantArmHandOffsetY}"
                                     Changed="TranslateTransform_Changed"></TranslateTransform>
-                </TransformGroup>
-            </StackPanel.RenderTransform>
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                </StackPanel>
+            </Canvas>
         </StackPanel>
     </Canvas>
 </UserControl>

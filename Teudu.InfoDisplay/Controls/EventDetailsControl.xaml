@@ -4,22 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="63" d:DesignWidth="458">
+             d:DesignHeight="109" d:DesignWidth="332">
     <UserControl.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Georgia"></Setter>
-            <Setter Property="FontSize" Value="20"></Setter>
-            <Setter Property="Foreground" Value="Black"></Setter>
-        </Style>
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-               TargetType="TextBlock"
-               x:Key="DescriptionText">
-            <Setter Property="FontSize" Value="16"></Setter>
-        </Style>
+        
     </UserControl.Resources>
 
-    <StackPanel Height="60" Width="600">
+    <StackPanel>
         <TextBlock x:Name="EventTitle" Text="This is an event title"/>
-        <TextBlock x:Name="EventDescription" Text="This is an event description" Style="{StaticResource DescriptionText}"/>
+        <TextBlock x:Name="EventDate" Text="This is an event date"/>
+        <TextBlock x:Name="EventDescription" Text="This is an event description" Margin="0,10,0,0" />
     </StackPanel>
 </UserControl>

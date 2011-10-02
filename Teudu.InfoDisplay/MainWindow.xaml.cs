@@ -86,19 +86,19 @@ namespace Teudu.InfoDisplay
         //    ((ViewModel)this.DataContext).ChangeBoard(e.Right);
         //}
 
-        void current_HoveredEventChanged(object sender, HoveredEventArgs e)
-        {
-            if (e.CurrentEvent != null)
-            {
-                this.EventDetails.EventTitle.Text = e.CurrentEvent.Name;
-                this.EventDetails.EventDescription.Text = e.CurrentEvent.Description;
-            }
-            else
-            {
-                this.EventDetails.EventTitle.Text = "";
-                this.EventDetails.EventDescription.Text = "";
-            }
-        }
+        //void current_HoveredEventChanged(object sender, HoveredEventArgs e)
+        //{
+        //    if (e.CurrentEvent != null)
+        //    {
+        //        this.EventDetails.EventTitle.Text = e.CurrentEvent.Name;
+        //        this.EventDetails.EventDescription.Text = e.CurrentEvent.Description;
+        //    }
+        //    else
+        //    {
+        //        this.EventDetails.EventTitle.Text = "";
+        //        this.EventDetails.EventDescription.Text = "";
+        //    }
+        //}
 
         //void MainWindow_PanRequest(object sender, PanEventArgs e)
         //{
