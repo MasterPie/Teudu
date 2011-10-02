@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Configuration;
 using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace Teudu.InfoDisplay
 {
@@ -23,17 +24,25 @@ namespace Teudu.InfoDisplay
     {
         private Event eventModel;
         private string imageDirectory;
+        private DispatcherTimer centerCheckTimer;
 
         public EventControl()
         {
             InitializeComponent();
             imageDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\" + ConfigurationManager.AppSettings["CachedImageDirectory"]  + @"\";
-            //this.LayoutUpdated += new EventHandler(EventControl_LayoutUpdated);
+
+            centerCheckTimer = new DispatcherTimer();
+            centerCheckTimer.Interval = TimeSpan.FromMilliseconds(500);
+            centerCheckTimer.Tick += new EventHandler(animateLiveTimer_Tick);
+            centerCheckTimer.Start();
         }
 
-        void EventControl_LayoutUpdated(object sender, EventArgs e)
+        void animateLiveTimer_Tick(object sender, EventArgs e)
         {
-            this.Dispatcher.BeginInvoke(new Action(this.VisibleLocation_work), System.Windows.Threading.DispatcherPriority.Loaded);
+            VisibleLocation_work();
+
+            TranslateTransform shiftLeft = new TranslateTransform(-this.ActualWidth, 0);
+            Details.RenderTransform = shiftLeft;
         }
 
         public Event Event
@@ -69,14 +78,23 @@ namespace Teudu.InfoDisplay
 
         public void VisibleLocation_work()
         {
+            if (!this.IsVisible)
+                return;
+
             double centerX = App.Current.MainWindow.ActualWidth / 2;
             double centerY = App.Current.MainWindow.ActualHeight / 2;
 
             Point topCorner = this.PointToScreen(new Point(0, 0));
-            double elementCenterX = topCorner.X + (double)this.GetValue(ActualWidthProperty) / 2;
-            double elementCenterY = topCorner.Y + (double)this.GetValue(ActualHeightProperty) / 2;
+            double elementCenterX = topCorner.X + this.ActualWidth / 2;
+            double elementCenterY = topCorner.Y + this.ActualHeight / 2;
 
             loc = new Point(elementCenterX, elementCenterY);
+
+            if (Math.Abs(centerX - elementCenterX) <= this.Width / 2 || Math.Abs(centerY - elementCenterY) <= this.ActualHeight / 2)
+                IsSelected = true;
+            else
+                IsSelected = false;
+
             this.OnPropertyChanged("VisibleLocation");
         }
 
@@ -85,9 +103,15 @@ namespace Teudu.InfoDisplay
             set
             {
                 if (value)
+                {
+                    Details.Visibility = System.Windows.Visibility.Visible;
                     outerBorder.BorderThickness = new Thickness(5);
+                }
                 else
+                {
+                    //Details.Visibility = System.Windows.Visibility.Hidden;
                     outerBorder.BorderThickness = new Thickness(0);
+                }
             }
         }
 

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="220">
     <UserControl.Resources>
@@ -43,5 +44,9 @@
                 <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
             </StackPanel>
         </Border>
+        <teudu:EventDetailsControl x:Name="Details"  Visibility="Hidden"
+                                   Panel.ZIndex="99"
+                                   Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                   Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" DataContext="{Binding}" Margin="0,0,25,0" />
     </Grid>
 </UserControl>

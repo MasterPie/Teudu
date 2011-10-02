@@ -35,11 +35,13 @@ namespace Teudu.InfoDisplay
             {
                 board = value;
                 this.Board.Children.Clear();
+                if (value == null)
+                    return;
                 BoardModel.Events.Take<Event>(15).ToList().ForEach(x => this.Board.Children.Add(new EventControl()
                 {
                     Event = x,
                     Width = 170,
-                    Margin = new Thickness(10)
+                    Margin = new Thickness(0,0,20,20)
                 }));
                 //TrackCenterEvent();
                 //SnapToNearestEvent();

@@ -80,20 +80,34 @@ namespace Teudu.InfoDisplay
 
         private void Advance()
         {
-            if (!boardMaster.AdvanceCurrent())
-                return; 
-            //animation => refresh prev, next boards
-            Current = next;
-            //jump to current board
-            JumpToCenter();
-            Previous = current;
-            Next = boardMaster.Next;
-            
+            if (boardMaster == null || !boardMaster.AdvanceCurrent())
+                return;
+
+            BindingOperations.ClearAllBindings(PanPosition);
+            PanPosition.Changed -= new EventHandler(TranslateTransform_Changed);
+            ((System.Windows.Media.Animation.Storyboard)this.Resources["AdvanceAnimation"]).Begin();           
+        }
+
+        private void SetTranslateBindings()
+        {
+            OffsetNavigatorConverter con = (OffsetNavigatorConverter)App.Current.Resources["offsetConverter"];
+            Binding bindingX = new Binding
+            {
+                Path = new PropertyPath("DominantArmHandOffsetX"),
+                Converter = con,
+                ConverterParameter = -1920
+            };
+            Binding bindingY = new Binding
+            {
+                Path = new PropertyPath("DominantArmHandOffsetY")
+            };
+            BindingOperations.SetBinding(PanPosition, TranslateTransform.XProperty, bindingX);
+            BindingOperations.SetBinding(PanPosition, TranslateTransform.YProperty, bindingY);
         }
 
         private void Regress()
         {
-            if (!boardMaster.RegressCurrent())
+            if (boardMaster == null || !boardMaster.RegressCurrent())
                 return;
             //animation, completed => refresh prev, next boards
             Current = prev;
@@ -126,7 +140,8 @@ namespace Teudu.InfoDisplay
 
         private bool GoNext()
         {
-            return (BoardMidLocation().X + this.ActualWidth) < 0; ///TODO: change to be based on event width
+            //System.Diagnostics.Trace.WriteLine("mid loc: " + BoardMidLocation().X);
+            return (BoardMidLocation().X) < 0; ///TODO: change to be based on event width
         }
 
         private Point BoardMidCoords()
@@ -146,10 +161,21 @@ namespace Teudu.InfoDisplay
         {
             //System.Diagnostics.Trace.WriteLine("mid of board :" + BoardMidLocation().X);
 
-            //if (GoNext())
-            //    Advance();
-            //else if (GoPrevious())
-            //    Regress();
+            if (GoNext())
+                Advance();
+            else if (GoPrevious())
+                Regress();
+        }
+
+        private void AdvanceAnimation_Completed(object sender, EventArgs e)
+        {
+            Previous = current;
+            Current = next;
+            ////jump to current board
+            JumpToCenter();
+            Next = boardMaster.Next;
+            SetTranslateBindings();
+            PanPosition.Changed += new EventHandler(TranslateTransform_Changed);
         }
     }
 }

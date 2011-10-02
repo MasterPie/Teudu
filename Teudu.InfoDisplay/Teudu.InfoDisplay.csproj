@@ -82,6 +82,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\BoardsStatisticsControl.xaml.cs">
+      <DependentUpon>BoardsStatisticsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Debug\BindableTraceListener.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Eventing\BoardEventArgs.cs" />
@@ -121,6 +124,10 @@
     <Compile Include="ViewModelLoader.cs" />
     <Compile Include="Data\WebSourceService.cs" />
     <Page Include="Controls\BoardNavigatorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BoardsStatisticsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
