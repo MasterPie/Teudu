@@ -31,12 +31,17 @@ namespace Teudu.InfoDisplay
                 runtime.SkeletonEngine.TransformSmooth = true;
                 runtime.SkeletonEngine.SmoothParameters = new TransformSmoothParameters()
                 {
-                    Smoothing = .75f,
+                    Smoothing = 0.75f,
+                    Correction = 0.0f,
+                    Prediction = 0.0f,
                     JitterRadius = 0.05f,
-                    MaxDeviationRadius = 0.04f
+                    MaxDeviationRadius = 0.4f
                 };
                 Trace.WriteLine("Kinect initialized");
                 
+                /*Smoothing = .75f,
+                    JitterRadius = 0.05f,
+                    MaxDeviationRadius = 0.04f*/
             }
             catch (Exception)
             {

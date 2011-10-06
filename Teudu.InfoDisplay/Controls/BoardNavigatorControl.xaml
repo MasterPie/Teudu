@@ -13,14 +13,14 @@
                 Storyboard.TargetName="PanPosition"
                 Storyboard.TargetProperty="X" IsAdditive="True"
                 Duration="0:0:1" FillBehavior="Stop" Completed="AdvanceAnimation_Completed">
-                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="-2730"/>
                 <SplineDoubleKeyFrame KeyTime="0:0:1" Value="-3840" KeySpline="0.25,0.5,0.75,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="PanPosition"
                 Storyboard.TargetProperty="Y" IsAdditive="True"
-                Duration="0:0:1" FillBehavior="Stop">
-                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="0" KeySpline="0.25,0.5,0.75,1"/>
+                Duration="0:0:2" FillBehavior="Stop">
+                <SplineDoubleKeyFrame KeyTime="0:0:2" Value="0" KeySpline="0.25,0.5,0.75,1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Style TargetType="TextBlock">

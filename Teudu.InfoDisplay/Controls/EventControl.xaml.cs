@@ -25,23 +25,38 @@ namespace Teudu.InfoDisplay
         private Event eventModel;
         private string imageDirectory;
         private DispatcherTimer centerCheckTimer;
+        private DispatcherTimer showEventTimer;
 
         public EventControl()
         {
             InitializeComponent();
+            
+
             imageDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\" + ConfigurationManager.AppSettings["CachedImageDirectory"]  + @"\";
 
             centerCheckTimer = new DispatcherTimer();
             centerCheckTimer.Interval = TimeSpan.FromMilliseconds(500);
             centerCheckTimer.Tick += new EventHandler(animateLiveTimer_Tick);
             centerCheckTimer.Start();
+
+            showEventTimer = new DispatcherTimer();
+            showEventTimer.Interval = TimeSpan.FromMilliseconds(new Random().Next(500));
+            showEventTimer.Tick += new EventHandler(showEventTimer_Tick);
+
+            Details.Width = App.Current.MainWindow.ActualWidth / 4;
+        }
+
+        void showEventTimer_Tick(object sender, EventArgs e)
+        {
+            ((System.Windows.Media.Animation.Storyboard)this.Resources["AppearAnimation"]).Begin();
+            showEventTimer.Stop();
         }
 
         void animateLiveTimer_Tick(object sender, EventArgs e)
         {
             VisibleLocation_work();
-
-            TranslateTransform shiftLeft = new TranslateTransform(-this.ActualWidth, 0);
+            
+            TranslateTransform shiftLeft = new TranslateTransform(-Details.ActualWidth, 0);
             Details.RenderTransform = shiftLeft;
         }
 
@@ -49,12 +64,13 @@ namespace Teudu.InfoDisplay
         {
             get { return this.eventModel; }
             set 
-            { 
+            {
+                this.EventContainer.Opacity = 0;
                 this.eventModel = value;
                 this.title.Text = eventModel.Name;
                 this.date.Text = eventModel.Time.ToShortTimeString();
                 //this.image.Source = eventModel.Image;
-                this.description.Text = eventModel.Description;
+                //this.description.Text = eventModel.Description;
 
                 BitmapImage src = new BitmapImage();
                 src.BeginInit();
@@ -63,6 +79,10 @@ namespace Teudu.InfoDisplay
                 src.CacheOption = BitmapCacheOption.OnLoad;
                 src.EndInit();
                 this.image.Source = src;
+
+                this.Details.Event = value;
+
+                showEventTimer.Start();
             }
         }
 
@@ -72,7 +92,7 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return "(" + Math.Round(loc.X, 1) + ", " + Math.Round(loc.Y,1) + ")";               
+                return "(" + Math.Round(loc.X, 1) + ", " + Math.Round(loc.Y,1) + " : " + this.ActualHeight + ")";               
             }
         }
 
@@ -82,7 +102,7 @@ namespace Teudu.InfoDisplay
                 return;
 
             double centerX = App.Current.MainWindow.ActualWidth / 2;
-            double centerY = App.Current.MainWindow.ActualHeight / 2;
+            double centerY = 540;// App.Current.MainWindow.ActualHeight / 2;
 
             Point topCorner = this.PointToScreen(new Point(0, 0));
             double elementCenterX = topCorner.X + this.ActualWidth / 2;
@@ -90,7 +110,7 @@ namespace Teudu.InfoDisplay
 
             loc = new Point(elementCenterX, elementCenterY);
 
-            if (Math.Abs(centerX - elementCenterX) <= this.Width / 2 || Math.Abs(centerY - elementCenterY) <= this.ActualHeight / 2)
+            if (Math.Abs(centerX - elementCenterX) <= (this.ActualWidth / 2) && Math.Abs(centerY - elementCenterY) <= (this.ActualHeight / 2))
                 IsSelected = true;
             else
                 IsSelected = false;
@@ -104,12 +124,14 @@ namespace Teudu.InfoDisplay
             {
                 if (value)
                 {
+                    Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Visible;
+                    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
                     outerBorder.BorderThickness = new Thickness(5);
                 }
                 else
                 {
-                    //Details.Visibility = System.Windows.Visibility.Hidden;
+                    Details.Visibility = System.Windows.Visibility.Hidden;
                     outerBorder.BorderThickness = new Thickness(0);
                 }
             }
@@ -124,5 +146,10 @@ namespace Teudu.InfoDisplay
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void AppearAnimation_Completed(object sender, EventArgs e)
+        {
+            this.EventContainer.Opacity = 100;
+        }
     }
 }

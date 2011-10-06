@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 
 namespace Teudu.InfoDisplay
 {
@@ -85,7 +86,8 @@ namespace Teudu.InfoDisplay
 
             BindingOperations.ClearAllBindings(PanPosition);
             PanPosition.Changed -= new EventHandler(TranslateTransform_Changed);
-            ((System.Windows.Media.Animation.Storyboard)this.Resources["AdvanceAnimation"]).Begin();           
+            ((System.Windows.Media.Animation.Storyboard)this.Resources["AdvanceAnimation"]).Begin();     
+            //DoubleAnimation anim1 = new DoubleAnimation(-1920,-
         }
 
         private void SetTranslateBindings()
@@ -160,7 +162,6 @@ namespace Teudu.InfoDisplay
         private void TranslateTransform_Changed(object sender, EventArgs e)
         {
             //System.Diagnostics.Trace.WriteLine("mid of board :" + BoardMidLocation().X);
-
             if (GoNext())
                 Advance();
             else if (GoPrevious())
