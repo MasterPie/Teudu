@@ -7,8 +7,8 @@
              d:DesignHeight="21" d:DesignWidth="559">
     <Grid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <TextBlock x:Name="TodaysDate" Text="Wednesday, September 28, 2011."/>
-            <TextBlock x:Name="Stats" Text="20 Events over 30 days in 12 locations." Margin="25,0,0,0" />
+            <TextBlock x:Name="TodaysDate" Text="Wednesday, September 28, 2011." FontSize="32"/>
+            <TextBlock x:Name="Stats" Text="20 Events over 30 days in 12 locations." Margin="25,0,0,0" FontSize="32" />
         </StackPanel>
     </Grid>
 </UserControl>

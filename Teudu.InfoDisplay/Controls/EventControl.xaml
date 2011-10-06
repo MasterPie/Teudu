@@ -7,8 +7,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="220">
     <UserControl.Resources>
+        <Storyboard x:Key="DetailsAppearAnimation" x:Name="DetailsAppearAnimation">
+            <DoubleAnimationUsingKeyFrames
+                Storyboard.TargetName="Details"
+                Storyboard.TargetProperty="Opacity" IsAdditive="True"
+                Duration="0:0:30" FillBehavior="Stop">
+                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:30" Value="100" KeySpline="0.25,0.5,0.75,1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AppearAnimation" x:Name="AppearAnimation">
+            <DoubleAnimationUsingKeyFrames
+                Storyboard.TargetName="EventContainer"
+                Storyboard.TargetProperty="Opacity" IsAdditive="True"
+                Duration="0:0:15" FillBehavior="Stop" Completed="AppearAnimation_Completed">
+                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:15" Value="100" KeySpline="0.25,0.5,0.75,1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <!--<UserControl.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Georgia"></Setter>
+            <Setter Property="FontFamily" Value="Segoe WP"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
             <Setter Property="Foreground" Value="#FFf3f0e9"></Setter>
         </Style>
@@ -17,7 +37,7 @@
                x:Key="DescriptionText">
             <Setter Property="FontSize" Value="8"></Setter>
         </Style>
-    </UserControl.Resources>
+    </UserControl.Resources>-->
     <Grid>
         <!--<Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
         <DockPanel Panel.ZIndex="11" LastChildFill="False">
@@ -30,23 +50,26 @@
             </StackPanel>
         </DockPanel>-->
         <Border x:Name="outerBorder" BorderBrush="#990000">
-            <StackPanel>
+            <StackPanel x:Name="EventContainer">
                 <DockPanel Panel.ZIndex="11" LastChildFill="False">
                     <StackPanel DockPanel.Dock="Bottom">
                         <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=VisibleLocation}"/>-->
                         <TextBlock x:Name="date" Text="Today, 6PM" Visibility="Collapsed"></TextBlock>
                         <TextBlock x:Name="title" Text="Title" Visibility="Collapsed"></TextBlock>
                         <StackPanel x:Name="extendedDetails" Visibility="Collapsed">
-                            <TextBlock x:Name="description" Text="Description" Height="30" Style="{StaticResource DescriptionText}"></TextBlock>
+                            <!--<TextBlock x:Name="description" Text="Description" Height="30" Style="{StaticResource DescriptionText}"></TextBlock>-->
                         </StackPanel>
                     </StackPanel>
                 </DockPanel>
                 <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
             </StackPanel>
         </Border>
-        <teudu:EventDetailsControl x:Name="Details"  Visibility="Hidden"
+        <Canvas>
+            <teudu:EventDetailsControl x:Name="Details"  Visibility="Hidden" 
                                    Panel.ZIndex="99"
-                                   Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                                   Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" DataContext="{Binding}" Margin="0,0,25,0" />
-    </Grid>
+                                   
+                                   Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,25,0" />
+
+        </Canvas>
+            </Grid>
 </UserControl>

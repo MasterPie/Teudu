@@ -6,8 +6,8 @@
         DataContext="{Binding ViewModel, Source={StaticResource loader}}" WindowStyle="None" WindowState="Maximized" Cursor="None" ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Georgia"></Setter>
-            <Setter Property="FontSize" Value="40"></Setter>
+            <Setter Property="FontFamily" Value="Segoe WP"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
             <Setter Property="Foreground" Value="#FFF3F0e9"></Setter>
         </Style>
         <Style BasedOn="{StaticResource {x:Type TextBlock}}"
