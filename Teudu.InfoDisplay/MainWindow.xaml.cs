@@ -139,6 +139,11 @@ namespace Teudu.InfoDisplay
                 double centerY = this.ActualHeight / 2;
                 return "(" + centerX + ", " + centerY + ")";
             }
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            System.Diagnostics.Trace.WriteLine("key is being pressed");
         }        
     }
 }

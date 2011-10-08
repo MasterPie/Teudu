@@ -23,6 +23,14 @@ namespace Teudu.InfoDisplay
         public BoardNavigatorControl()
         {
             InitializeComponent();
+            this.Loaded += new RoutedEventHandler(BoardNavigatorControl_Loaded);
+        }
+
+        void BoardNavigatorControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Width = this.ActualWidth;
+            CurrentBoard.Width = App.Current.MainWindow.ActualWidth;
+            CurrentBoard.MaxWidth = App.Current.MainWindow.ActualWidth;
         }
 
         private IBoardService boardMaster;
@@ -177,6 +185,37 @@ namespace Teudu.InfoDisplay
             Next = boardMaster.Next;
             SetTranslateBindings();
             PanPosition.Changed += new EventHandler(TranslateTransform_Changed);
+        }
+
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            double d = Canvas.GetLeft(BoardContainer);
+            if (e.Key == Key.Left)
+            {
+                System.Diagnostics.Trace.WriteLine("left!");
+                Canvas.SetLeft(BoardContainer, d - 5);
+                //window1.Left -= d;
+            }
+            if (e.Key == Key.Right)
+            {
+                Canvas.SetLeft(BoardContainer, d + 5);
+                //window1.Left += d;
+            }
+            if (e.Key == Key.Up)
+            {
+                //window1.Top -= d;
+            }
+            if (e.Key == Key.Down)
+            {
+                //window1.Top += d;
+            }
+
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Focus();
+            
         }
     }
 }

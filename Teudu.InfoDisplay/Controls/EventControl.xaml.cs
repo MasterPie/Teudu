@@ -101,10 +101,10 @@ namespace Teudu.InfoDisplay
             if (!this.IsVisible)
                 return;
 
-            double centerX = App.Current.MainWindow.ActualWidth / 2;
-            double centerY = 540;// App.Current.MainWindow.ActualHeight / 2;
+            double centerX =  App.Current.MainWindow.ActualWidth / 2;
+            double centerY = App.Current.MainWindow.ActualHeight / 2;
 
-            Point topCorner = this.PointToScreen(new Point(0, 0));
+            Point topCorner = this.TranslatePoint(new Point(0, 0), App.Current.MainWindow);
             double elementCenterX = topCorner.X + this.ActualWidth / 2;
             double elementCenterY = topCorner.Y + this.ActualHeight / 2;
 

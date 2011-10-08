@@ -86,6 +86,7 @@
       <DependentUpon>BoardsStatisticsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Debug\BindableTraceListener.cs" />
+    <Compile Include="Debug\SimulatedKinectService.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Eventing\BoardEventArgs.cs" />
     <Compile Include="Controls\BoardNavigatorControl.xaml.cs">

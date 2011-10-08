@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="220">
+             d:DesignHeight="300" d:DesignWidth="220" Focusable="True">
     <UserControl.Resources>
         <Storyboard x:Key="DetailsAppearAnimation" x:Name="DetailsAppearAnimation">
             <DoubleAnimationUsingKeyFrames
@@ -53,7 +53,7 @@
             <StackPanel x:Name="EventContainer">
                 <DockPanel Panel.ZIndex="11" LastChildFill="False">
                     <StackPanel DockPanel.Dock="Bottom">
-                        <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=VisibleLocation}"/>-->
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=VisibleLocation}"/>
                         <TextBlock x:Name="date" Text="Today, 6PM" Visibility="Collapsed"></TextBlock>
                         <TextBlock x:Name="title" Text="Title" Visibility="Collapsed"></TextBlock>
                         <StackPanel x:Name="extendedDetails" Visibility="Collapsed">

@@ -16,7 +16,8 @@ namespace Teudu.InfoDisplay
         
         public ViewModelLoader() 
         { 
-            kinectService = new UserKinectService();
+            //kinectService = new UserKinectService();
+            kinectService = new Debug.SimulatedKinectService();
             //sourceService = new Test.FileSourceService("eventstest.xml");
             sourceService = new WebSourceService();
             boardService = new MomentaryBoardService();
