@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" PreviewKeyDown="UserControl_KeyDown" Loaded="UserControl_Loaded"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <teudu:OffsetNavigatorConverter x:Key="offsetConverter"/>
@@ -46,8 +46,8 @@
     <Canvas>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Vertical" Background="#FF100C44" Panel.ZIndex="80">
-                <teudu:BoardsStatisticsControl x:Name="BoardStats" Width="1920" Height="50" Margin="25,0,0,0" />
-                <Grid Width="1920" Height="150" Background="#FF100C44" Margin="25,10,0,0">
+                <teudu:BoardsStatisticsControl x:Name="BoardStats" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Height="50" Margin="25,0,0,0" />
+                <Grid Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Height="150" Background="#FF100C44" Margin="25,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*" />
                         <ColumnDefinition Width="50*" />
@@ -60,18 +60,21 @@
                 <StackPanel Orientation="Horizontal" x:Name="BoardContainer" Panel.ZIndex="60">
                     <teudu:EventBoard x:Name="PreviousBoard" 
                             Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                      MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                             Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0,0,0" />
                     <teudu:EventBoard x:Name="CurrentBoard"
                             Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                      MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                             Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,0,0"/>
                     <teudu:EventBoard x:Name="NextBoard"
                         Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                      MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                         Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,25,0"/>
                     <StackPanel.RenderTransform>
                         <TransformGroup>
                             <TranslateTransform x:Name="PanPosition" X="{Binding Path=DominantArmHandOffsetX,
                                         Converter={StaticResource offsetConverter},
-                                        ConverterParameter=-1920}" 
+                                        ConverterParameter=-1536}" 
                                     Y="{Binding Path=DominantArmHandOffsetY}"
                                     Changed="TranslateTransform_Changed"></TranslateTransform>
                         </TransformGroup>

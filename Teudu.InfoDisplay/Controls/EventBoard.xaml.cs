@@ -40,11 +40,12 @@ namespace Teudu.InfoDisplay
                 BoardModel.Events.Take<Event>(15).ToList().ForEach(x => this.Board.Children.Add(new EventControl()
                 {
                     Event = x,
-                    Width = 170,
+                    Width = 230,
                     Margin = new Thickness(0,0,20,20)
                 }));
                 //TrackCenterEvent();
                 //SnapToNearestEvent();
+                this.Board.MaxWidth = this.ActualWidth - 40;
             }
         }
 
