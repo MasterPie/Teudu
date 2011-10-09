@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Data;
+using System.Diagnostics;
 
 namespace Teudu.InfoDisplay
 {
@@ -14,6 +15,7 @@ namespace Teudu.InfoDisplay
         {
             double offset = (double)value;
             double actualPosition = Double.Parse((string)parameter);
+            Trace.WriteLine("given " + actualPosition + " now " + offset + actualPosition);
             return offset + actualPosition;
         }
 
