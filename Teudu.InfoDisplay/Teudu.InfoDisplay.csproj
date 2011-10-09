@@ -82,6 +82,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\BoardPagedControl.xaml.cs">
+      <DependentUpon>BoardPagedControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BoardsStatisticsControl.xaml.cs">
       <DependentUpon>BoardsStatisticsControl.xaml</DependentUpon>
     </Compile>
@@ -125,6 +128,10 @@
     <Compile Include="ViewModelLoader.cs" />
     <Compile Include="Data\WebSourceService.cs" />
     <Page Include="Controls\BoardNavigatorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BoardPagedControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

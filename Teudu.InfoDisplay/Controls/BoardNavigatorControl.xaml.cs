@@ -13,13 +13,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace Teudu.InfoDisplay
 {
     /// <summary>
     /// Interaction logic for BoardNavigatorControl.xaml
     /// </summary>
-    public partial class BoardNavigatorControl : UserControl
+    public partial class BoardNavigatorControl : UserControl, INotifyPropertyChanged
     {
         const double boardInbetween = 150;
         DispatcherTimer trackingResetTimer;
@@ -70,10 +71,15 @@ namespace Teudu.InfoDisplay
         private Board prev, current, next;
         public Board Previous
         {
+            get
+            {
+                return prev;
+            }
             set
             {
                 prev = value;
                 this.Dispatcher.BeginInvoke(new Action(this.LoadPreviousBoard), System.Windows.Threading.DispatcherPriority.Loaded);
+                this.OnPropertyChanged("Previous");
             }
         }
 
@@ -85,19 +91,26 @@ namespace Teudu.InfoDisplay
 
         public Board Current
         {
+            get
+            {
+                return current;
+            }
             set
             {
                 current = value;
                 CurrentBoard.BoardModel = current;
+                this.OnPropertyChanged("Current");
             }
         }
 
         public Board Next
         {
+            get { return next; }
             set
             {
                 next = value;
                 this.Dispatcher.BeginInvoke(new Action(this.LoadNextBoard), System.Windows.Threading.DispatcherPriority.Loaded);
+                this.OnPropertyChanged("Next");
             }
         }
 
@@ -113,9 +126,17 @@ namespace Teudu.InfoDisplay
                 return;
 
             BindingOperations.ClearAllBindings(PanPosition);
+            BindingOperations.ClearAllBindings(TitlePosition);
             PanPosition.Changed -= new EventHandler(TranslateTransform_Changed);
-            ((System.Windows.Media.Animation.Storyboard)this.Resources["AdvanceAnimation"]).Begin();     
+            //load next
+            
+            this.Dispatcher.BeginInvoke(new Action(AdvanceAnimation), System.Windows.Threading.DispatcherPriority.Loaded);
             //DoubleAnimation anim1 = new DoubleAnimation(-1920,-
+        }
+
+        private void AdvanceAnimation()
+        {
+            ((System.Windows.Media.Animation.Storyboard)this.Resources["AdvanceAnimation"]).Begin();
         }
 
         private void SetTranslateBindings()
@@ -125,7 +146,7 @@ namespace Teudu.InfoDisplay
             {
                 Path = new PropertyPath("DominantArmHandOffsetX"),
                 Converter = con,
-                ConverterParameter = -1920
+                ConverterParameter = -1386
             };
             Binding bindingY = new Binding
             {
@@ -133,6 +154,7 @@ namespace Teudu.InfoDisplay
             };
             BindingOperations.SetBinding(PanPosition, TranslateTransform.XProperty, bindingX);
             BindingOperations.SetBinding(PanPosition, TranslateTransform.YProperty, bindingY);
+            BindingOperations.SetBinding(TitlePosition, TranslateTransform.XProperty, bindingX);
         }
 
         private void Regress()
@@ -198,13 +220,13 @@ namespace Teudu.InfoDisplay
         private void AdvanceAnimation_Completed(object sender, EventArgs e)
         {
             Canvas.SetLeft(BoardContainer, -(this.ActualWidth - boardInbetween) *2);
+            Canvas.SetLeft(TitleContainer, -(this.ActualWidth - boardInbetween) * 2);
             ((System.Windows.Media.Animation.Storyboard)this.Resources["AdvanceAnimation"]).Stop();     
             return;
             Previous = current;
-            Current = next;
+            Next = boardMaster.Next;
             ////jump to current board
             JumpToCenter();
-            Next = boardMaster.Next;
             trackingResetTimer.Start();           
         }
 
@@ -238,5 +260,15 @@ namespace Teudu.InfoDisplay
             this.Focus();
             
         }
+
+        void OnPropertyChanged(string property)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

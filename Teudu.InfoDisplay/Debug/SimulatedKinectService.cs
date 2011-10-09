@@ -18,7 +18,7 @@ namespace Teudu.InfoDisplay.Debug
 
         void movementTimer_Tick(object sender, EventArgs e)
         {
-            //SlowMoveRight();
+            SlowMoveRight();
         }
 
         public bool IsIdle
@@ -31,16 +31,19 @@ namespace Teudu.InfoDisplay.Debug
         {
             
             //.ScaleTo(1920, 1080, 0.4f, 0.4f,true)
+            //if (x < 1f)
+            //{
+                x += 1f;
+                y += 1f;
 
-            x += 1f;
-            y += 1f;
-
-            if (this.SkeletonUpdated != null) 
-            { 
-                this.SkeletonUpdated(this, new SkeletonEventArgs() { 
-                    RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector(){Z=1,X=x, Y=(float)Math.Sin(x)}
-                });
-            }
+                if (this.SkeletonUpdated != null)
+                {
+                    this.SkeletonUpdated(this, new SkeletonEventArgs()
+                    {
+                        RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 1, X = x, Y = (float)Math.Sin(x) }
+                    });
+                }
+            //}
                 
         }
 

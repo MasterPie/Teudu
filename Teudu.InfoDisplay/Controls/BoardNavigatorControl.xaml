@@ -47,11 +47,11 @@
             <StackPanel Orientation="Vertical" Background="#FF100C44" Panel.ZIndex="80">
                 <!--<teudu:BoardsStatisticsControl x:Name="BoardStats" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Height="50" Margin="25,0,0,0" />-->
                 <StackPanel Orientation="Horizontal" x:Name="TitleContainer" Panel.ZIndex="60">
-                    <TextBlock x:Name="BoardPrevTitle" Text="Previous" Style="{StaticResource BoardTitleText}" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                    <TextBlock x:Name="BoardPrevTitle" Text="{Binding Previous.Name,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource BoardTitleText}" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                       MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
-                    <TextBlock x:Name="BoardTitle" Text="Current" Style="{StaticResource BoardTitleText}" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                    <TextBlock x:Name="BoardTitle" Text="{Binding Current.Name,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource BoardTitleText}" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                       MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0,0,0"/>
-                    <TextBlock x:Name="BoardNextTitle" Text="Next" Style="{StaticResource BoardTitleText}" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                    <TextBlock x:Name="BoardNextTitle" Text="{Binding Next.Name,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource BoardTitleText}" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                       MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
                     <StackPanel.RenderTransform>
                         <TransformGroup>
