@@ -31,22 +31,7 @@
     </Window.Resources>
     <Grid>
         <StackPanel Background="#FF100C44" Panel.ZIndex="80">
-            <!--<TextBlock Text="Teudu" FontFamily="Segoe WP" FontSize="120" OverridesDefaultStyle="False" Margin="25,0,0,0" Foreground="#FF464646" Panel.ZIndex="80"/>-->
-            <!--<Grid Height="200" Panel.ZIndex="80">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="33*" />
-                    <ColumnDefinition Width="33*" />
-                    <ColumnDefinition Width="33*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock x:Name="BoardPrevTitle" Text="{Binding Path=PreviousBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="0"/>
-                <TextBlock x:Name="BoardTitle" Text="{Binding Path=CurrentBoard.Name}" Style="{StaticResource BoardTitleText}" Grid.Column="1"/>
-                <TextBlock x:Name="BoardNextTitle" Text="{Binding Path=NextBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>
-            </Grid>-->
             <teudu:BoardNavigatorControl x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10"/>
-            <!--<Canvas x:Name="BoardContainer" Height="630" MaxHeight="630" Panel.ZIndex="10"/>-->
-            <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=VisibleLocation}" Panel.ZIndex="80"/>-->
-            <!--<teudu:EventDetailsControl x:Name="EventDetails" Height="100" Background="#999933" Panel.ZIndex="80"/>-->
-            <!--<TextBlock Text="{Binding Path=CurrentBoard.Name}" Panel.ZIndex="5" Margin="50,-780,50,0" Style="{StaticResource BoardTitleTextMetro}"/>-->
         </StackPanel>
         <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
     </Grid>

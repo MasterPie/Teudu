@@ -36,10 +36,10 @@ namespace Teudu.InfoDisplay
         public Board Current
         {
             get {
-                if (currBoard >= 0 && currBoard < boards.Count)
-                    return boards[currBoard];
-                else 
-                    return null;
+                //if (currBoard >= 0 && currBoard < boards.Count)
+                    return boards[(currBoard)%boards.Count];
+                //else 
+                //    return null;
             }
         }
 
@@ -47,9 +47,9 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                if (currBoard >= (boards.Count - 1))
-                    return null;
-                return boards[currBoard + 1];
+                //if (currBoard >= (boards.Count - 1))
+                //    return null;
+                return boards[(currBoard + 1)%boards.Count];
             }
         }
 
@@ -58,19 +58,19 @@ namespace Teudu.InfoDisplay
             get
             {
                 if (currBoard <= 0)
-                    return null;
+                    return boards[boards.Count-1];
                 return boards[currBoard - 1];
             }
         }
 
         public bool AdvanceCurrent()
         {
-            if (currBoard < boards.Count - 1)
-            {
-                currBoard++;
+            //if (currBoard < boards.Count - 1)
+            //{
+                currBoard = (currBoard + 1) % boards.Count;
                 return true;
-            }
-            return false;
+            //}
+            //return false;
         }
 
         public bool RegressCurrent()
@@ -78,9 +78,12 @@ namespace Teudu.InfoDisplay
             if (currBoard > 0)
             {
                 currBoard--;
-                return true;
+                
             }
-            return false;
+            else
+                currBoard = boards.Count;
+            //return false;
+            return true;
         }
 
         private void Sift()

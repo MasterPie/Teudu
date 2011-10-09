@@ -11,10 +11,10 @@
         <Storyboard x:Key="AdvanceAnimation" x:Name="AdvanceAnimation">
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="PanPosition"
-                Storyboard.TargetProperty="X" IsAdditive="True"
-                Duration="0:0:1" FillBehavior="Stop" Completed="AdvanceAnimation_Completed">
-                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="-2730"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="-3840" KeySpline="0.25,0.5,0.75,1"/>
+                Storyboard.TargetProperty="X" IsAdditive="False"
+                Duration="0:0:1" FillBehavior="HoldEnd" Completed="AdvanceAnimation_Completed">
+                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="-2500"/> <!---2730/-3840-->
+                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="-2772" KeySpline="0.25,0.5,0.75,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="PanPosition"
@@ -33,8 +33,7 @@
                x:Key="BoardTitleText">
             <Setter Property="Typography.Capitals" Value="Titling"></Setter>
             <Setter Property="FontFamily" Value="Segoe WP Bold"></Setter>
-            <Setter Property="FontSize" Value="150"></Setter>
-            <Setter Property="Margin" Value="0,0,100,0"></Setter>
+            <Setter Property="FontSize" Value="120"></Setter>
             <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
         </Style>
         <Style BasedOn="{StaticResource BoardTitleText}"
@@ -47,21 +46,29 @@
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Vertical" Background="#FF100C44" Panel.ZIndex="80">
                 <!--<teudu:BoardsStatisticsControl x:Name="BoardStats" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Height="50" Margin="25,0,0,0" />-->
-                <Grid Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Height="150" Background="#FF100C44" Margin="25,10,0,0" Visibility="Collapsed">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50*" />
-                        <ColumnDefinition Width="50*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="BoardTitle" Text="Current" Style="{StaticResource BoardTitleText}" Grid.Column="0"/>
-                    <TextBlock x:Name="BoardNextTitle" Text="Next" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="1"/>
-                </Grid>
+                <StackPanel Orientation="Horizontal" x:Name="TitleContainer" Panel.ZIndex="60">
+                    <TextBlock x:Name="BoardPrevTitle" Text="Previous" Style="{StaticResource BoardTitleText}" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                      MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+                    <TextBlock x:Name="BoardTitle" Text="Current" Style="{StaticResource BoardTitleText}" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                      MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0,0,0"/>
+                    <TextBlock x:Name="BoardNextTitle" Text="Next" Style="{StaticResource BoardTitleText}" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                      MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform x:Name="TitlePosition" X="{Binding Path=DominantArmHandOffsetX,
+                                        Converter={StaticResource offsetConverter},
+                                        ConverterParameter=-1386}" 
+                                    Y="0"></TranslateTransform>
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                </StackPanel>
             </StackPanel>
             <Canvas>
                 <StackPanel Orientation="Horizontal" x:Name="BoardContainer" Panel.ZIndex="60">
                     <teudu:EventBoard x:Name="PreviousBoard" 
                             Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                       MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                            Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="25,0,0,0" />
+                            Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,0,0" />
                     <teudu:EventBoard x:Name="CurrentBoard"
                             Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                       MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
@@ -69,12 +76,12 @@
                     <teudu:EventBoard x:Name="NextBoard"
                         Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                       MaxWidth="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                        Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,25,0"/>
+                        Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,0,0"/>
                     <StackPanel.RenderTransform>
                         <TransformGroup>
                             <TranslateTransform x:Name="PanPosition" X="{Binding Path=DominantArmHandOffsetX,
                                         Converter={StaticResource offsetConverter},
-                                        ConverterParameter=-1536}" 
+                                        ConverterParameter=-1386}" 
                                     Y="{Binding Path=DominantArmHandOffsetY}"
                                     Changed="TranslateTransform_Changed"></TranslateTransform>
                         </TransformGroup>

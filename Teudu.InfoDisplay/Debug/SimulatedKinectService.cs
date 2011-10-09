@@ -18,7 +18,7 @@ namespace Teudu.InfoDisplay.Debug
 
         void movementTimer_Tick(object sender, EventArgs e)
         {
-            SlowMoveRight();
+            //SlowMoveRight();
         }
 
         public bool IsIdle
@@ -38,7 +38,7 @@ namespace Teudu.InfoDisplay.Debug
             if (this.SkeletonUpdated != null) 
             { 
                 this.SkeletonUpdated(this, new SkeletonEventArgs() { 
-                    RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector(){Z=1,X=x, Y=(float)Math.Sin(Math.Log(x))}
+                    RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector(){Z=1,X=x, Y=(float)Math.Sin(x)}
                 });
             }
                 
