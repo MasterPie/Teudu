@@ -44,6 +44,8 @@ namespace Teudu.InfoDisplay
         void BoardNavigatorControl_Loaded(object sender, RoutedEventArgs e)
         {
             this.Width = this.ActualWidth;
+            PreviousBoard.Width = PreviousBoard.MaxWidth = App.Current.MainWindow.ActualWidth - boardInbetween;
+            NextBoard.Width = NextBoard.MaxWidth = App.Current.MainWindow.ActualWidth - boardInbetween;
             CurrentBoard.Width = App.Current.MainWindow.ActualWidth - boardInbetween;
             CurrentBoard.MaxWidth = App.Current.MainWindow.ActualWidth - boardInbetween;
         }
@@ -55,8 +57,11 @@ namespace Teudu.InfoDisplay
             { 
                 //stop monitoring interactions
                 boardMaster = value;
+                Previous = boardMaster.Prev;
                 Current = boardMaster.Current;
                 Next = boardMaster.Next;
+
+                BoardPrevTitle.MaxWidth = BoardTitle.MaxWidth = BoardNextTitle.MaxWidth = CurrentBoard.MaxWidth;
                 //JumpToCenter();
                 //begin monitoring
             }
@@ -147,6 +152,7 @@ namespace Teudu.InfoDisplay
             //TranslateTransform shift = new TranslateTransform(-this.ActualWidth, 0);
             //BoardContainer.RenderTransform = shift;
             Canvas.SetLeft(BoardContainer, -this.ActualWidth);
+            //Canvas.SetLeft(TitleContainer, -this.ActualWidth);
         }
 
         public Point BoardContainerOffset
@@ -159,14 +165,12 @@ namespace Teudu.InfoDisplay
 
         private bool GoPrevious()
         {
-            //Point containerCenter = this.TransformToAncestor(App.Current.MainWindow).Transform(new Point(BoardContainer.ActualWidth/2,0));
             return BoardMidLocation().X > BoardContainer.ActualWidth/2;
         }
 
         private bool GoNext()
         {
-            //System.Diagnostics.Trace.WriteLine("mid loc: " + BoardMidLocation().X);
-            return (BoardMidLocation().X) < (0 + boardInbetween); ///TODO: change to be based on event width
+            return (BoardMidLocation().X) < (0 + boardInbetween);
         }
 
         private Point BoardMidCoords()
@@ -193,6 +197,9 @@ namespace Teudu.InfoDisplay
 
         private void AdvanceAnimation_Completed(object sender, EventArgs e)
         {
+            Canvas.SetLeft(BoardContainer, -(this.ActualWidth - boardInbetween) *2);
+            ((System.Windows.Media.Animation.Storyboard)this.Resources["AdvanceAnimation"]).Stop();     
+            return;
             Previous = current;
             Current = next;
             ////jump to current board

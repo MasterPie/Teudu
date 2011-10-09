@@ -26,6 +26,13 @@ namespace Teudu.InfoDisplay
         {
             InitializeComponent();
             //ScaleLevel = 1;
+            this.Loaded += new RoutedEventHandler(EventBoard_Loaded);
+        }
+
+        void EventBoard_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Board.MaxWidth = this.ActualWidth - 40;
+            this.InvalidateMeasure();
         }
 
         public string BoardTitle
@@ -44,8 +51,6 @@ namespace Teudu.InfoDisplay
             get { return board; }
             set
             {
-                this.Board.MaxWidth = this.ActualWidth - 40;
-                this.InvalidateMeasure();
                 board = value;
                 this.Board.Children.Clear();
                 if (value == null)
