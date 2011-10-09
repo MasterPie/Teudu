@@ -46,8 +46,8 @@
     <Canvas>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Vertical" Background="#FF100C44" Panel.ZIndex="80">
-                <teudu:BoardsStatisticsControl x:Name="BoardStats" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Height="50" Margin="25,0,0,0" />
-                <Grid Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Height="150" Background="#FF100C44" Margin="25,10,0,0">
+                <!--<teudu:BoardsStatisticsControl x:Name="BoardStats" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Height="50" Margin="25,0,0,0" />-->
+                <Grid Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Height="150" Background="#FF100C44" Margin="25,10,0,0" Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*" />
                         <ColumnDefinition Width="50*" />

@@ -11,14 +11,14 @@ namespace Teudu.InfoDisplay.Debug
         public void Initialize()
         {
             movementTimer = new System.Windows.Threading.DispatcherTimer();
-            movementTimer.Interval = new TimeSpan(10000);
+            movementTimer.Interval = new TimeSpan(30000);
             movementTimer.Tick += new EventHandler(movementTimer_Tick);
             movementTimer.Start();
         }
 
         void movementTimer_Tick(object sender, EventArgs e)
         {
-            JagToRight();
+            SlowMoveRight();
         }
 
         public bool IsIdle
@@ -27,7 +27,7 @@ namespace Teudu.InfoDisplay.Debug
         }
         float x = -100f;
         float y = -100f;
-        private void JagToRight()
+        private void SlowMoveRight()
         {
             
             //.ScaleTo(1920, 1080, 0.4f, 0.4f,true)
@@ -38,7 +38,7 @@ namespace Teudu.InfoDisplay.Debug
             if (this.SkeletonUpdated != null) 
             { 
                 this.SkeletonUpdated(this, new SkeletonEventArgs() { 
-                    RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector(){Z=1,X=x, Y=(float)Math.Sin(x)}
+                    RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector(){Z=1,X=x, Y=(float)Math.Sin(Math.Log(x))}
                 });
             }
                 

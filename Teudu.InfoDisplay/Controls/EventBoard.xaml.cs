@@ -28,11 +28,24 @@ namespace Teudu.InfoDisplay
             //ScaleLevel = 1;
         }
 
+        public string BoardTitle
+        {
+            get
+            {
+                if (board != null)
+                    return board.Name;
+                else
+                    return "";
+            }
+        }
+
         public Board BoardModel
         {
             get { return board; }
             set
             {
+                this.Board.MaxWidth = this.ActualWidth - 40;
+                this.InvalidateMeasure();
                 board = value;
                 this.Board.Children.Clear();
                 if (value == null)
@@ -43,9 +56,7 @@ namespace Teudu.InfoDisplay
                     Width = 230,
                     Margin = new Thickness(0,0,20,20)
                 }));
-                //TrackCenterEvent();
-                //SnapToNearestEvent();
-                this.Board.MaxWidth = this.ActualWidth - 40;
+                this.OnPropertyChanged("BoardTitle");
             }
         }
 

@@ -35,7 +35,7 @@ namespace Teudu.InfoDisplay
             imageDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\" + ConfigurationManager.AppSettings["CachedImageDirectory"]  + @"\";
 
             centerCheckTimer = new DispatcherTimer();
-            centerCheckTimer.Interval = TimeSpan.FromMilliseconds(500);
+            centerCheckTimer.Interval = TimeSpan.FromMilliseconds(300);
             centerCheckTimer.Tick += new EventHandler(animateLiveTimer_Tick);
             centerCheckTimer.Start();
 
@@ -44,6 +44,7 @@ namespace Teudu.InfoDisplay
             showEventTimer.Tick += new EventHandler(showEventTimer_Tick);
 
             Details.Width = App.Current.MainWindow.ActualWidth / 4;
+            Details.Height = App.Current.MainWindow.ActualHeight / 4;
         }
 
         void showEventTimer_Tick(object sender, EventArgs e)
@@ -55,8 +56,8 @@ namespace Teudu.InfoDisplay
         void animateLiveTimer_Tick(object sender, EventArgs e)
         {
             VisibleLocation_work();
-            
-            TranslateTransform shiftLeft = new TranslateTransform(-Details.ActualWidth, 0);
+
+            TranslateTransform shiftLeft = new TranslateTransform(-Details.ActualWidth - App.Current.MainWindow.ActualWidth / 8, 0);
             Details.RenderTransform = shiftLeft;
         }
 
@@ -67,10 +68,6 @@ namespace Teudu.InfoDisplay
             {
                 this.EventContainer.Opacity = 0;
                 this.eventModel = value;
-                this.title.Text = eventModel.Name;
-                this.date.Text = eventModel.Time.ToShortTimeString();
-                //this.image.Source = eventModel.Image;
-                //this.description.Text = eventModel.Description;
 
                 BitmapImage src = new BitmapImage();
                 src.BeginInit();
