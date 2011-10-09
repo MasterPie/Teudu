@@ -44,7 +44,7 @@ namespace Teudu.InfoDisplay
 
         public string Date
         {
-            get { return eventModel.Time.ToShortDateString(); }
+            get { return eventModel.PrettyTime(); }
         }
 
         public string Description

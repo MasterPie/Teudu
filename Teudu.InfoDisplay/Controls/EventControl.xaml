@@ -26,50 +26,20 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </UserControl.Resources>
-    <!--<UserControl.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Segoe WP"></Setter>
-            <Setter Property="FontSize" Value="20"></Setter>
-            <Setter Property="Foreground" Value="#FFf3f0e9"></Setter>
-        </Style>
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-               TargetType="TextBlock"
-               x:Key="DescriptionText">
-            <Setter Property="FontSize" Value="8"></Setter>
-        </Style>
-    </UserControl.Resources>-->
     <Grid>
-        <!--<Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
-        <DockPanel Panel.ZIndex="11" LastChildFill="False">
-            <StackPanel DockPanel.Dock="Bottom">
-                <TextBlock x:Name="date" Text="Today, 6PM"></TextBlock>
-                <TextBlock x:Name="title" Text="Title"></TextBlock>
-                <StackPanel x:Name="extendedDetails" Opacity="0">
-                    <TextBlock x:Name="description" Text="Description" Height="60" Style="{StaticResource DescriptionText}"></TextBlock>
-                </StackPanel>
-            </StackPanel>
-        </DockPanel>-->
-        <Border x:Name="outerBorder" BorderBrush="#990000">
+        <Border x:Name="outerBorder" BorderBrush="#FFF3F0e9">
             <StackPanel x:Name="EventContainer">
                 <DockPanel Panel.ZIndex="11" LastChildFill="False">
                     <StackPanel DockPanel.Dock="Bottom">
-                        <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=VisibleLocation}"/>
-                        <TextBlock x:Name="date" Text="Today, 6PM" Visibility="Collapsed"></TextBlock>
-                        <TextBlock x:Name="title" Text="Title" Visibility="Collapsed"></TextBlock>
-                        <StackPanel x:Name="extendedDetails" Visibility="Collapsed">
-                            <!--<TextBlock x:Name="description" Text="Description" Height="30" Style="{StaticResource DescriptionText}"></TextBlock>-->
-                        </StackPanel>
+                        <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=VisibleLocation}"/>-->
                     </StackPanel>
                 </DockPanel>
                 <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
             </StackPanel>
         </Border>
         <Canvas>
-            <teudu:EventDetailsControl x:Name="Details"  Visibility="Hidden" 
-                                   Panel.ZIndex="99"
-                                   
-                                   Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,25,0" />
-
+            <teudu:EventDetailsControl x:Name="Details"  Visibility="Hidden" Panel.ZIndex="99"
+                Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,25,0" />
         </Canvas>
             </Grid>
 </UserControl>

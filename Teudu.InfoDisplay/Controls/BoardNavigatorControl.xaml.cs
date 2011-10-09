@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace Teudu.InfoDisplay
 {
@@ -20,17 +21,31 @@ namespace Teudu.InfoDisplay
     /// </summary>
     public partial class BoardNavigatorControl : UserControl
     {
+        const double boardInbetween = 150;
+        DispatcherTimer trackingResetTimer;
         public BoardNavigatorControl()
         {
             InitializeComponent();
+            trackingResetTimer = new DispatcherTimer();
+            trackingResetTimer.Interval = new TimeSpan(0, 0, 0, 1);
+            trackingResetTimer.Tick += new EventHandler(trackingResetTimer_Tick);
+
             this.Loaded += new RoutedEventHandler(BoardNavigatorControl_Loaded);
+            
+        }
+
+        void trackingResetTimer_Tick(object sender, EventArgs e)
+        {
+            trackingResetTimer.Stop();
+            SetTranslateBindings();
+            PanPosition.Changed += new EventHandler(TranslateTransform_Changed);
         }
 
         void BoardNavigatorControl_Loaded(object sender, RoutedEventArgs e)
         {
             this.Width = this.ActualWidth;
-            CurrentBoard.Width = App.Current.MainWindow.ActualWidth;
-            CurrentBoard.MaxWidth = App.Current.MainWindow.ActualWidth;
+            CurrentBoard.Width = App.Current.MainWindow.ActualWidth - boardInbetween;
+            CurrentBoard.MaxWidth = App.Current.MainWindow.ActualWidth - boardInbetween;
         }
 
         private IBoardService boardMaster;
@@ -151,7 +166,7 @@ namespace Teudu.InfoDisplay
         private bool GoNext()
         {
             //System.Diagnostics.Trace.WriteLine("mid loc: " + BoardMidLocation().X);
-            return (BoardMidLocation().X) < 0; ///TODO: change to be based on event width
+            return (BoardMidLocation().X) < (0 + boardInbetween); ///TODO: change to be based on event width
         }
 
         private Point BoardMidCoords()
@@ -183,8 +198,7 @@ namespace Teudu.InfoDisplay
             ////jump to current board
             JumpToCenter();
             Next = boardMaster.Next;
-            SetTranslateBindings();
-            PanPosition.Changed += new EventHandler(TranslateTransform_Changed);
+            trackingResetTimer.Start();           
         }
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)

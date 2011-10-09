@@ -20,7 +20,7 @@ namespace Teudu.InfoDisplay
             ID = eventId;
             Name = eventName;
             Description = eventDescription;
-            Time = eventTime;
+            StartTime = eventTime;
             Image = eventImage;
             Categories = eventCategories;
         }
@@ -43,7 +43,7 @@ namespace Teudu.InfoDisplay
             get { return description; }
         }
 
-        public DateTime Time
+        public DateTime StartTime
         {
             set { time = value; }
             get { return time; }
@@ -66,6 +66,13 @@ namespace Teudu.InfoDisplay
         {
             set { categories = value; }
             get { return categories; }
+        }
+
+        public string PrettyTime()
+        {
+            string start = time.ToString("dddd, MMMM d, h:mm tt");
+            string end = "1:00 AM";
+            return start + " - " + end;
         }
 
         public bool HappeningThisWeek

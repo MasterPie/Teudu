@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
         Title="Teudu" Height="1080" Width="1920"
-        DataContext="{Binding ViewModel, Source={StaticResource loader}}" WindowStyle="None" WindowState="Maximized" Cursor="None" ResizeMode="NoResize">
+        DataContext="{Binding ViewModel, Source={StaticResource loader}}" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe WP"></Setter>
@@ -25,7 +25,7 @@
         <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                TargetType="TextBlock"
                x:Key="BoardTitleTextMetro">
-            <Setter Property="FontSize" Value="72"></Setter>
+            <Setter Property="FontSize" Value="48"></Setter>
             <Setter Property="Opacity" Value="0.5"></Setter>
         </Style>
     </Window.Resources>
@@ -42,7 +42,7 @@
                 <TextBlock x:Name="BoardTitle" Text="{Binding Path=CurrentBoard.Name}" Style="{StaticResource BoardTitleText}" Grid.Column="1"/>
                 <TextBlock x:Name="BoardNextTitle" Text="{Binding Path=NextBoard.Name}" Style="{StaticResource BoardTitleTextInactive}" Grid.Column="2"/>
             </Grid>-->
-            <teudu:BoardNavigatorControl x:Name="BoardNavigator" Height="900" Panel.ZIndex="10"/>
+            <teudu:BoardNavigatorControl x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10"/>
             <!--<Canvas x:Name="BoardContainer" Height="630" MaxHeight="630" Panel.ZIndex="10"/>-->
             <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=VisibleLocation}" Panel.ZIndex="80"/>-->
             <!--<teudu:EventDetailsControl x:Name="EventDetails" Height="100" Background="#999933" Panel.ZIndex="80"/>-->
