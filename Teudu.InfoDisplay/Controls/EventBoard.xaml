@@ -24,7 +24,7 @@
         </Style>
     </UserControl.Resources>
     <Canvas>
-        <StackPanel  Margin="25,0,0,0">
+        <StackPanel  Margin="50,0,0,0">
             <WrapPanel Name="Board" Orientation="Vertical" Panel.ZIndex="1"
                         Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                         Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>

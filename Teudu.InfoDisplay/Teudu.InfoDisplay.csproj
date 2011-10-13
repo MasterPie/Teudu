@@ -65,6 +65,8 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -82,11 +84,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\BoardCrumbs.xaml.cs">
+      <DependentUpon>BoardCrumbs.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BoardPagedControl.xaml.cs">
       <DependentUpon>BoardPagedControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\BoardsStatisticsControl.xaml.cs">
       <DependentUpon>BoardsStatisticsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BoardTitleControl.xaml.cs">
+      <DependentUpon>BoardTitleControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Debug\BindableTraceListener.cs" />
     <Compile Include="Debug\SimulatedKinectService.cs" />
@@ -127,6 +135,10 @@
     <Compile Include="ViewModel.cs" />
     <Compile Include="ViewModelLoader.cs" />
     <Compile Include="Data\WebSourceService.cs" />
+    <Page Include="Controls\BoardCrumbs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BoardNavigatorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -136,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BoardsStatisticsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BoardTitleControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

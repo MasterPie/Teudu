@@ -288,12 +288,13 @@ namespace Teudu.InfoDisplay
 
         public bool LeftArmInFront
         {
-            get { return leftArm.ArmAlmostStraight && LeftHandAboveTorso || (leftArm.HandZ < (spine.Z - 100)); }
+            get { return leftArm.HandZ < 1.2; }
+                //leftArm.ArmAlmostStraight && LeftHandAboveTorso || (leftArm.HandZ < (spine.Z - 100)); }
         }
 
         public bool RightArmInFront
         {
-            get { return rightArm.HandZ < 1.25; }
+            get { return rightArm.HandZ < 1.2; }
                 //rightArm.ArmAlmostStraight && RightHandAboveTorso || (rightArm.HandZ < (spine.Z - 100)); }
         }
 

@@ -7,13 +7,26 @@ namespace Teudu.InfoDisplay.Debug
 {
     public class SimulatedKinectService : IKinectService
     {
-        System.Windows.Threading.DispatcherTimer movementTimer; 
+        System.Windows.Threading.DispatcherTimer movementTimer;
+        System.Windows.Threading.DispatcherTimer startTimer;
         public void Initialize()
         {
             movementTimer = new System.Windows.Threading.DispatcherTimer();
-            movementTimer.Interval = new TimeSpan(30000);
+            movementTimer.Interval = new TimeSpan(20000);
             movementTimer.Tick += new EventHandler(movementTimer_Tick);
+
+            startTimer = new System.Windows.Threading.DispatcherTimer();
+            startTimer.Interval = new TimeSpan(0,0,5);
+            startTimer.Tick += new EventHandler(startTimer_Tick);
+
+            startTimer.Start();
+            
+        }
+
+        void startTimer_Tick(object sender, EventArgs e)
+        {
             movementTimer.Start();
+            startTimer.Stop();
         }
 
         void movementTimer_Tick(object sender, EventArgs e)
@@ -40,7 +53,7 @@ namespace Teudu.InfoDisplay.Debug
                 {
                     this.SkeletonUpdated(this, new SkeletonEventArgs()
                     {
-                        RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 1, X = x, Y = (float)Math.Sin(x) }
+                        RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 1, X = x, Y = (float)Math.Sin(Math.Log(x)) }
                     });
                 }
             //}

@@ -55,7 +55,7 @@ namespace Teudu.InfoDisplay
                 this.Board.Children.Clear();
                 if (value == null)
                     return;
-                BoardModel.Events.Take<Event>(15).ToList().ForEach(x => this.Board.Children.Add(new EventControl()
+                BoardModel.Events.ForEach(x => this.Board.Children.Add(new EventControl()
                 {
                     Event = x,
                     Width = 230,

@@ -21,6 +21,7 @@ namespace Teudu.InfoDisplay
     /// </summary>
     public partial class BoardPagedControl : UserControl
     {
+        private bool isShifting = false;
         const double boardInbetween = 150;
         DispatcherTimer trackingResetTimer;
 
@@ -44,7 +45,8 @@ namespace Teudu.InfoDisplay
         {
             trackingResetTimer.Stop();
             SetBindings();
-            BoardPosition.Changed += new EventHandler(TranslateTransform_Changed);
+            //BoardPosition.Changed += new EventHandler(TranslateTransform_Changed);
+            isShifting = false;
         }
 
         void BoardNavigatorControl_Loaded(object sender, RoutedEventArgs e)
@@ -78,11 +80,15 @@ namespace Teudu.InfoDisplay
                 boardView.Height = this.ActualHeight;
                 boardView.BoardModel = x;
                 
-                TextBlock boardTitle = new TextBlock();
-                boardTitle.MaxWidth = boardTitle.Width = App.Current.MainWindow.ActualWidth - boardInbetween;
-                boardTitle.Text = x.Name;
+                //TextBlock boardTitle = new TextBlock();
+                //boardTitle.MaxWidth = boardTitle.Width = App.Current.MainWindow.ActualWidth - boardInbetween;
+                //boardTitle.Text = x.Title;
 
-                positionOffsets.Add(x, -App.Current.MainWindow.ActualWidth * i++);
+                BoardTitleControl boardTitle = new BoardTitleControl();
+                boardTitle.MaxWidth = boardTitle.Width = App.Current.MainWindow.ActualWidth - boardInbetween;
+                boardTitle.Board = x;
+
+                positionOffsets.Add(x, (App.Current.MainWindow.ActualWidth * i++));
 
                 this.TitleContainer.Children.Add(boardTitle);
                 this.BoardContainer.Children.Add(boardView);
@@ -122,13 +128,15 @@ namespace Teudu.InfoDisplay
                 return;
 
             ClearBindings();
-            BoardPosition.Changed -= new EventHandler(TranslateTransform_Changed);
+            //BoardPosition.Changed -= new EventHandler(TranslateTransform_Changed);
             //load next
 
-            DoubleAnimation advanceAnimation = new DoubleAnimation(BoardLeftEdgeLocation().X, positionOffsets[boardMaster.Prev] * 2, new Duration(TimeSpan.FromSeconds(1)));
+            DoubleAnimation advanceAnimation = new DoubleAnimation(positionOffsets[boardMaster.Prev] - this.ActualWidth / 2 + boardInbetween, -positionOffsets[boardMaster.Current] + boardInbetween, new Duration(TimeSpan.FromSeconds(1)));
             advanceAnimation.Completed += new EventHandler(advanceAnimation_Completed);
-            Storyboard.SetTarget(advanceAnimation, BoardPosition);
-            Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath(TranslateTransform.XProperty));
+            //Storyboard.SetTarget(advanceAnimation, BoardPosition);
+            //Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath(TranslateTransform.XProperty));
+            Storyboard.SetTarget(advanceAnimation, BoardContainer);
+            Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath("(Canvas.Left)"));
             sbAdvance.Children.Clear();
             sbAdvance.Children.Add(advanceAnimation); 
             sbAdvance.Begin(); 
@@ -140,6 +148,7 @@ namespace Teudu.InfoDisplay
 
         void advanceAnimation_Completed(object sender, EventArgs e)
         {
+            Canvas.SetLeft(BoardContainer, -positionOffsets[boardMaster.Current] + boardInbetween);
             sbAdvance.Stop();
             trackingResetTimer.Start();           
         }
@@ -158,18 +167,24 @@ namespace Teudu.InfoDisplay
 
         private bool GoNext()
         {
-            return (BoardLeftEdgeLocation().X) < (positionOffsets[boardMaster.Current] + positionOffsets[boardMaster.Current]/2 + boardInbetween);
+            return (BoardLeftEdgeLocation().X) < (-positionOffsets[boardMaster.Current] - this.ActualWidth/2 + boardInbetween);
         }
 
         private Point BoardLeftEdgeLocation()
         {
-            return BoardContainer.TransformToAncestor(this).Transform(new Point(0, 0));
+            return BoardContainer.TransformToAncestor(App.Current.MainWindow).Transform(new Point(0, 0));
         }
 
         private void TranslateTransform_Changed(object sender, EventArgs e)
         {
-            //if (GoNext())
-            //    Advance();
+            if (isShifting)
+                return;
+
+            if (GoNext())
+            {
+                isShifting = true;
+                Advance();
+            }
             //else if (GoPrevious())
             //    Regress();
         }

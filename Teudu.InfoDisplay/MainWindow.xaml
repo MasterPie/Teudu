@@ -32,7 +32,7 @@
     <Grid>
         <StackPanel Background="#FF100C44" Panel.ZIndex="80">
             <!--<teudu:BoardNavigatorControl x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10"/>-->
-            <teudu:BoardPagedControl x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10"/>
+            <teudu:BoardPagedControl x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10" Margin="0,0,0,0"/>
         </StackPanel>
         <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
     </Grid>

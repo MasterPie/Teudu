@@ -31,7 +31,6 @@
         <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                TargetType="TextBlock"
                x:Key="BoardTitleText">
-            <Setter Property="Typography.Capitals" Value="Titling"></Setter>
             <Setter Property="FontFamily" Value="Segoe WP Bold"></Setter>
             <Setter Property="FontSize" Value="120"></Setter>
             <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
