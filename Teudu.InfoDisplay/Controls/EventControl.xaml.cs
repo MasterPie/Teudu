@@ -57,7 +57,7 @@ namespace Teudu.InfoDisplay
         {
             VisibleLocation_work();
 
-            TranslateTransform shiftLeft = new TranslateTransform(-Details.ActualWidth - App.Current.MainWindow.ActualWidth / 8, 0);
+            TranslateTransform shiftLeft = new TranslateTransform(-Details.ActualWidth - App.Current.MainWindow.ActualWidth / 30, 0);
             Details.RenderTransform = shiftLeft;
         }
 
@@ -124,7 +124,7 @@ namespace Teudu.InfoDisplay
                     Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Visible;
                     ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
-                    outerBorder.BorderThickness = new Thickness(5);
+                    //outerBorder.BorderThickness = new Thickness(5);
                 }
                 else
                 {

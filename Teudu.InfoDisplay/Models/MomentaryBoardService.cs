@@ -111,6 +111,13 @@ namespace Teudu.InfoDisplay
             {
                 boards.Add(boardLookup[key]);
             }
+
+            foreach (Board board in boards)
+            {
+                List<Event> savedEvents = board.Events;
+                savedEvents = savedEvents.OrderByDescending(x => x.StartTime).Take(15).ToList<Event>();
+                board.Events = savedEvents;
+            }
         }
 
         public void Cleanup()

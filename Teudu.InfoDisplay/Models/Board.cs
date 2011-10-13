@@ -22,10 +22,23 @@ namespace Teudu.InfoDisplay
             set { name = value; }
         }
 
+        public string Title
+        {
+            get { return name; }
+        }
+
         public List<Event> Events
         {
             get { return events; }
             set { events = value; }
+        }
+
+        public DateTime MaxDate
+        {
+            get
+            {
+                return events.Max(x => x.StartTime);
+            }
         }
 
         public override string ToString()
