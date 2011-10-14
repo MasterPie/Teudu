@@ -5,6 +5,7 @@
         Title="Teudu" Height="1080" Width="1920"
         DataContext="{Binding ViewModel, Source={StaticResource loader}}" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
     <Window.Resources>
+        <teudu:NotifyingDateTime x:Key="notifyingDate"/>
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe WP"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
@@ -35,5 +36,6 @@
             <teudu:BoardPagedControl x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10" Margin="0,0,0,0"/>
         </StackPanel>
         <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
+        <TextBlock Text="{Binding Source={StaticResource notifyingDate},Path=Now}" Panel.ZIndex="99" Width="300" HorizontalAlignment="Right" Margin="0,25,25,0"/>
     </Grid>
 </Window>

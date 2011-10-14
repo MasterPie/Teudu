@@ -35,7 +35,7 @@ namespace Teudu.InfoDisplay
             sbAdvance = new Storyboard();
 
             trackingResetTimer = new DispatcherTimer();
-            trackingResetTimer.Interval = new TimeSpan(0, 0, 0, 1);
+            trackingResetTimer.Interval = new TimeSpan(0,0,0,0,500);
             trackingResetTimer.Tick += new EventHandler(trackingResetTimer_Tick);
 
             this.Loaded += new RoutedEventHandler(BoardNavigatorControl_Loaded);
@@ -62,6 +62,8 @@ namespace Teudu.InfoDisplay
                 ClearBindings();
                 boardMaster = value;
                 CreateBoardViews();
+                this.Crumbs.Boards = boardMaster.Boards;
+                this.Crumbs.Current = boardMaster.Current;
                 BoardPosition.Changed += new EventHandler(TranslateTransform_Changed);
                 SetBindings();
             }
@@ -70,8 +72,8 @@ namespace Teudu.InfoDisplay
         private void CreateBoardViews()
         {
             positionOffsets.Clear();
-            //this.TitleContainer.Children.Clear();
-            //this.BoardContainer.Children.Clear();
+            this.TitleContainer.Children.Clear();
+            this.BoardContainer.Children.Clear();
             int i = 0;
             boardMaster.Boards.ForEach(x =>
             {
@@ -79,16 +81,12 @@ namespace Teudu.InfoDisplay
                 boardView.MaxWidth = boardView.Width = App.Current.MainWindow.ActualWidth - boardInbetween;
                 boardView.Height = this.ActualHeight;
                 boardView.BoardModel = x;
-                
-                //TextBlock boardTitle = new TextBlock();
-                //boardTitle.MaxWidth = boardTitle.Width = App.Current.MainWindow.ActualWidth - boardInbetween;
-                //boardTitle.Text = x.Title;
 
                 BoardTitleControl boardTitle = new BoardTitleControl();
                 boardTitle.MaxWidth = boardTitle.Width = App.Current.MainWindow.ActualWidth - boardInbetween;
                 boardTitle.Board = x;
 
-                positionOffsets.Add(x, (App.Current.MainWindow.ActualWidth * i++));
+                positionOffsets.Add(x, (boardView.Width * i++));
 
                 this.TitleContainer.Children.Add(boardTitle);
                 this.BoardContainer.Children.Add(boardView);
@@ -105,11 +103,19 @@ namespace Teudu.InfoDisplay
         private void SetBindings()
         {
             OffsetNavigatorConverter con = (OffsetNavigatorConverter)App.Current.Resources["offsetConverter"];
+            SlowedOffsetNavigationConverter con2 = (SlowedOffsetNavigationConverter)App.Current.Resources["slowedOffsetConverter"];
             Binding bindingX = new Binding
             {
                 Path = new PropertyPath("DominantArmHandOffsetX"),
                 Source = this.DataContext,
                 Converter = con,
+                ConverterParameter = positionOffsets[boardMaster.Current] //- 1386
+            };
+            Binding bindingX2 = new Binding
+            {
+                Path = new PropertyPath("DominantArmHandOffsetX"),
+                Source = this.DataContext,
+                Converter = con2,
                 ConverterParameter = positionOffsets[boardMaster.Current] //- 1386
             };
             Binding bindingY = new Binding
@@ -119,7 +125,7 @@ namespace Teudu.InfoDisplay
             };
             BindingOperations.SetBinding(BoardPosition, TranslateTransform.XProperty, bindingX);
             BindingOperations.SetBinding(BoardPosition, TranslateTransform.YProperty, bindingY);
-            BindingOperations.SetBinding(TitlePosition, TranslateTransform.XProperty, bindingX);
+            BindingOperations.SetBinding(TitlePosition, TranslateTransform.XProperty, bindingX2);
         }
         Storyboard sbAdvance;
         private void Advance()
@@ -128,28 +134,30 @@ namespace Teudu.InfoDisplay
                 return;
 
             ClearBindings();
-            //BoardPosition.Changed -= new EventHandler(TranslateTransform_Changed);
-            //load next
 
-            DoubleAnimation advanceAnimation = new DoubleAnimation(positionOffsets[boardMaster.Prev] - this.ActualWidth / 2 + boardInbetween, -positionOffsets[boardMaster.Current] + boardInbetween, new Duration(TimeSpan.FromSeconds(1)));
+            double from = -positionOffsets[boardMaster.Prev] - this.ActualWidth / 2 + boardInbetween;
+            double to = -positionOffsets[boardMaster.Current];
+
+            DoubleAnimation advanceAnimation = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(2)));
             advanceAnimation.Completed += new EventHandler(advanceAnimation_Completed);
-            //Storyboard.SetTarget(advanceAnimation, BoardPosition);
-            //Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath(TranslateTransform.XProperty));
             Storyboard.SetTarget(advanceAnimation, BoardContainer);
             Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath("(Canvas.Left)"));
+
+            DoubleAnimation advanceAnimation2 = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(2)));
+            Storyboard.SetTarget(advanceAnimation2, TitleContainer);
+            Storyboard.SetTargetProperty(advanceAnimation2, new PropertyPath("(Canvas.Left)"));
             sbAdvance.Children.Clear();
-            sbAdvance.Children.Add(advanceAnimation); 
+            sbAdvance.Children.Add(advanceAnimation);
+            sbAdvance.Children.Add(advanceAnimation2);
             sbAdvance.Begin(); 
-
-
-            //this.Dispatcher.BeginInvoke(new Action(AdvanceAnimation), System.Windows.Threading.DispatcherPriority.Loaded);
-            //DoubleAnimation anim1 = new DoubleAnimation(-1920,-
         }
 
         void advanceAnimation_Completed(object sender, EventArgs e)
         {
-            Canvas.SetLeft(BoardContainer, -positionOffsets[boardMaster.Current] + boardInbetween);
+            Canvas.SetLeft(BoardContainer, -positionOffsets[boardMaster.Current]);
+            Canvas.SetLeft(TitleContainer, -positionOffsets[boardMaster.Current]);
             sbAdvance.Stop();
+            this.Crumbs.Current = boardMaster.Current;
             trackingResetTimer.Start();           
         }
 
@@ -157,12 +165,38 @@ namespace Teudu.InfoDisplay
         {
             if (boardMaster == null || !boardMaster.RegressCurrent())
                 return;
-            //animation, completed => refresh prev, next boards
+
+            ClearBindings();
+
+            double from = -positionOffsets[boardMaster.Next] + this.ActualWidth / 2 - boardInbetween;
+            double to = -positionOffsets[boardMaster.Current];
+
+            DoubleAnimation regressAnimation = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
+            regressAnimation.Completed += new EventHandler(regressAnimation_Completed);
+            Storyboard.SetTarget(regressAnimation, BoardContainer);
+            Storyboard.SetTargetProperty(regressAnimation, new PropertyPath("(Canvas.Left)"));
+
+            DoubleAnimation regressAnimation2 = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
+            Storyboard.SetTarget(regressAnimation2, TitleContainer);
+            Storyboard.SetTargetProperty(regressAnimation2, new PropertyPath("(Canvas.Left)"));
+            sbAdvance.Children.Clear();
+            sbAdvance.Children.Add(regressAnimation);
+            sbAdvance.Children.Add(regressAnimation2);
+            sbAdvance.Begin(); 
+        }
+
+        void regressAnimation_Completed(object sender, EventArgs e)
+        {
+            Canvas.SetLeft(BoardContainer, -positionOffsets[boardMaster.Current]);
+            Canvas.SetLeft(TitleContainer, -positionOffsets[boardMaster.Current]);
+            sbAdvance.Stop();
+            this.Crumbs.Current = boardMaster.Current;
+            trackingResetTimer.Start();   
         }
 
         private bool GoPrevious()
         {
-            return BoardLeftEdgeLocation().X > (positionOffsets[boardMaster.Current] - positionOffsets[boardMaster.Current] / 2);
+            return BoardLeftEdgeLocation().X > (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 - boardInbetween);
         }
 
         private bool GoNext()
@@ -185,8 +219,11 @@ namespace Teudu.InfoDisplay
                 isShifting = true;
                 Advance();
             }
-            //else if (GoPrevious())
-            //    Regress();
+            else if (GoPrevious())
+            {
+                isShifting = true;
+                Regress();
+            }
         }
     }
 }

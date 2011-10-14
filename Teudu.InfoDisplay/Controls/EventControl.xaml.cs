@@ -130,6 +130,7 @@ namespace Teudu.InfoDisplay
                 {
                     Details.Visibility = System.Windows.Visibility.Hidden;
                     outerBorder.BorderThickness = new Thickness(0);
+                    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
                 }
             }
         }

@@ -11,9 +11,9 @@
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="Details"
                 Storyboard.TargetProperty="Opacity" IsAdditive="True"
-                Duration="0:0:30" FillBehavior="Stop">
+                Duration="0:0:1" FillBehavior="Stop">
                 <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:30" Value="100" KeySpline="0.25,0.5,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="1" KeySpline="0.25,0.5,0.75,1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AppearAnimation" x:Name="AppearAnimation">
