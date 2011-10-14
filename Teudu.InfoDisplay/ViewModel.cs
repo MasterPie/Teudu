@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using System.Threading;
 using System.Windows.Input;
+using System.Configuration;
 
 namespace Teudu.InfoDisplay
 {
@@ -18,10 +19,11 @@ namespace Teudu.InfoDisplay
     {
         private const double PAN_TO_OFFSET = 50;
         private const double SCALE_OFFSET = 250;
-        private const double HEIGHT_OFF_GROUND = 0;//300;
+        private double HeightOffGround = 0;//300;
         private double ARM_SCALE_FACTOR_X = 1;//(App.Current.MainWindow.Width / 2) * 3;
         private double ARM_SCALE_FACTOR_Y = 1;//(App.Current.MainWindow.Height / 2) * 3;
         private double ARM_SCALE_FACTOR_Z = 1;//500; // Distance to tv
+        private double UserClearanceDistance;
 
         //private const int MAX_SCALE = 4;
         //private const int MIN_SCALE = 1;
@@ -38,13 +40,12 @@ namespace Teudu.InfoDisplay
         ISourceService sourceService;
         IBoardService boardService;
 
-        private DispatcherTimer categoryChangeTimer;
-
         public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService) 
         {
-            //categoryChangeTimer = new DispatcherTimer(DispatcherPriority.Loaded);
-            //categoryChangeTimer.Tick += new EventHandler(categoryChangeTimer_Tick);
-            //categoryChangeTimer.Interval = new TimeSpan(50000000); //100000000
+            UserClearanceDistance = 1.3;
+            Double.TryParse(ConfigurationManager.AppSettings["UserDistanceRequired"], out UserClearanceDistance);
+            HeightOffGround = 0;
+            Double.TryParse(ConfigurationManager.AppSettings["HeightOffGround"], out HeightOffGround);
 
             this.kinectService = kinectService; 
 
@@ -53,8 +54,6 @@ namespace Teudu.InfoDisplay
 
             this.boardService = boardService;
             this.boardService.BoardsUpdated += new EventHandler(boardService_BoardsChanged);
-            //this.boardService.ActiveBoardChanged += new EventHandler<BoardEventArgs>(boardService_ActiveBoardChanged);
-        
 
             leftArm = new Arm();
             rightArm = new Arm();
@@ -151,7 +150,7 @@ namespace Teudu.InfoDisplay
             {
                 #region Set vals
                 var midpointX = App.Current.MainWindow.ActualWidth / 2; 
-                var midpointY = App.Current.MainWindow.ActualHeight / 2 + - HEIGHT_OFF_GROUND; //TODO: get height off ground
+                var midpointY = App.Current.MainWindow.ActualHeight / 2 + - HeightOffGround; //TODO: get height off ground
 
                 this.head.Y = e.HeadPosition.Y * ARM_SCALE_FACTOR_Y;
 
@@ -288,13 +287,13 @@ namespace Teudu.InfoDisplay
 
         public bool LeftArmInFront
         {
-            get { return leftArm.HandZ < 1.2; }
+            get { return leftArm.HandZ < UserClearanceDistance; }
                 //leftArm.ArmAlmostStraight && LeftHandAboveTorso || (leftArm.HandZ < (spine.Z - 100)); }
         }
 
         public bool RightArmInFront
         {
-            get { return rightArm.HandZ < 1.2; }
+            get { return rightArm.HandZ < UserClearanceDistance; }
                 //rightArm.ArmAlmostStraight && RightHandAboveTorso || (rightArm.HandZ < (spine.Z - 100)); }
         }
 
@@ -348,12 +347,12 @@ namespace Teudu.InfoDisplay
 
         public double DominantArmHandOffsetX
         {
-            get { return -DominantHand.HandOffsetX*7; }
+            get { return DominantHand.HandOffsetX*6; }
         }
 
         public double DominantArmHandOffsetY
         {
-            get { return -DominantHand.HandOffsetY*7; }
+            get { return DominantHand.HandOffsetY*6; }
         }
 
         #endregion

@@ -119,6 +119,7 @@
     <Compile Include="Eventing\HoveredEventArgs.cs" />
     <Compile Include="IBoardService.cs" />
     <Compile Include="KinectTools.cs" />
+    <Compile Include="Models\NotifyingDateTime.cs" />
     <Compile Include="OffsetNavigatorConverter.cs" />
     <Compile Include="Eventing\PanEventArgs.cs" />
     <Compile Include="Models\MomentaryBoardService.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Eventing\SkeletonEventArgs.cs" />
     <Compile Include="Eventing\SourceEventArgs.cs" />
     <Compile Include="Eventing\SwipeEventArgs.cs" />
+    <Compile Include="SlowedOffsetNavigationConverter.cs" />
     <Compile Include="SwipeType.cs" />
     <Compile Include="TrackedJoints.cs" />
     <Compile Include="Models\UserKinectService.cs" />
@@ -199,7 +201,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

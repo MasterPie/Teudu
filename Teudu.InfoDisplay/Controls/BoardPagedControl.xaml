@@ -8,6 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <teudu:OffsetNavigatorConverter x:Key="offsetConverter"/>
+        <teudu:SlowedOffsetNavigationConverter x:Key="slowedOffsetConverter"/>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="#FFF3F0e9"></Setter>
             <Setter Property="Typography.Capitals" Value="Titling"></Setter>
@@ -20,11 +21,14 @@
                x:Key="BoardTitleText">
 
         </Style>
+        
     </UserControl.Resources>
     <Canvas>
         <StackPanel Orientation="Vertical">
-            <teudu:BoardCrumbs Height="50" Margin="25,0,0,0"/>
-            <StackPanel Orientation="Vertical" Background="#FF100C44" Panel.ZIndex="80">
+            <Grid Background="#FF100C44" Panel.ZIndex="80">
+                <teudu:BoardCrumbs Height="50" Margin="25,0,0,0" Background="#FF100C44" x:Name="Crumbs"/>
+            </Grid>
+            <Canvas Background="#FF100C44" Panel.ZIndex="80" Height="150" Width="1920">
                 <StackPanel Orientation="Horizontal" x:Name="TitleContainer" Panel.ZIndex="60" Margin="25,0,0,0">
                     <StackPanel.RenderTransform>
                         <TransformGroup>
@@ -32,7 +36,7 @@
                         </TransformGroup>
                     </StackPanel.RenderTransform>
                 </StackPanel>
-            </StackPanel>
+            </Canvas>
             <Canvas>
                 <StackPanel Orientation="Horizontal" x:Name="BoardContainer" Panel.ZIndex="60">
                     <StackPanel.RenderTransform>
