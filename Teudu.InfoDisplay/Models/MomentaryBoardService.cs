@@ -36,10 +36,11 @@ namespace Teudu.InfoDisplay
         public Board Current
         {
             get {
-                //if (currBoard >= 0 && currBoard < boards.Count)
-                    return boards[(currBoard)%boards.Count];
-                //else 
-                //    return null;
+                if (currBoard >= 0 && currBoard < boards.Count)
+                    //return boards[(currBoard)%boards.Count];
+                    return boards[currBoard];
+                else
+                    return null;
             }
         }
 
@@ -47,9 +48,10 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                //if (currBoard >= (boards.Count - 1))
-                //    return null;
-                return boards[(currBoard + 1)%boards.Count];
+                if (currBoard >= (boards.Count - 1))
+                    return null;
+                //return boards[(currBoard + 1)%boards.Count];
+                return boards[currBoard + 1];
             }
         }
 
@@ -57,20 +59,24 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                if (currBoard <= 0)
-                    return boards[boards.Count-1];
-                return boards[currBoard - 1];
+                //if (currBoard <= 0)
+                //    return boards[boards.Count-1];
+                if (currBoard > 0)
+                    return boards[currBoard - 1];
+                else
+                    return null;
             }
         }
 
         public bool AdvanceCurrent()
         {
-            //if (currBoard < boards.Count - 1)
-            //{
-                currBoard = (currBoard + 1) % boards.Count;
+            if (currBoard < boards.Count - 1)
+            {
+                //currBoard = (currBoard + 1) % boards.Count;
+                currBoard++;
                 return true;
-            //}
-            //return false;
+            }
+            return false;
         }
 
         public bool RegressCurrent()
@@ -78,12 +84,13 @@ namespace Teudu.InfoDisplay
             if (currBoard > 0)
             {
                 currBoard--;
-                
+                return true;
             }
-            else
-                currBoard = boards.Count;
-            //return false;
-            return true;
+            //else
+            //    currBoard = boards.Count;
+            ////return false;
+            //return true;
+            return false;
         }
 
         private void Sift()

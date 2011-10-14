@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Timers;
 using System.Windows.Threading;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace Teudu.InfoDisplay
 {
@@ -82,6 +83,7 @@ namespace Teudu.InfoDisplay
 
         private List<Event> ReadEvents()
         {
+            CultureInfo culture = CultureInfo.InvariantCulture;
             List<Event> retEvents = new List<Event>();
             XmlNode root = doc.DocumentElement;
             try
@@ -109,7 +111,7 @@ namespace Teudu.InfoDisplay
 
                             if (detail.Name.ToLower().Equals("datetime"))
                             {
-                                if (!DateTime.TryParse(detail.InnerText, out time))
+                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/'), "yyyy/MM/dd HH:mm:ss UTC", culture, DateTimeStyles.AssumeUniversal, out time))
                                     time = DateTime.Now;
                             }
 

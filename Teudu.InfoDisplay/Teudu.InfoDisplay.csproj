@@ -130,6 +130,7 @@
     <Compile Include="Eventing\SkeletonEventArgs.cs" />
     <Compile Include="Eventing\SourceEventArgs.cs" />
     <Compile Include="Eventing\SwipeEventArgs.cs" />
+    <Compile Include="PrettyDateConverter.cs" />
     <Compile Include="SlowedOffsetNavigationConverter.cs" />
     <Compile Include="SwipeType.cs" />
     <Compile Include="TrackedJoints.cs" />
@@ -235,6 +236,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\1029101434-02.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Gradient.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EventGradient.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

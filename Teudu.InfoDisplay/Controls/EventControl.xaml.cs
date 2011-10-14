@@ -43,8 +43,8 @@ namespace Teudu.InfoDisplay
             showEventTimer.Interval = TimeSpan.FromMilliseconds(new Random().Next(500));
             showEventTimer.Tick += new EventHandler(showEventTimer_Tick);
 
-            Details.Width = App.Current.MainWindow.ActualWidth / 4;
-            Details.Height = App.Current.MainWindow.ActualHeight / 4;
+            Details.Width = App.Current.MainWindow.ActualWidth / 3.5;
+            Details.Height = App.Current.MainWindow.ActualHeight / 3.5;
         }
 
         void showEventTimer_Tick(object sender, EventArgs e)
