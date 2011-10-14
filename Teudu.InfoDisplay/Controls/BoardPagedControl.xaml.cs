@@ -102,21 +102,16 @@ namespace Teudu.InfoDisplay
 
         private void SetBindings()
         {
-            OffsetNavigatorConverter con = (OffsetNavigatorConverter)App.Current.Resources["offsetConverter"];
-            SlowedOffsetNavigationConverter con2 = (SlowedOffsetNavigationConverter)App.Current.Resources["slowedOffsetConverter"];
             Binding bindingX = new Binding
             {
                 Path = new PropertyPath("DominantArmHandOffsetX"),
-                Source = this.DataContext,
-                Converter = con,
-                ConverterParameter = positionOffsets[boardMaster.Current] //- 1386
+                Source = this.DataContext
             };
             Binding bindingX2 = new Binding
             {
                 Path = new PropertyPath("DominantArmHandOffsetX"),
                 Source = this.DataContext,
-                Converter = con2,
-                ConverterParameter = positionOffsets[boardMaster.Current] //- 1386
+                Converter = new SlowedOffsetNavigationConverter()
             };
             Binding bindingY = new Binding
             {
@@ -138,12 +133,12 @@ namespace Teudu.InfoDisplay
             double from = -positionOffsets[boardMaster.Prev] - this.ActualWidth / 2 + boardInbetween;
             double to = -positionOffsets[boardMaster.Current];
 
-            DoubleAnimation advanceAnimation = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(2)));
+            DoubleAnimation advanceAnimation = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
             advanceAnimation.Completed += new EventHandler(advanceAnimation_Completed);
             Storyboard.SetTarget(advanceAnimation, BoardContainer);
             Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath("(Canvas.Left)"));
 
-            DoubleAnimation advanceAnimation2 = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(2)));
+            DoubleAnimation advanceAnimation2 = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
             Storyboard.SetTarget(advanceAnimation2, TitleContainer);
             Storyboard.SetTargetProperty(advanceAnimation2, new PropertyPath("(Canvas.Left)"));
             sbAdvance.Children.Clear();

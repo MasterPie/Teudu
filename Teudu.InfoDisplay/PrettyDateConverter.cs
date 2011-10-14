@@ -3,25 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Data;
-using System.Diagnostics;
 
 namespace Teudu.InfoDisplay
 {
-    [ValueConversion(typeof(double), typeof(double))]
-    public class OffsetNavigatorConverter : IValueConverter
+    [ValueConversion(typeof(double), typeof(string))]
+    public class PrettyDateConverter : IValueConverter
     {
-
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            double offset = (double)value;
-            double actualPosition = (double)parameter;
-            Trace.WriteLine("given " + actualPosition + " now " + offset + actualPosition);
-            return offset + actualPosition;
+            DateTime dateTime = (DateTime)value;
+
+            return dateTime.ToString("dddd, MMMM dd, hh:mm tt");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

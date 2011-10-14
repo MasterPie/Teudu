@@ -5,29 +5,12 @@
         Title="Teudu" Height="1080" Width="1920"
         DataContext="{Binding ViewModel, Source={StaticResource loader}}" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
     <Window.Resources>
+        <teudu:PrettyDateConverter x:Key="dateConverter"/>
         <teudu:NotifyingDateTime x:Key="notifyingDate"/>
         <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Segoe WP"></Setter>
+            <Setter Property="FontFamily" Value="Helvetica Neue LT Std"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
             <Setter Property="Foreground" Value="#FFF3F0e9"></Setter>
-        </Style>
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-               TargetType="TextBlock"
-               x:Key="BoardTitleText">
-            <Setter Property="Typography.Capitals" Value="Titling"></Setter>
-            <Setter Property="TextAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-        <Style BasedOn="{StaticResource BoardTitleText}"
-               TargetType="TextBlock"
-               x:Key="BoardTitleTextInactive">
-            <Setter Property="Opacity" Value="0.3"></Setter>
-        </Style>
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-               TargetType="TextBlock"
-               x:Key="BoardTitleTextMetro">
-            <Setter Property="FontSize" Value="48"></Setter>
-            <Setter Property="Opacity" Value="0.5"></Setter>
         </Style>
     </Window.Resources>
     <Grid>
@@ -36,6 +19,6 @@
             <teudu:BoardPagedControl x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10" Margin="0,0,0,0"/>
         </StackPanel>
         <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
-        <TextBlock Text="{Binding Source={StaticResource notifyingDate},Path=Now}" Panel.ZIndex="99" Width="300" HorizontalAlignment="Right" Margin="0,25,25,0"/>
+        <TextBlock Text="{Binding Source={StaticResource notifyingDate},Path=Now, Converter={StaticResource dateConverter}}" Panel.ZIndex="99" Width="300" HorizontalAlignment="Right" Margin="0,25,40,0"/>
     </Grid>
 </Window>

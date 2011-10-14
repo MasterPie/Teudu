@@ -5,10 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="109" d:DesignWidth="332">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Helvetica Neue LT Std"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="Foreground" Value="#FFF3F0e9"></Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
-        <StackPanel Panel.ZIndex="1">
-            <!--<Line Stroke="White" StrokeThickness="3" X1="0" X2="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>-->
-            <TextBlock x:Name="EventTitle" Text="{Binding Title,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="10,0,10,0" TextWrapping="Wrap" FontSize="32"/>
+        <StackPanel Panel.ZIndex="1" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <TextBlock x:Name="EventTitle" Text="{Binding Title,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="10,0,10,0" TextWrapping="Wrap" FontSize="30" FontWeight="Bold"/>
             <TextBlock x:Name="EventDate" Text="{Binding Date,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="10,0,10,0" TextWrapping="Wrap" FontSize="20"/>
             <TextBlock x:Name="EventDescription" Text="{Binding Description,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="10" TextWrapping="Wrap" FontSize="20"/>
         </StackPanel>
