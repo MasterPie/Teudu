@@ -34,7 +34,7 @@
                         <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=VisibleLocation}"/>-->
                     </StackPanel>
                 </DockPanel>
-                <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/1029101434-02.jpg" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
+                <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
             </StackPanel>
         </Border>
         <Canvas>

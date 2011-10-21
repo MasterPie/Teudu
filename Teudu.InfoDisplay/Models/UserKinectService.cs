@@ -53,20 +53,21 @@ namespace Teudu.InfoDisplay
         { 
             var skeleton = e.SkeletonFrame.Skeletons
                 .Where(s => s.TrackingState == SkeletonTrackingState.Tracked)
+                .OrderBy(x => x.Position.Z) //track closest
                 .FirstOrDefault(); 
 
             if (skeleton == null)
                 return;
 
-            var headPosition = skeleton.Joints[JointID.Head].ScaleTo(1920, 1080, 0.4f, 0.4f,true).Position;
-            var rightHandPosition = skeleton.Joints[JointID.HandRight].ScaleTo(1920, 1080, 0.4f, 0.4f, true).Position;
-            var leftHandPosition = skeleton.Joints[JointID.HandLeft].ScaleTo(1920, 1080, 0.4f, 0.4f, true).Position;
-            var torsoPosition = skeleton.Joints[JointID.HipCenter].ScaleTo(1920, 1080, 0.4f, 0.4f, true).Position;
-            var leftElbowPosition = skeleton.Joints[JointID.ElbowLeft].ScaleTo(1920, 1080, 0.4f, 0.4f, true).Position;
-            var rightElbowPosition = skeleton.Joints[JointID.ElbowRight].ScaleTo(1920, 1080, 0.4f, 0.4f, true).Position;
-            var leftShoulderPosition = skeleton.Joints[JointID.ShoulderLeft].ScaleTo(1920, 1080, 0.4f, 0.4f, true).Position;
-            var rightShoulderPosition = skeleton.Joints[JointID.ShoulderRight].ScaleTo(1920, 1080, 0.4f, 0.4f, true).Position;
-            var spinePosition = skeleton.Joints[JointID.Spine].ScaleTo(1920, 1080, 0.4f, 0.4f, true).Position;
+            var headPosition = skeleton.Joints[JointID.Head].ScaleTo(1920, 1080, 0.4f, 0.4f,false).Position;
+            var rightHandPosition = skeleton.Joints[JointID.HandRight].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
+            var leftHandPosition = skeleton.Joints[JointID.HandLeft].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
+            var torsoPosition = skeleton.Joints[JointID.HipCenter].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
+            var leftElbowPosition = skeleton.Joints[JointID.ElbowLeft].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
+            var rightElbowPosition = skeleton.Joints[JointID.ElbowRight].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
+            var leftShoulderPosition = skeleton.Joints[JointID.ShoulderLeft].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
+            var rightShoulderPosition = skeleton.Joints[JointID.ShoulderRight].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
+            var spinePosition = skeleton.Joints[JointID.Spine].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
 
             isTrackingSkeleton = true;
 
@@ -84,7 +85,7 @@ namespace Teudu.InfoDisplay
                     TorsoPosition = torsoPosition
                 }); 
             } 
-        }        
+        }
         
         public void Cleanup() 
         { 

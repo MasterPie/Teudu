@@ -23,7 +23,6 @@ namespace Teudu.InfoDisplay
     public partial class MainWindow : Window
     {
         //private EventBoard current;
-
         public MainWindow()
         {
             InitializeComponent();

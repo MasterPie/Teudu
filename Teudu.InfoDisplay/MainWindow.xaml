@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
         Title="Teudu" Height="1080" Width="1920"
-        DataContext="{Binding ViewModel, Source={StaticResource loader}}" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
+        DataContext="{Binding ViewModel, Source={StaticResource loader}}" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize" Cursor="None">
     <Window.Resources>
         <teudu:PrettyDateConverter x:Key="dateConverter"/>
         <teudu:NotifyingDateTime x:Key="notifyingDate"/>
+        <teudu:BoolColorConverter x:Key="boolConverter"/>
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Helvetica Neue LT Std"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
@@ -18,7 +19,7 @@
             <!--<teudu:BoardNavigatorControl x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10"/>-->
             <teudu:BoardPagedControl x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10" Margin="0,0,0,0"/>
         </StackPanel>
-        <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
+        <TextBlock Text="+" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center" Foreground="{Binding Path=Engaged, Converter={StaticResource boolConverter}}"/>
         <TextBlock Text="{Binding Source={StaticResource notifyingDate},Path=Now, Converter={StaticResource dateConverter}}" Panel.ZIndex="99" Width="300" HorizontalAlignment="Right" Margin="0,25,40,0"/>
     </Grid>
 </Window>
