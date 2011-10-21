@@ -104,18 +104,18 @@ namespace Teudu.InfoDisplay
         {
             Binding bindingX = new Binding
             {
-                Path = new PropertyPath("DominantArmHandOffsetX"),
+                Path = new PropertyPath("GlobalOffsetX"),
                 Source = this.DataContext
             };
             Binding bindingX2 = new Binding
             {
-                Path = new PropertyPath("DominantArmHandOffsetX"),
+                Path = new PropertyPath("GlobalOffsetX"),
                 Source = this.DataContext,
                 Converter = new SlowedOffsetNavigationConverter()
             };
             Binding bindingY = new Binding
             {
-                Path = new PropertyPath("DominantArmHandOffsetY"),
+                Path = new PropertyPath("GlobalOffsetY"),
                 Source = this.DataContext
             };
             BindingOperations.SetBinding(BoardPosition, TranslateTransform.XProperty, bindingX);
@@ -212,12 +212,12 @@ namespace Teudu.InfoDisplay
             if (GoNext())
             {
                 isShifting = true;
-                Advance();
+                //Advance();
             }
             else if (GoPrevious())
             {
                 isShifting = true;
-                Regress();
+                //Regress();
             }
         }
     }

@@ -97,21 +97,24 @@ namespace Teudu.InfoDisplay
         {
             boards.Clear();
             Dictionary<string, Board> boardLookup = new Dictionary<string, Board>();
-            boardLookup.Add("hot", new Board("Hot"));
+            boardLookup.Add("hot", new Board("Hot Events"));
 
             events.ForEach(x =>
             {
-                List<Category> categories = x.Categories;
-                categories.ForEach(cat =>
+                if (x.StartTime >= DateTime.Now)
                 {
-                    if (boardLookup.ContainsKey(cat.Name.ToLower()))
-                        boardLookup[cat.Name.ToLower()].Events.Add(x);
-                    else
-                        boardLookup.Add(cat.Name.ToLower(), new Board(cat.Name) { Events = new List<Event>() {x} });
-                });
+                    List<Category> categories = x.Categories;
+                    categories.ForEach(cat =>
+                    {
+                        if (boardLookup.ContainsKey(cat.Name.ToLower()))
+                            boardLookup[cat.Name.ToLower()].Events.Add(x);
+                        else
+                            boardLookup.Add(cat.Name.ToLower(), new Board(cat.Name) { Events = new List<Event>() { x } });
+                    });
 
-                if (x.HappeningThisWeek)
-                    boardLookup["hot"].Events.Add(x);
+                    //if (x.HappeningThisWeek)
+                        boardLookup["hot"].Events.Add(x);
+                }
             });
 
             foreach (string key in boardLookup.Keys)

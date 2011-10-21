@@ -30,7 +30,7 @@ namespace Teudu.InfoDisplay
             {
                 this.BoardTitle.Text = value.Title;
                 this.BoardStats.Text = "15 events in the next 2 hours";
-                this.BoardStats.Text = String.Format("{0} events in the next {1} hours", value.Events.Count, (DateTime.Now - value.MaxDate).Hours);
+                this.BoardStats.Text = String.Format("{0} events in the next {1} hours", value.Events.Count, "48");
             }
         }
 

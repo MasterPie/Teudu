@@ -69,13 +69,20 @@ namespace Teudu.InfoDisplay
                 this.EventContainer.Opacity = 0;
                 this.eventModel = value;
 
-                BitmapImage src = new BitmapImage();
-                src.BeginInit();
+                try
+                {
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
 
-                src.UriSource = new Uri(imageDirectory + this.eventModel.Image);
-                src.CacheOption = BitmapCacheOption.OnLoad;
-                src.EndInit();
-                this.image.Source = src;
+                    src.UriSource = new Uri(imageDirectory + this.eventModel.Image);
+                    src.CacheOption = BitmapCacheOption.OnLoad;
+                    src.EndInit();
+                    this.image.Source = src;
+                }
+                catch (Exception e)
+                {
+                    //
+                }
 
                 this.Details.Event = value;
 

@@ -71,13 +71,13 @@ namespace Teudu.InfoDisplay
         public string PrettyTime()
         {
             string start = time.ToString("dddd, MMMM d, h:mm tt");
-            string end = "1:00 AM";
+            string end = "Future";
             return start + " - " + end;
         }
 
         public bool HappeningThisWeek
         {
-            get { return time.Subtract(DateTime.Today) <= new TimeSpan(7, 0, 0, 0); }
+            get { return time.Subtract(DateTime.Today) <= new TimeSpan(20, 0, 0, 0) && time >= DateTime.Now; }
         }
     }
 }

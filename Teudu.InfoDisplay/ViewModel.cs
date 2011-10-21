@@ -25,6 +25,9 @@ namespace Teudu.InfoDisplay
         private double ARM_SCALE_FACTOR_Z = 1;//500; // Distance to tv
         private double UserClearanceDistance;
 
+        private double EntryX = 0;
+        private double EntryY = 0;
+
         //private const int MAX_SCALE = 4;
         //private const int MIN_SCALE = 1;
 
@@ -154,6 +157,8 @@ namespace Teudu.InfoDisplay
 
                 this.head.Y = e.HeadPosition.Y * ARM_SCALE_FACTOR_Y;
 
+                bool wasEngaged = Engaged;
+
                 this.rightArm.HandX = (e.RightHandPosition.X * ARM_SCALE_FACTOR_X);
                 this.rightArm.HandY = (e.RightHandPosition.Y * ARM_SCALE_FACTOR_Y);
                 this.rightArm.HandZ = e.RightHandPosition.Z * ARM_SCALE_FACTOR_Z;
@@ -174,6 +179,17 @@ namespace Teudu.InfoDisplay
                 this.leftArm.ShoulderY = (e.LeftShoulderPosition.Y * ARM_SCALE_FACTOR_Y);
                 this.leftArm.ShoulderZ = e.LeftShoulderPosition.Z * ARM_SCALE_FACTOR_Z;
 
+                if (!wasEngaged)
+                {
+                    oldGlobalX = GlobalOffsetX;
+                    oldGlobalY = GlobalOffsetY;
+                    EntryX = DominantArmHandOffsetX;
+                    EntryY = DominantArmHandOffsetY;
+                }
+                //hand not moving and not engaged...abort
+                    GlobalOffsetX = DominantArmHandOffsetX;
+                    GlobalOffsetY = DominantArmHandOffsetY;
+                
                 this.spine.Z = e.SpinePosition.Z * ARM_SCALE_FACTOR_Z;
 
                 this.torso.Y = (e.TorsoPosition.Y * ARM_SCALE_FACTOR_Y);
@@ -181,12 +197,16 @@ namespace Teudu.InfoDisplay
 
                 //Trace.WriteLine("Right arm is " + rightArm.HandZ);
 
+                
+
                 if (ViewChangeMode == HandsState.Panning)
                 {
                     this.OnPropertyChanged("DominantArmHandOffsetX");
                     this.OnPropertyChanged("DominantArmHandOffsetY");
+                    
                     //Pan();
                 }
+                this.OnPropertyChanged("Engaged");
                 //else if (ViewChangeMode == HandsState.Zooming)
                 //    Scale();
                 //Trace.WriteLineIf(LeftArmInFront, "Left arm z " + leftArm.HandZ + " , spine z " + spine.Z);
@@ -285,16 +305,32 @@ namespace Teudu.InfoDisplay
         //    get{ return (DominantHand.HandY > hotSpotBottom) && (DominantHand.HandY <= (hotSpotBottom + hotspotRegionY)); }
         //}
 
+        public bool Engaged
+        {
+            get
+            {
+                return LeftHandActive || RightHandActive;
+            }
+        }
+
+        public double ArmReadiness
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
         public bool LeftArmInFront
         {
             get { return leftArm.HandZ < UserClearanceDistance; }
-                //leftArm.ArmAlmostStraight && LeftHandAboveTorso || (leftArm.HandZ < (spine.Z - 100)); }
+                //return leftArm.ArmAlmostStraight && LeftHandAboveTorso || (leftArm.HandZ < (spine.Z - 100)); }
         }
 
         public bool RightArmInFront
         {
             get { return rightArm.HandZ < UserClearanceDistance; }
-                //rightArm.ArmAlmostStraight && RightHandAboveTorso || (rightArm.HandZ < (spine.Z - 100)); }
+                //return rightArm.ArmAlmostStraight && RightHandAboveTorso || (rightArm.HandZ < (spine.Z - 100)); }
         }
 
         public HandsState ViewChangeMode
@@ -345,14 +381,30 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        private double oldGlobalX = 0;
+        private double oldGlobalY = 0;
+        private double globalX = 0;
+        private double globalY = 0;
+        public double GlobalOffsetX
+        {
+            set {globalX = EntryX-value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX"); Trace.WriteLine("Changed with value: " + globalX);}
+            get { return globalX; }
+        }
+
+        public double GlobalOffsetY
+        {
+            set {globalY = EntryY - value + oldGlobalY; this.OnPropertyChanged("GlobalOffsetY"); }
+            get { return globalY; }
+        }
+
         public double DominantArmHandOffsetX
         {
-            get { return DominantHand.HandOffsetX*6; }
+            get { return -DominantHand.HandOffsetX*2; }
         }
 
         public double DominantArmHandOffsetY
         {
-            get { return DominantHand.HandOffsetY*6; }
+            get { return -DominantHand.HandOffsetY*2; }
         }
 
         #endregion
