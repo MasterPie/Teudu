@@ -74,6 +74,8 @@ namespace Teudu.InfoDisplay
             {
                 //currBoard = (currBoard + 1) % boards.Count;
                 currBoard++;
+                if (BoardAdvanced != null)
+                    BoardAdvanced(this, new BoardEventArgs() { Board = Current, Previous = Prev, Next = Next, BoardService = this });
                 return true;
             }
             return false;
@@ -84,6 +86,8 @@ namespace Teudu.InfoDisplay
             if (currBoard > 0)
             {
                 currBoard--;
+                if(BoardRegressed != null)
+                    BoardRegressed(this, new BoardEventArgs() { Board = Current, Previous = Prev, Next = Next, BoardService = this });
                 return true;
             }
             //else
@@ -106,10 +110,10 @@ namespace Teudu.InfoDisplay
                     List<Category> categories = x.Categories;
                     categories.ForEach(cat =>
                     {
-                        if (boardLookup.ContainsKey(cat.Name.ToLower()))
-                            boardLookup[cat.Name.ToLower()].Events.Add(x);
+                        if (boardLookup.ContainsKey(cat.Name.Trim().ToLower()))
+                            boardLookup[cat.Name.Trim().ToLower()].Events.Add(x);
                         else
-                            boardLookup.Add(cat.Name.ToLower(), new Board(cat.Name) { Events = new List<Event>() { x } });
+                            boardLookup.Add(cat.Name.Trim().ToLower(), new Board(cat.Name) { Events = new List<Event>() { x } });
                     });
 
                     //if (x.HappeningThisWeek)
@@ -142,6 +146,8 @@ namespace Teudu.InfoDisplay
         }
 
         public event EventHandler BoardsUpdated;
+        public event EventHandler<BoardEventArgs> BoardRegressed;
+        public event EventHandler<BoardEventArgs> BoardAdvanced;
         public event EventHandler<BoardEventArgs> ActiveBoardChanged;
     }
 }
