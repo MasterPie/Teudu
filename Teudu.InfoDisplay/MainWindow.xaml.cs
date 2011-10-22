@@ -30,7 +30,7 @@ namespace Teudu.InfoDisplay
             //((ViewModel)this.DataContext).PanRequest += new EventHandler<PanEventArgs>(MainWindow_PanRequest);
             //((ViewModel)this.DataContext).ScaleRequest += new EventHandler<ScaleEventArgs>(MainWindow_ScaleRequest);
             ((ViewModel)this.DataContext).BoardsUpdated += new EventHandler<BoardEventArgs>(MainWindow_BoardsUpdated);
-
+            
             //current = new EventBoard();
             //this.BoardContainer.Children.Add(current);
             
