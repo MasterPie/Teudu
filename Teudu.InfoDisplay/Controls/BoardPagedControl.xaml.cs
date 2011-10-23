@@ -75,16 +75,18 @@ namespace Teudu.InfoDisplay
         {
             double from = -positionOffsets[boardMaster.Next] + this.ActualWidth / 2 - boardInbetween;
             double to = -positionOffsets[boardMaster.Current];
-            //ShiftBoard(from, to);
-            this.Crumbs.Current = e.Board;
+            ShiftBoard(from, to);
+            //this.Crumbs.Current = e.Board;
+            //isShifting = false;
         }
 
         void boardMaster_BoardAdvanced(object sender, BoardEventArgs e)
         {
             double from = -positionOffsets[boardMaster.Prev] - this.ActualWidth / 2 + boardInbetween;
             double to = -positionOffsets[boardMaster.Current];
-            //ShiftBoard(from, to);
-            this.Crumbs.Current = e.Board;
+            ShiftBoard(from, to);
+            //this.Crumbs.Current = e.Board;
+            //isShifting = false;
         }
 
         private void CreateBoardViews()
@@ -146,7 +148,8 @@ namespace Teudu.InfoDisplay
             if (boardMaster == null || !boardMaster.AdvanceCurrent())
                 return;
 
-            //ClearBindings();
+            System.Diagnostics.Trace.WriteLine("Moved to " + boardMaster.Current);
+            ClearBindings();
         }
 
         private void ShiftBoard(double from, double to)
@@ -157,6 +160,7 @@ namespace Teudu.InfoDisplay
             Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath("(Canvas.Left)"));
 
             DoubleAnimation advanceAnimation2 = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
+            //advanceAnimation2.Completed +=new EventHandler(advanceAnimation_Completed);
             Storyboard.SetTarget(advanceAnimation2, TitleContainer);
             Storyboard.SetTargetProperty(advanceAnimation2, new PropertyPath("(Canvas.Left)"));
             sbAdvance.Children.Clear();
@@ -167,10 +171,16 @@ namespace Teudu.InfoDisplay
 
         void advanceAnimation_Completed(object sender, EventArgs e)
         {
-            Canvas.SetLeft(BoardContainer, -positionOffsets[boardMaster.Current]);
-            Canvas.SetLeft(TitleContainer, -positionOffsets[boardMaster.Current]);
+            //Canvas.SetLeft(BoardContainer, -positionOffsets[boardMaster.Current]);
+            //Canvas.SetLeft(TitleContainer, -positionOffsets[boardMaster.Current]);
+            TranslateTransform titleTransform = new TranslateTransform(-positionOffsets[boardMaster.Current], 0);
+            TitleContainer.RenderTransform = titleTransform;
+            this.Crumbs.Current = boardMaster.Current;
             sbAdvance.Stop();
-            trackingResetTimer.Start();           
+            ((ViewModel)this.DataContext).UpdateBrowse(-positionOffsets[boardMaster.Current], 0);
+            SetBindings();
+            isShifting = false;
+            //trackingResetTimer.Start();           
         }
 
         private void Regress()
@@ -178,27 +188,18 @@ namespace Teudu.InfoDisplay
             if (boardMaster == null || !boardMaster.RegressCurrent())
                 return;
 
-            //ClearBindings();
-        }
-
-        void regressAnimation_Completed(object sender, EventArgs e)
-        {
-            Canvas.SetLeft(BoardContainer, -positionOffsets[boardMaster.Current]);
-            Canvas.SetLeft(TitleContainer, -positionOffsets[boardMaster.Current]);
-            sbAdvance.Stop();
-            this.Crumbs.Current = boardMaster.Current;
-            trackingResetTimer.Start();   
+            ClearBindings();
         }
 
         private bool GoPrevious()
         {
-            //System.Diagnostics.Trace.WriteLine("prev at: " + BoardLeftEdgeLocation().X + ">? thres: " + (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 - boardInbetween));
+            System.Diagnostics.Trace.WriteLine("prev at: " + BoardLeftEdgeLocation().X + ">? thres: " + (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 - boardInbetween));
             return BoardLeftEdgeLocation().X > (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 - boardInbetween);
         }
 
         private bool GoNext()
         {
-            System.Diagnostics.Trace.WriteLine("next thres: " + (-positionOffsets[boardMaster.Current] - this.ActualWidth / 2 + boardInbetween));
+            System.Diagnostics.Trace.WriteLine("next at: " + BoardLeftEdgeLocation().X + " <? next thres: " + (-positionOffsets[boardMaster.Current] - this.ActualWidth / 2 + boardInbetween));
             return (BoardLeftEdgeLocation().X) < (-positionOffsets[boardMaster.Current] - this.ActualWidth/2 + boardInbetween);
         }
 
@@ -215,6 +216,7 @@ namespace Teudu.InfoDisplay
             if (GoNext())
             {
                 isShifting = true;
+                System.Diagnostics.Trace.WriteLine("Advance!");
                 Advance();
             }
             else if (GoPrevious())
