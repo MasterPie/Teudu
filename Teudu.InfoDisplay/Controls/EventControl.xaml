@@ -29,18 +29,13 @@
     <Grid>
         <Border x:Name="outerBorder" BorderBrush="#FFF3F0e9">
             <StackPanel x:Name="EventContainer">
-                <DockPanel Panel.ZIndex="11" LastChildFill="False">
-                    <StackPanel DockPanel.Dock="Bottom">
-                        <!--<TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=VisibleLocation}"/>-->
-                    </StackPanel>
-                </DockPanel>
-                <Image x:Name="image" Panel.ZIndex="10" Source="/Teudu.InfoDisplay;component/Images/" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
+                <Image x:Name="image" Panel.ZIndex="10" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
+                <!--Source="/Teudu.InfoDisplay;component/Images/"-->
             </StackPanel>
         </Border>
         <Canvas>
             <teudu:EventDetailsControl x:Name="Details"  Visibility="Hidden" Panel.ZIndex="99"
                 Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,25,0" />
         </Canvas>
-        <!--<Image Source="/Teudu.InfoDisplay;component/Images/Gradint.png"/>-->
      </Grid>
 </UserControl>

@@ -21,6 +21,7 @@ namespace Teudu.InfoDisplay
         private double HeightOffGround = 0;
         private double CORRESPONDENCE_SCALE_FACTOR = 4;
         private double UserClearanceDistance;
+        private int maxEventHeight;
 
         private bool firstEntry = true;
         private double EntryX = 0;
@@ -37,6 +38,8 @@ namespace Teudu.InfoDisplay
             Double.TryParse(ConfigurationManager.AppSettings["UserDistanceRequired"], out UserClearanceDistance);
             HeightOffGround = 0;
             Double.TryParse(ConfigurationManager.AppSettings["HeightOffGround"], out HeightOffGround);
+            if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
+                maxEventHeight = 340;
 
 
             this.kinectService = kinectService; 
@@ -218,10 +221,13 @@ namespace Teudu.InfoDisplay
         public double GlobalOffsetY
         {
             set {
-                if (EntryY - value + oldGlobalY > App.Current.MainWindow.ActualHeight / 2)
-                    globalY = App.Current.MainWindow.ActualHeight / 2;
+                if (EntryY - value + oldGlobalY > (App.Current.MainWindow.ActualHeight / 2 - 250))
+                    globalY = App.Current.MainWindow.ActualHeight / 2 - 250;
+                else if (EntryY - value + oldGlobalY < (3*-maxEventHeight))
+                    globalY = (3 * -maxEventHeight);
                 else
-                    globalY = EntryY - value + oldGlobalY; this.OnPropertyChanged("GlobalOffsetY"); }
+                    globalY = EntryY - value + oldGlobalY; this.OnPropertyChanged("GlobalOffsetY");
+            }
             get
             {
                 if (firstEntry)

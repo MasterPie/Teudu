@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Configuration;
 
 namespace Teudu.InfoDisplay
 {
@@ -55,10 +56,19 @@ namespace Teudu.InfoDisplay
                 this.Board.Children.Clear();
                 if (value == null)
                     return;
+
+                int eventWidth = 230;
+                if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventWidth"], out eventWidth))
+                    eventWidth = 230;
+                int maxEventHeight = 340;
+                if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
+                    maxEventHeight = 340;
+                
                 BoardModel.Events.ForEach(x => this.Board.Children.Add(new EventControl()
                 {
                     Event = x,
-                    Width = 230,
+                    Width = eventWidth,
+                    MaxHeight = maxEventHeight,
                     Margin = new Thickness(0,0,20,20)
                 }));
                 this.OnPropertyChanged("BoardTitle");
