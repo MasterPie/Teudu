@@ -17,7 +17,8 @@ namespace Teudu.InfoDisplay
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return null;
+            double slowedOffset = (double)value;
+            return slowedOffset * 10;
         }
     }
 }

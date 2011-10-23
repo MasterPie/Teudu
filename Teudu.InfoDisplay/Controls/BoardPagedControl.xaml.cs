@@ -100,6 +100,7 @@ namespace Teudu.InfoDisplay
                 EventBoard boardView = new EventBoard();
                 boardView.MaxWidth = boardView.Width = App.Current.MainWindow.ActualWidth - boardInbetween;
                 boardView.Height = this.ActualHeight;
+                boardView.MaxHeight = 3 * 340;
                 boardView.BoardModel = x;
 
                 BoardTitleControl boardTitle = new BoardTitleControl();
@@ -140,7 +141,7 @@ namespace Teudu.InfoDisplay
             };
             BindingOperations.SetBinding(BoardPosition, TranslateTransform.XProperty, bindingX);
             BindingOperations.SetBinding(BoardPosition, TranslateTransform.YProperty, bindingY);
-            BindingOperations.SetBinding(TitlePosition, TranslateTransform.XProperty, bindingX2);
+            BindingOperations.SetBinding(TitlePosition, TranslateTransform.XProperty, bindingX);
         }
         Storyboard sbAdvance;
         private void Advance()
@@ -160,7 +161,6 @@ namespace Teudu.InfoDisplay
             Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath("(Canvas.Left)"));
 
             DoubleAnimation advanceAnimation2 = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
-            //advanceAnimation2.Completed +=new EventHandler(advanceAnimation_Completed);
             Storyboard.SetTarget(advanceAnimation2, TitleContainer);
             Storyboard.SetTargetProperty(advanceAnimation2, new PropertyPath("(Canvas.Left)"));
             sbAdvance.Children.Clear();
@@ -171,14 +171,13 @@ namespace Teudu.InfoDisplay
 
         void advanceAnimation_Completed(object sender, EventArgs e)
         {
-            //Canvas.SetLeft(BoardContainer, -positionOffsets[boardMaster.Current]);
-            //Canvas.SetLeft(TitleContainer, -positionOffsets[boardMaster.Current]);
-            TranslateTransform titleTransform = new TranslateTransform(-positionOffsets[boardMaster.Current], 0);
-            TitleContainer.RenderTransform = titleTransform;
+            //TranslateTransform titleTransform = new TranslateTransform(-positionOffsets[boardMaster.Current], 0);
+            //TitleContainer.RenderTransform = titleTransform;
             this.Crumbs.Current = boardMaster.Current;
             sbAdvance.Stop();
             ((ViewModel)this.DataContext).UpdateBrowse(-positionOffsets[boardMaster.Current], 0);
             SetBindings();
+            //TitleContainer.RenderTransform = TitlePosition;
             isShifting = false;
             //trackingResetTimer.Start();           
         }
