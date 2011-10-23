@@ -19,12 +19,13 @@ namespace Teudu.InfoDisplay
     {
         private const double SCALE_OFFSET = 250;
         private double HeightOffGround = 0;
-        private double CORRESPONDENCE_SCALE_FACTOR = 2;
+        private double CORRESPONDENCE_SCALE_FACTOR = 4;
         private double UserClearanceDistance;
 
         private bool firstEntry = true;
         private double EntryX = 0;
         private double EntryY = 0;
+        private bool updatingViewState = false;
 
         IKinectService kinectService;
         ISourceService sourceService;
@@ -52,14 +53,16 @@ namespace Teudu.InfoDisplay
             this.sourceService.BeginPoll();
         }
 
-        public double ViewBrowseX
+        public void UpdateBrowse(double x, double y)
         {
-            set { oldGlobalX = value; }
-        }
-
-        public double ViewBrowseY
-        {
-            set { oldGlobalY = value; }
+            updatingViewState = true;
+            oldGlobalX = x;
+            oldGlobalY = y;
+            EntryX = DominantArmHandOffsetX;
+            EntryY = DominantArmHandOffsetY;
+            globalX = oldGlobalX;
+            globalY = oldGlobalY;
+            updatingViewState = false;
         }
 
         void boardService_BoardsChanged(object sender, EventArgs e)
@@ -100,6 +103,9 @@ namespace Teudu.InfoDisplay
 
                 if(Engaged)
                     firstEntry = false;
+
+                if (updatingViewState)
+                    return;
 
                 if (!wasEngaged)
                 {
@@ -202,7 +208,7 @@ namespace Teudu.InfoDisplay
         private double globalY = 0;
         public double GlobalOffsetX
         {
-            set {globalX = EntryX-value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX"); }
+            set { globalX = EntryX - value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX"); Trace.WriteLine("GlobalX: " + globalX); }
             get {
                 if (firstEntry)
                     return 0;
