@@ -20,9 +20,9 @@
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="EventContainer"
                 Storyboard.TargetProperty="Opacity" IsAdditive="True"
-                Duration="0:0:15" FillBehavior="Stop" Completed="AppearAnimation_Completed">
+                Duration="0:0:1" FillBehavior="Stop" Completed="AppearAnimation_Completed">
                 <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:15" Value="100" KeySpline="0.25,0.5,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="1" KeySpline="0.25,0.5,0.75,1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="SlideUpAnimation" x:Name="SlideUpAnimation">
@@ -40,7 +40,7 @@
         </Storyboard>
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe WP"></Setter>
-            <Setter Property="FontSize" Value="24"></Setter>
+            <Setter Property="FontSize" Value="30"></Setter>
             <Setter Property="Foreground" Value="White"></Setter>
         </Style>
         <Style BasedOn="{StaticResource {x:Type TextBlock}}"
@@ -48,7 +48,8 @@
                x:Key="EventHappeningTime">
             <Setter Property="Typography.Capitals" Value="Titling"></Setter>
             <Setter Property="FontFamily" Value="Segoe WP Bold"></Setter>
-            <Setter Property="FontSize" Value="35"></Setter>
+            <Setter Property="Margin" Value="0,-10,0,0"></Setter>
+            <Setter Property="FontSize" Value="40"></Setter>
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -69,7 +70,7 @@
                   Height="{Binding ActualHeight,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
                 <StackPanel VerticalAlignment="Center" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
                     <TextBlock Text="Starts in" TextAlignment="Center"/>
-                    <TextBlock Text="{Binding StartsIn,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource EventHappeningTime}" TextAlignment="Center" />
+                    <TextBlock Text="{Binding StartsIn,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource EventHappeningTime}" TextAlignment="Center"/>
                 </StackPanel>
                 <Grid.RenderTransform>
                     <TransformGroup>

@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Teudu.InfoDisplay
 {
-    public class ViewModelLoader
+    public class ViewModelLoader    
     {
         static ViewModel viewModelStatic; 
         static IKinectService kinectService;

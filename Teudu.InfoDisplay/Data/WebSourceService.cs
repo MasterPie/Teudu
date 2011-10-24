@@ -22,6 +22,7 @@ namespace Teudu.InfoDisplay
         private string serviceURI;
 
         private BackgroundWorker downloadWorker;
+        private DispatcherTimer retryTimer;
         private DispatcherTimer timer;
 
         public void Initialize()
@@ -43,9 +44,18 @@ namespace Teudu.InfoDisplay
             timer.Interval = new TimeSpan(0, 0, pollTime);
             timer.Tick += new EventHandler(timer_Tick);
 
+            retryTimer = new DispatcherTimer();
+            retryTimer.Interval = TimeSpan.FromSeconds(30);
+            retryTimer.Tick += new EventHandler(retryTimer_Tick);
+
             downloadWorker = new BackgroundWorker();
             downloadWorker.DoWork += new DoWorkEventHandler(downloadWorker_DoWork);
             downloadWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(downloadWorker_RunWorkerCompleted);
+        }
+
+        void retryTimer_Tick(object sender, EventArgs e)
+        {
+            BeginPoll();
         }
 
         void downloadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -61,12 +71,19 @@ namespace Teudu.InfoDisplay
 
         void downloadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            xmlResponse = wc.DownloadString(serviceURI);
+            try
+            {
+                xmlResponse = wc.DownloadString(serviceURI);
 
-            doc.LoadXml(xmlResponse);
+                doc.LoadXml(xmlResponse);
 
-            List<Event> events = ReadEvents();
-            e.Result = events;
+                List<Event> events = ReadEvents();
+                e.Result = events;
+            }
+            catch (Exception)
+            {
+                retryTimer.Start();
+            }
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -77,6 +94,9 @@ namespace Teudu.InfoDisplay
 
         public void BeginPoll()
         {
+            if (retryTimer.IsEnabled)
+                retryTimer.Stop();
+
             downloadWorker.RunWorkerAsync();
             //timer.Start();
         }
@@ -96,6 +116,7 @@ namespace Teudu.InfoDisplay
                         string name, description, image;
                         name = description = image = "";
                         DateTime time = new DateTime();
+                        DateTime endTime = new DateTime();
                         List<Category> categories = new List<Category>();
 
                         if(node.Attributes.GetNamedItem("id") != null)
@@ -109,10 +130,16 @@ namespace Teudu.InfoDisplay
                             if (detail.Name.ToLower().Equals("description"))
                                 description = detail.InnerText;
 
-                            if (detail.Name.ToLower().Equals("datetime"))
+                            if (detail.Name.ToLower().Equals("starttime"))
                             {
                                 if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/'), "yyyy/MM/dd HH:mm:ss UTC", culture, DateTimeStyles.AssumeUniversal, out time))
                                     time = DateTime.Now;
+                            }
+
+                            if (detail.Name.ToLower().Equals("endtime"))
+                            {
+                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/'), "yyyy/MM/dd HH:mm:ss UTC", culture, DateTimeStyles.AssumeUniversal, out endTime))
+                                    endTime = DateTime.Now.AddYears(20);
                             }
 
                             if (detail.Name.ToLower().Equals("image"))
@@ -124,7 +151,7 @@ namespace Teudu.InfoDisplay
 
                         string imageLoc = DownloadImage(image, id);
                         
-                        retEvents.Add(new Event(id, name, description, time, time.AddHours(1), imageLoc, categories));
+                        retEvents.Add(new Event(id, name, description, time, endTime, imageLoc, categories));
                     }
                 }
             }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace Teudu.InfoDisplay.Test
 {
@@ -54,6 +55,7 @@ namespace Teudu.InfoDisplay.Test
 
         private List<Event> ReadEvents()
         {
+            CultureInfo culture = CultureInfo.InvariantCulture;
             List<Event> retEvents = new List<Event>();
             XmlNode root = doc.DocumentElement;
             try
@@ -66,9 +68,11 @@ namespace Teudu.InfoDisplay.Test
                         string name, description, image;
                         name = description = image = "";
                         DateTime time = new DateTime();
+                        DateTime endTime = new DateTime();
                         List<Category> categories = new List<Category>();
 
-                        Int32.TryParse(node.Attributes.GetNamedItem("id").Value, out id);
+                        if (node.Attributes.GetNamedItem("id") != null)
+                            Int32.TryParse(node.Attributes.GetNamedItem("id").Value, out id);
 
                         foreach (XmlNode detail in node.ChildNodes)
                         {
@@ -78,17 +82,26 @@ namespace Teudu.InfoDisplay.Test
                             if (detail.Name.ToLower().Equals("description"))
                                 description = detail.InnerText;
 
-                            if (detail.Name.ToLower().Equals("datetime"))
+                            if (detail.Name.ToLower().Equals("starttime"))
                             {
-                                if (!DateTime.TryParse(detail.InnerText, out time))
+                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/'), "yyyy/MM/dd HH:mm:ss UTC", culture, DateTimeStyles.AssumeUniversal, out time))
                                     time = DateTime.Now;
+                            }
+
+                            if (detail.Name.ToLower().Equals("endtime"))
+                            {
+                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/'), "yyyy/MM/dd HH:mm:ss UTC", culture, DateTimeStyles.AssumeUniversal, out endTime))
+                                    endTime = DateTime.Now.AddYears(20);
                             }
 
                             if (detail.Name.ToLower().Equals("image"))
                                 image = detail.InnerText;
+
+                            if (detail.Name.ToLower().Equals("categories"))
+                                detail.InnerText.Split(',').Distinct().ToList().ForEach(x => categories.Add(new Category(x.Trim())));
                         }
 
-                        retEvents.Add(new Event(id, name, description, time, time.AddHours(1), image, categories));
+                        retEvents.Add(new Event(id, name, description, time, endTime, image, categories));
                     }
                 }
             }

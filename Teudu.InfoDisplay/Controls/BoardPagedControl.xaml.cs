@@ -73,7 +73,7 @@ namespace Teudu.InfoDisplay
 
         void boardMaster_BoardRegressed(object sender, BoardEventArgs e)
         {
-            double from = -positionOffsets[boardMaster.Next] + this.ActualWidth / 2 - boardInbetween;
+            double from = -positionOffsets[boardMaster.Next] + this.ActualWidth / 2 + boardInbetween;
             double to = -positionOffsets[boardMaster.Current];
             ShiftBoard(from, to);
             //this.Crumbs.Current = e.Board;
@@ -193,7 +193,7 @@ namespace Teudu.InfoDisplay
         private bool GoPrevious()
         {
             System.Diagnostics.Trace.WriteLine("prev at: " + BoardLeftEdgeLocation().X + ">? thres: " + (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 - boardInbetween));
-            return BoardLeftEdgeLocation().X > (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 - boardInbetween);
+            return BoardLeftEdgeLocation().X > (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 + boardInbetween);
         }
 
         private bool GoNext()
