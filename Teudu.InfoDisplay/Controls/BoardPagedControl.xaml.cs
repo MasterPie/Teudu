@@ -35,7 +35,7 @@ namespace Teudu.InfoDisplay
             sbAdvance = new Storyboard();
 
             trackingResetTimer = new DispatcherTimer();
-            trackingResetTimer.Interval = new TimeSpan(0,0,0,0,500);
+            trackingResetTimer.Interval = TimeSpan.FromSeconds(5);
             trackingResetTimer.Tick += new EventHandler(trackingResetTimer_Tick);
 
             this.Loaded += new RoutedEventHandler(BoardNavigatorControl_Loaded);
@@ -44,8 +44,8 @@ namespace Teudu.InfoDisplay
         void trackingResetTimer_Tick(object sender, EventArgs e)
         {
             trackingResetTimer.Stop();
+            ((ViewModel)this.DataContext).UpdateBrowse(-positionOffsets[boardMaster.Current], 0);
             SetBindings();
-            //BoardPosition.Changed += new EventHandler(TranslateTransform_Changed);
             isShifting = false;
         }
 
@@ -67,7 +67,7 @@ namespace Teudu.InfoDisplay
                 BoardPosition.Changed += new EventHandler(TranslateTransform_Changed);
                 boardMaster.BoardAdvanced += new EventHandler<BoardEventArgs>(boardMaster_BoardAdvanced);
                 boardMaster.BoardRegressed += new EventHandler<BoardEventArgs>(boardMaster_BoardRegressed);
-                SetBindings();
+                trackingResetTimer.Start();
             }
         }
 

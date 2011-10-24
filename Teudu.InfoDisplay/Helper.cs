@@ -7,18 +7,23 @@ namespace Teudu.InfoDisplay
 {
     public class Helper
     {
-        public static string ToSensibleDate(double minutes)
+        public static string ToSensibleDate(string prefix, double minutes)
         {
             string sensibleDate = "";
             if (minutes < 60)
-                sensibleDate = minutes.ToString() + " minutes";
+                sensibleDate = prefix + " " + minutes.ToString() + " minutes";
 
-            int hours = TimeSpan.FromMinutes(minutes).Hours;
+            double hours = TimeSpan.FromMinutes(minutes).TotalHours;
+
 
             if (hours < 24)
-                sensibleDate = hours.ToString() + " hours";
+                sensibleDate = prefix + " " + Math.Round(hours, 0, MidpointRounding.AwayFromZero).ToString() + " hours";
+            else if (hours < 48)
+                sensibleDate = " tomorrow";
             else
-                sensibleDate = TimeSpan.FromMinutes(minutes).Days + " days";
+                sensibleDate = prefix + " " + Math.Round(TimeSpan.FromMinutes(minutes).TotalDays, 0, MidpointRounding.AwayFromZero) + " days";
+
+
 
             return sensibleDate;
 

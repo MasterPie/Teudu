@@ -48,7 +48,7 @@ namespace Teudu.InfoDisplay
             showEventTimer.Tick += new EventHandler(showEventTimer_Tick);
 
             slideUpTimer = new DispatcherTimer();
-            slideUpTimer.Interval = TimeSpan.FromSeconds(5);
+            slideUpTimer.Interval = TimeSpan.FromSeconds(60);
             slideUpTimer.Tick += new EventHandler(slideUpTimer_Tick);
 
             checkRecencyTimer = new DispatcherTimer();
@@ -91,12 +91,14 @@ namespace Teudu.InfoDisplay
 
         private int GetSlideUpFrequency()
         {
-            int secondsFrequency = 5;// 3600;
+            int secondsFrequency = 3600;
             DateTime now = DateTime.Now;
             TimeSpan recency = eventModel.StartTime - now;
-
+            System.Diagnostics.Trace.WriteLine("TotalHours: " + recency.TotalHours);
+            if (recency.TotalHours < 1000)
+                secondsFrequency = 12;
             if (recency.TotalHours < 5)
-                secondsFrequency = 10;// 60;
+                secondsFrequency = 60;
             if (recency.TotalMinutes < 60)
                 secondsFrequency = 15;
             if (recency.TotalMinutes < 30)
@@ -124,6 +126,7 @@ namespace Teudu.InfoDisplay
                     src.CacheOption = BitmapCacheOption.OnLoad;
                     src.EndInit();
                     this.image.Source = src;
+                    
                 }
                 catch (Exception e)
                 {
@@ -131,7 +134,7 @@ namespace Teudu.InfoDisplay
                 }
 
                 this.Details.Event = value;
-
+                slideUpTimer.Interval = TimeSpan.FromSeconds(GetSlideUpFrequency());
                 showEventTimer.Start();
             }
         }
@@ -142,7 +145,7 @@ namespace Teudu.InfoDisplay
             {
                 TimeSpan recency = eventModel.StartTime - DateTime.Now;
 
-                return Helper.ToSensibleDate(recency.TotalMinutes);
+                return Helper.ToSensibleDate("",recency.TotalMinutes);
             }
         }
 
