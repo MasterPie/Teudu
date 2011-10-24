@@ -52,7 +52,10 @@ namespace Teudu.InfoDisplay
 
             leftArm = new Arm();
             rightArm = new Arm();
+        }
 
+        public void BeginBackgroundJobs()
+        {
             this.sourceService.BeginPoll();
         }
 
@@ -211,7 +214,11 @@ namespace Teudu.InfoDisplay
         private double globalY = 0;
         public double GlobalOffsetX
         {
-            set { globalX = EntryX - value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX"); Trace.WriteLine("GlobalX: " + globalX); }
+            set {
+                if (EntryX - value + oldGlobalX > App.Current.MainWindow.ActualWidth / 2)
+                    globalX = App.Current.MainWindow.ActualWidth / 2;
+                else
+                    globalX = EntryX - value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX"); Trace.WriteLine("GlobalX: " + globalX); }
             get {
                 if (firstEntry)
                     return 0;

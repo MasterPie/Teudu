@@ -29,7 +29,10 @@ namespace Teudu.InfoDisplay
             set
             {
                 this.BoardTitle.Text = value.Title;
-                this.BoardStats.Text = String.Format("{0} events {1}.", value.Events.Count, Helper.ToSensibleDate("in the next",(value.Events.Max(x=>x.StartTime) - DateTime.Now).TotalMinutes));
+                if (value.Events.Count > 0)
+                    this.BoardStats.Text = String.Format("{0} events {1}.", value.Events.Count, Helper.ToSensibleDate("in the next", (value.Events.Max(x => x.StartTime) - DateTime.Now).TotalMinutes));
+                else
+                    this.BoardStats.Text = "There are no events.";
             }
         }
     }

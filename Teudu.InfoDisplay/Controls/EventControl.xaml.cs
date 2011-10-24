@@ -52,7 +52,7 @@ namespace Teudu.InfoDisplay
             slideUpTimer.Tick += new EventHandler(slideUpTimer_Tick);
 
             checkRecencyTimer = new DispatcherTimer();
-            checkRecencyTimer.Interval = TimeSpan.FromMinutes(15);
+            checkRecencyTimer.Interval = TimeSpan.FromMinutes(10);
             checkRecencyTimer.Tick += new EventHandler(checkRecencyTimer_Tick);
 
             Details.Width = App.Current.MainWindow.ActualWidth / 3.5;
@@ -94,11 +94,11 @@ namespace Teudu.InfoDisplay
             int secondsFrequency = 3600;
             DateTime now = DateTime.Now;
             TimeSpan recency = eventModel.StartTime - now;
-            System.Diagnostics.Trace.WriteLine("TotalHours: " + recency.TotalHours);
-            if (recency.TotalHours < 1000)
-                secondsFrequency = 12;
-            if (recency.TotalHours < 5)
+
+            if (recency.TotalDays <= 7)
                 secondsFrequency = 60;
+            if (recency.TotalHours < 5)
+                secondsFrequency = 30;
             if (recency.TotalMinutes < 60)
                 secondsFrequency = 15;
             if (recency.TotalMinutes < 30)

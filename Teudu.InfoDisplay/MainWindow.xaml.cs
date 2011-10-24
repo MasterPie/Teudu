@@ -25,7 +25,13 @@ namespace Teudu.InfoDisplay
         public MainWindow()
         {
             InitializeComponent();
-            ((ViewModel)this.DataContext).BoardsUpdated += new EventHandler<BoardEventArgs>(MainWindow_BoardsUpdated);            
+            this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
+        }
+
+        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((ViewModel)this.DataContext).BoardsUpdated += new EventHandler<BoardEventArgs>(MainWindow_BoardsUpdated);
+            ((ViewModel)this.DataContext).BeginBackgroundJobs();
         }
 
         void MainWindow_BoardsUpdated(object sender, BoardEventArgs e)

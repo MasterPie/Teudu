@@ -63,7 +63,7 @@ namespace Teudu.InfoDisplay
             {
                 if (String.IsNullOrEmpty(value))
                 {
-                    image = "RohanCampaign.jpg";
+                    image = "default.jpg";
                 }
                 else
                     image = value; }
