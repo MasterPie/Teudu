@@ -12,15 +12,17 @@ namespace Teudu.InfoDisplay
         private string name;
         private string description;
         private DateTime time;
+        private DateTime endTime;
         private string image;
         private List<Category> categories;
 
-        public Event(int eventId, string eventName, string eventDescription, DateTime eventTime, string eventImage, List<Category> eventCategories)
+        public Event(int eventId, string eventName, string eventDescription, DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories)
         {
             ID = eventId;
             Name = eventName;
             Description = eventDescription;
             StartTime = eventTime;
+            EndTime = eventEndTime;
             Image = eventImage;
             Categories = eventCategories;
         }
@@ -49,6 +51,12 @@ namespace Teudu.InfoDisplay
             get { return time; }
         }
 
+        public DateTime EndTime
+        {
+            set { endTime = value; }
+            get { return endTime; }
+        }
+
         public string Image
         {
             set
@@ -71,7 +79,7 @@ namespace Teudu.InfoDisplay
         public string PrettyTime()
         {
             string start = time.ToString("dddd, MMMM d, h:mm tt");
-            string end = "Future";
+            string end = endTime.ToString("h:mm tt");
             return start + " - " + end;
         }
 
