@@ -116,7 +116,7 @@ namespace Teudu.InfoDisplay
                             boardLookup.Add(cat.Name.Trim().ToLower(), new Board(cat.Name) { Events = new List<Event>() { x } });
                     });
 
-                    //if (x.HappeningThisWeek)
+                    if (x.HappeningThisWeek)
                         boardLookup["hot"].Events.Add(x);
                 }
             });
@@ -129,7 +129,7 @@ namespace Teudu.InfoDisplay
             foreach (Board board in boards)
             {
                 List<Event> savedEvents = board.Events;
-                savedEvents = savedEvents.OrderByDescending(x => x.StartTime).Take(15).ToList<Event>();
+                savedEvents = savedEvents.OrderBy(x => x.StartTime).Take(15).ToList<Event>();
                 board.Events = savedEvents;
             }
         }

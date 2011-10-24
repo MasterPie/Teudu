@@ -88,7 +88,7 @@ namespace Teudu.InfoDisplay.Test
                                 image = detail.InnerText;
                         }
 
-                        retEvents.Add(new Event(id, name, description, time, image, categories));
+                        retEvents.Add(new Event(id, name, description, time, time.AddHours(1), image, categories));
                     }
                 }
             }

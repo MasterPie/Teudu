@@ -124,7 +124,7 @@ namespace Teudu.InfoDisplay
 
                         string imageLoc = DownloadImage(image, id);
                         
-                        retEvents.Add(new Event(id, name, description, time, imageLoc, categories));
+                        retEvents.Add(new Event(id, name, description, time, time.AddHours(1), imageLoc, categories));
                     }
                 }
             }

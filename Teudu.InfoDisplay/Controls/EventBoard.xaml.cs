@@ -63,7 +63,16 @@ namespace Teudu.InfoDisplay
                 int maxEventHeight = 340;
                 if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
                     maxEventHeight = 340;
-                
+
+                int numEvents = BoardModel.Events.Count;
+
+                if (numEvents <= 15)
+                    this.Height = 340 * 3 + (20 * 3);
+                if(numEvents <= 10)
+                    this.Height = 340 * 2 + (20 * 2);
+                if (numEvents <= 5)
+                    this.Height = 340 + 20;
+
                 BoardModel.Events.ForEach(x => this.Board.Children.Add(new EventControl()
                 {
                     Event = x,
