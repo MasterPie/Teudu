@@ -29,27 +29,8 @@ namespace Teudu.InfoDisplay
             set
             {
                 this.BoardTitle.Text = value.Title;
-                this.BoardStats.Text = String.Format("{0} events in the next {1}.", value.Events.Count, ToSensibleDate((value.Events.Max(x=>x.StartTime) - DateTime.Now).TotalMinutes));
+                this.BoardStats.Text = String.Format("{0} events in the next {1}.", value.Events.Count, Helper.ToSensibleDate((value.Events.Max(x=>x.StartTime) - DateTime.Now).TotalMinutes));
             }
         }
-
-        private string ToSensibleDate(double minutes)
-        {
-            string sensibleDate = "";
-            if (minutes < 60)
-                sensibleDate = minutes.ToString() + " minutes";
-
-            int hours = TimeSpan.FromMinutes(minutes).Hours;
-
-            if (hours < 24)
-                sensibleDate = hours.ToString() + " hours";
-            else
-                sensibleDate = TimeSpan.FromMinutes(minutes).Days + " days";
-
-            return sensibleDate;
-
-        }
-
-        
     }
 }
