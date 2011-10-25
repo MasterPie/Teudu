@@ -159,18 +159,43 @@ namespace Teudu.InfoDisplay
 
         private void ShiftBoard(double from, double to)
         {
-            DoubleAnimation advanceAnimation = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
-            advanceAnimation.Completed += new EventHandler(advanceAnimation_Completed);
+            //DoubleAnimation advanceAnimation = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
+            //advanceAnimation.Completed += new EventHandler(advanceAnimation_Completed);
+            //Storyboard.SetTarget(advanceAnimation, BoardContainer);
+            //Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath("(Canvas.Left)"));
+
+            //DoubleAnimation advanceAnimation2 = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
+            //Storyboard.SetTarget(advanceAnimation2, TitleContainer);
+            //Storyboard.SetTargetProperty(advanceAnimation2, new PropertyPath("(Canvas.Left)"));
+            //sbAdvance.Children.Clear();
+            //sbAdvance.Children.Add(advanceAnimation);
+            //sbAdvance.Children.Add(advanceAnimation2);
+            //sbAdvance.Begin(); 
+
+            DoubleAnimationUsingKeyFrames advanceAnimation = new DoubleAnimationUsingKeyFrames();
+            advanceAnimation.Completed +=new EventHandler(advanceAnimation_Completed);
+            advanceAnimation.Duration = TimeSpan.FromSeconds(1);
+            LinearDoubleKeyFrame linear = new LinearDoubleKeyFrame(from, KeyTime.FromTimeSpan(TimeSpan.FromSeconds(0)));
+            EasingDoubleKeyFrame easing = new EasingDoubleKeyFrame(to, KeyTime.FromTimeSpan(TimeSpan.FromSeconds(1)), new CircleEase() {EasingMode = EasingMode.EaseInOut });
+            advanceAnimation.KeyFrames.Add(linear);
+            advanceAnimation.KeyFrames.Add(easing);
             Storyboard.SetTarget(advanceAnimation, BoardContainer);
             Storyboard.SetTargetProperty(advanceAnimation, new PropertyPath("(Canvas.Left)"));
 
-            DoubleAnimation advanceAnimation2 = new DoubleAnimation(from, to, new Duration(TimeSpan.FromSeconds(1)));
+            DoubleAnimationUsingKeyFrames advanceAnimation2 = new DoubleAnimationUsingKeyFrames();
+            advanceAnimation2.Duration = TimeSpan.FromSeconds(1);
+            LinearDoubleKeyFrame linear2 = new LinearDoubleKeyFrame(from, KeyTime.FromTimeSpan(TimeSpan.FromSeconds(0)));
+            EasingDoubleKeyFrame easing2 = new EasingDoubleKeyFrame(to, KeyTime.FromTimeSpan(TimeSpan.FromSeconds(1)), new CircleEase() { EasingMode = EasingMode.EaseInOut });
+            advanceAnimation2.KeyFrames.Add(linear2);
+            advanceAnimation2.KeyFrames.Add(easing2);
             Storyboard.SetTarget(advanceAnimation2, TitleContainer);
             Storyboard.SetTargetProperty(advanceAnimation2, new PropertyPath("(Canvas.Left)"));
+
+
             sbAdvance.Children.Clear();
             sbAdvance.Children.Add(advanceAnimation);
             sbAdvance.Children.Add(advanceAnimation2);
-            sbAdvance.Begin(); 
+            sbAdvance.Begin();
         }
 
         void advanceAnimation_Completed(object sender, EventArgs e)
