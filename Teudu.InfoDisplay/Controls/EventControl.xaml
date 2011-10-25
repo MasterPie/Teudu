@@ -55,7 +55,7 @@
     <Grid>
         <Border x:Name="outerBorder" BorderBrush="#FFF3F0e9">
             <StackPanel x:Name="EventContainer">
-                <Image x:Name="image" Panel.ZIndex="10" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
+                <Image x:Name="image" Panel.ZIndex="10" Stretch="Uniform" Source="/Teudu.InfoDisplay;component/Images/default.jpg" StretchDirection="DownOnly" VerticalAlignment="Top"></Image>
                 <!--Source="/Teudu.InfoDisplay;component/Images/"-->
             </StackPanel>
         </Border>
