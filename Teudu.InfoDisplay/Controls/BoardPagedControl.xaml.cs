@@ -45,6 +45,7 @@ namespace Teudu.InfoDisplay
         {
             trackingResetTimer.Stop();
             ((ViewModel)this.DataContext).UpdateBrowse(-positionOffsets[boardMaster.Current], 0);
+            ((ViewModel)this.DataContext).MaxBoardWidth = this.BoardContainer.ActualWidth;
             SetBindings();
             isShifting = false;
         }
@@ -147,7 +148,10 @@ namespace Teudu.InfoDisplay
         private void Advance()
         {
             if (boardMaster == null || !boardMaster.AdvanceCurrent())
+            {
+                isShifting = false;
                 return;
+            }
 
             System.Diagnostics.Trace.WriteLine("Moved to " + boardMaster.Current);
             ClearBindings();
@@ -185,7 +189,10 @@ namespace Teudu.InfoDisplay
         private void Regress()
         {
             if (boardMaster == null || !boardMaster.RegressCurrent())
+            {
+                isShifting = false;
                 return;
+            }
 
             ClearBindings();
         }
@@ -215,7 +222,6 @@ namespace Teudu.InfoDisplay
             if (GoNext())
             {
                 isShifting = true;
-                System.Diagnostics.Trace.WriteLine("Advance!");
                 Advance();
             }
             else if (GoPrevious())

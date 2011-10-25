@@ -139,8 +139,12 @@
     <Compile Include="Controls\BoardTitleControl.xaml.cs">
       <DependentUpon>BoardTitleControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LoadingPopup.xaml.cs">
+      <DependentUpon>LoadingPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Debug\BindableTraceListener.cs" />
     <Compile Include="Debug\SimulatedKinectService.cs" />
+    <Compile Include="EngagedSymbolConverter.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Eventing\BoardEventArgs.cs" />
@@ -177,6 +181,7 @@
     <Compile Include="PrettyDateConverter.cs" />
     <Compile Include="SlowedOffsetNavigationConverter.cs" />
     <Compile Include="SwipeType.cs" />
+    <Compile Include="ThreadSafeRandom.cs" />
     <Compile Include="TrackedJoints.cs" />
     <Compile Include="Models\UserKinectService.cs" />
     <Compile Include="ViewModel.cs" />
@@ -211,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\EventDetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LoadingPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -287,6 +296,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\EventGradient.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\default.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

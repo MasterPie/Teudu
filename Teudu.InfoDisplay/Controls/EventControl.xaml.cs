@@ -44,7 +44,7 @@ namespace Teudu.InfoDisplay
             centerCheckTimer.Start();
 
             showEventTimer = new DispatcherTimer();
-            showEventTimer.Interval = TimeSpan.FromMilliseconds(new Random().Next(500));
+            showEventTimer.Interval = TimeSpan.FromMilliseconds(ThreadSafeRandom.Next(2500));
             showEventTimer.Tick += new EventHandler(showEventTimer_Tick);
 
             slideUpTimer = new DispatcherTimer();
@@ -56,12 +56,20 @@ namespace Teudu.InfoDisplay
             checkRecencyTimer.Tick += new EventHandler(checkRecencyTimer_Tick);
 
             Details.Width = App.Current.MainWindow.ActualWidth / 3.5;
-            Details.Height = App.Current.MainWindow.ActualHeight / 3.5;
+            //Details.Height = App.Current.MainWindow.ActualHeight / 3.5;
         }
 
         void checkRecencyTimer_Tick(object sender, EventArgs e)
         {
             slideUpTimer.Interval = TimeSpan.FromSeconds(GetSlideUpFrequency());
+            EmphasizeIfNeeded();
+        }
+
+        private void EmphasizeIfNeeded()
+        {
+            TimeSpan recency = GetRecency();
+
+            //if(recency.
         }
 
         void slideUpTimer_Tick(object sender, EventArgs e)
@@ -89,13 +97,19 @@ namespace Teudu.InfoDisplay
             Details.RenderTransform = shiftLeft;
         }
 
+        private TimeSpan GetRecency()
+        {
+            DateTime now = DateTime.Now;
+            TimeSpan recency = eventModel.StartTime - now;
+            return recency;
+        }
+
         private int GetSlideUpFrequency()
         {
             int secondsFrequency = 3600;
-            DateTime now = DateTime.Now;
-            TimeSpan recency = eventModel.StartTime - now;
+            TimeSpan recency = GetRecency();
 
-            if (recency.TotalDays <= 7)
+            if (recency.TotalDays <= 3) //TODO: remove
                 secondsFrequency = 60;
             if (recency.TotalHours < 5)
                 secondsFrequency = 30;
@@ -130,7 +144,8 @@ namespace Teudu.InfoDisplay
                 }
                 catch (Exception e)
                 {
-                    //
+
+                    System.Diagnostics.Trace.WriteLine(e.ToString());
                 }
 
                 this.Details.Event = value;

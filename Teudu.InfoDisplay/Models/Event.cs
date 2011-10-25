@@ -8,6 +8,7 @@ namespace Teudu.InfoDisplay
 {
     public class Event
     {
+        public static string DefaultImage = "default.jpg";
         private int id;
         private string name;
         private string description;
@@ -63,7 +64,7 @@ namespace Teudu.InfoDisplay
             {
                 if (String.IsNullOrEmpty(value))
                 {
-                    image = "default.jpg";
+                    image = DefaultImage;
                 }
                 else
                     image = value; }

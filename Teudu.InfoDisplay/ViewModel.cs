@@ -59,6 +59,15 @@ namespace Teudu.InfoDisplay
             this.sourceService.BeginPoll();
         }
 
+        private double maxBoardWidth = 0;
+        public double MaxBoardWidth
+        {
+            set
+            {
+                maxBoardWidth = value;
+            }
+        }
+
         public void UpdateBrowse(double x, double y)
         {
             updatingViewState = true;
@@ -217,8 +226,11 @@ namespace Teudu.InfoDisplay
             set {
                 if (EntryX - value + oldGlobalX > App.Current.MainWindow.ActualWidth / 2)
                     globalX = App.Current.MainWindow.ActualWidth / 2;
+                else if (EntryX - value + oldGlobalX < -maxBoardWidth + App.Current.MainWindow.ActualWidth / 2)
+                    globalX = -maxBoardWidth + App.Current.MainWindow.ActualWidth / 2;
                 else
-                    globalX = EntryX - value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX"); Trace.WriteLine("GlobalX: " + globalX); }
+                    globalX = EntryX - value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX"); Trace.WriteLine("GlobalX: " + globalX);
+            }
             get {
                 if (firstEntry)
                     return 0;

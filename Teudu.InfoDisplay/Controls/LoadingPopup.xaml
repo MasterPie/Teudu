@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Teudu.InfoDisplay.LoadingPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="240" d:DesignWidth="842">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe WP"></Setter>
+            <Setter Property="FontSize" Value="30"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+               TargetType="TextBlock"
+               x:Key="MessageText">
+            <Setter Property="Typography.Capitals" Value="Titling"></Setter>
+            <Setter Property="FontFamily" Value="Segoe WP Bold"></Setter>
+            <Setter Property="Margin" Value="0,-10,0,0"></Setter>
+            <Setter Property="FontSize" Value="40"></Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid Height="{Binding ActualHeight,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Width="{Binding ActualWidth,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+        <Grid Background="Black" Opacity="0.7"/>
+        <Grid Width="600" Height="150"  Background="Purple" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Margin="25">
+                <TextBlock Text="Please wait..."/>
+                <TextBlock Text="System starting up." Style="{StaticResource MessageText}"/>
+            </StackPanel>
+        </Grid>
+            
+    </Grid>
+</UserControl>
