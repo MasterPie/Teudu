@@ -47,6 +47,11 @@ namespace Teudu.InfoDisplay
             get { return eventModel.PrettyTime(); }
         }
 
+        public string Location
+        {
+            get { return eventModel.Location; }
+        }
+
         public string Description
         {
             get { return eventModel.Description; }

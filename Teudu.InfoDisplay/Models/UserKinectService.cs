@@ -7,6 +7,7 @@ using Coding4Fun.Kinect.Wpf;
 using Kinect.Toolbox;
 
 using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace Teudu.InfoDisplay
 {
@@ -15,6 +16,7 @@ namespace Teudu.InfoDisplay
         
         Runtime runtime;
         bool isTrackingSkeleton;
+        DispatcherTimer kinectRetryTimer;
         
         public void Initialize() 
         {
@@ -23,8 +25,28 @@ namespace Teudu.InfoDisplay
             
             runtime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(runtime_SkeletonFrameReady);
 
+            kinectRetryTimer = new DispatcherTimer();
+            kinectRetryTimer.Interval = TimeSpan.FromSeconds(5);
+            kinectRetryTimer.Tick += new EventHandler(kinectRetryTimer_Tick);
             //TODO: Have timer to poll idle
 
+            
+            StartKinect();
+                
+                /*Smoothing = .75f,
+                    JitterRadius = 0.05f,
+                    MaxDeviationRadius = 0.04f*/
+            
+        }
+
+        void kinectRetryTimer_Tick(object sender, EventArgs e)
+        {
+            kinectRetryTimer.Stop();
+            StartKinect();
+        }
+
+        void StartKinect()
+        {
             try
             {
                 runtime.Initialize(RuntimeOptions.UseSkeletalTracking);
@@ -38,14 +60,11 @@ namespace Teudu.InfoDisplay
                     MaxDeviationRadius = 0.4f
                 };
                 Trace.WriteLine("Kinect initialized");
-                
-                /*Smoothing = .75f,
-                    JitterRadius = 0.05f,
-                    MaxDeviationRadius = 0.04f*/
             }
             catch (Exception)
             {
-                Trace.WriteLine("Error while initializing Kinect");
+                Trace.WriteLine("Error while initializing Kinect. Trying again in 5 seconds...");
+                kinectRetryTimer.Start();
             }
         }
 

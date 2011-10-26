@@ -32,7 +32,7 @@ namespace Teudu.InfoDisplay
 
         void EventBoard_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Board.MaxWidth = this.ActualWidth - 40;
+            this.Board.MaxWidth = App.Current.MainWindow.ActualWidth - 40;
             this.InvalidateMeasure();
         }
 
