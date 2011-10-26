@@ -65,8 +65,8 @@ namespace Teudu.InfoDisplay.Test
                     if (node.Name.ToLower().Equals("event"))
                     {
                         int id = -1;
-                        string name, description, image;
-                        name = description = image = "";
+                        string name, description, image, location;
+                        name = description = image = location = "";
                         DateTime time = new DateTime();
                         DateTime endTime = new DateTime();
                         List<Category> categories = new List<Category>();
@@ -81,6 +81,9 @@ namespace Teudu.InfoDisplay.Test
 
                             if (detail.Name.ToLower().Equals("description"))
                                 description = detail.InnerText;
+
+                            if (detail.Name.ToLower().Equals("location"))
+                                location = detail.InnerText;
 
                             if (detail.Name.ToLower().Equals("starttime"))
                             {
@@ -101,7 +104,7 @@ namespace Teudu.InfoDisplay.Test
                                 detail.InnerText.Split(',').Distinct().ToList().ForEach(x => categories.Add(new Category(x.Trim())));
                         }
 
-                        retEvents.Add(new Event(id, name, description, time, endTime, image, categories));
+                        retEvents.Add(new Event(id, name, description, location,time, endTime, image, categories));
                     }
                 }
             }

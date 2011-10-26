@@ -32,11 +32,24 @@ namespace Teudu.InfoDisplay
         {
             ((ViewModel)this.DataContext).BoardsUpdated += new EventHandler<BoardEventArgs>(MainWindow_BoardsUpdated);
             ((ViewModel)this.DataContext).BeginBackgroundJobs();
+            LoadingContainer.Show("");
+            
         }
 
         void MainWindow_BoardsUpdated(object sender, BoardEventArgs e)
         {
             this.BoardNavigator.BoardMaster = e.BoardService;
+            LoadingContainer.Hide();
+        }
+
+        public void PopStatusMessage(string msg)
+        {
+            LoadingContainer.Opacity = 1;
+        }
+
+        public void HideStatusMessage()
+        {
+            LoadingContainer.Opacity = 0;
         }
 
         public string VisibleLocation

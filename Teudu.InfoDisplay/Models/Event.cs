@@ -12,16 +12,18 @@ namespace Teudu.InfoDisplay
         private int id;
         private string name;
         private string description;
+        private string location;
         private DateTime time;
         private DateTime endTime;
         private string image;
         private List<Category> categories;
 
-        public Event(int eventId, string eventName, string eventDescription, DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories)
+        public Event(int eventId, string eventName, string eventDescription, string eventLocation, DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories)
         {
             ID = eventId;
             Name = eventName;
             Description = eventDescription;
+            Location = eventLocation;
             StartTime = eventTime;
             EndTime = eventEndTime;
             Image = eventImage;
@@ -44,6 +46,12 @@ namespace Teudu.InfoDisplay
         {
             set { description = value; }
             get { return description; }
+        }
+
+        public string Location
+        {
+            set { location = value; }
+            get { return location; }
         }
 
         public DateTime StartTime

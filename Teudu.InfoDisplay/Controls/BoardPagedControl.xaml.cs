@@ -224,14 +224,12 @@ namespace Teudu.InfoDisplay
 
         private bool GoPrevious()
         {
-            System.Diagnostics.Trace.WriteLine("prev at: " + BoardLeftEdgeLocation().X + ">? thres: " + (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 - boardInbetween));
             return BoardLeftEdgeLocation().X > (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 + boardInbetween);
         }
 
         private bool GoNext()
         {
-            System.Diagnostics.Trace.WriteLine("next at: " + BoardLeftEdgeLocation().X + " <? next thres: " + (-positionOffsets[boardMaster.Current] - this.ActualWidth / 2 + boardInbetween));
-            return (BoardLeftEdgeLocation().X) < (-positionOffsets[boardMaster.Current] - this.ActualWidth/2 + boardInbetween);
+           return (BoardLeftEdgeLocation().X) < (-positionOffsets[boardMaster.Current] - this.ActualWidth/2 + boardInbetween);
         }
 
         private Point BoardLeftEdgeLocation()

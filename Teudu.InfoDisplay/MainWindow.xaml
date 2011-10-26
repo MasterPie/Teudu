@@ -22,6 +22,6 @@
         </StackPanel>
         <TextBlock Text="{Binding Path=Engaged, Converter={StaticResource symbolConverter}, FallbackValue=+}" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center" Foreground="{Binding Path=Engaged, Converter={StaticResource boolConverter}, FallbackValue=Red}"/>
         <TextBlock Text="{Binding Source={StaticResource notifyingDate},Path=Now, Converter={StaticResource dateConverter}}" Panel.ZIndex="99" Width="300" HorizontalAlignment="Right" Margin="0,25,40,0"/>
-        <teudu:LoadingPopup Panel.ZIndex="100" Opacity="0"/>
+        <teudu:LoadingPopup x:Name="LoadingContainer" Panel.ZIndex="100"/>
     </Grid>
 </Window>
