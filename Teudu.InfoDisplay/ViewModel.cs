@@ -126,17 +126,24 @@ namespace Teudu.InfoDisplay
                 {
                     oldGlobalX = GlobalOffsetX;
                     oldGlobalY = GlobalOffsetY;
-                    EntryX = DominantArmHandOffsetX;
-                    EntryY = DominantArmHandOffsetY;
-                }
-                GlobalOffsetX = DominantArmHandOffsetX;
-                GlobalOffsetY = DominantArmHandOffsetY;
-                #endregion                
 
-                if (ViewChangeMode == HandsState.Panning)
+                    if (Engaged)
+                    {
+                        EntryX = DominantArmHandOffsetX;
+                        EntryY = DominantArmHandOffsetY;
+                    }
+                }
+                
+                #endregion                
+                if (Engaged)
                 {
-                    this.OnPropertyChanged("DominantArmHandOffsetX");
-                    this.OnPropertyChanged("DominantArmHandOffsetY");
+                    GlobalOffsetX = DominantArmHandOffsetX;
+                    GlobalOffsetY = DominantArmHandOffsetY;
+                    if (ViewChangeMode == HandsState.Panning)
+                    {
+                        this.OnPropertyChanged("DominantArmHandOffsetX");
+                        this.OnPropertyChanged("DominantArmHandOffsetY");
+                    }
                 }
 
                 this.OnPropertyChanged("Engaged");
@@ -153,7 +160,7 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return LeftHandActive || RightHandActive;
+                return (LeftHandActive || RightHandActive) && !(LeftHandActive && RightHandActive);
             }
         }
 
@@ -205,6 +212,7 @@ namespace Teudu.InfoDisplay
                     return leftArm;
                 else
                     return rightArm;
+
             }
         }
 
@@ -242,8 +250,8 @@ namespace Teudu.InfoDisplay
             set {
                 if (EntryY - value + oldGlobalY > (App.Current.MainWindow.ActualHeight / 2 - 250))
                     globalY = App.Current.MainWindow.ActualHeight / 2 - 250;
-                else if (EntryY - value + oldGlobalY < (3*-maxEventHeight))
-                    globalY = (3 * -maxEventHeight);
+                else if (EntryY - value + oldGlobalY < (3*-maxEventHeight - 60))
+                    globalY = (3 * -maxEventHeight - 60);
                 else
                     globalY = EntryY - value + oldGlobalY; this.OnPropertyChanged("GlobalOffsetY");
             }

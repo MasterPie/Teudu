@@ -202,16 +202,17 @@ namespace Teudu.InfoDisplay
             {
                 if (value)
                 {
-                    Details.Opacity = 0;
+                    Details.Opacity = 1;
                     Details.Visibility = System.Windows.Visibility.Visible;
-                    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
+                    //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
                     //outerBorder.BorderThickness = new Thickness(5);
                 }
                 else
                 {
+                    Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Hidden;
                     outerBorder.BorderThickness = new Thickness(0);
-                    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
+                    //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
                 }
             }
         }
