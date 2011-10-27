@@ -35,8 +35,8 @@
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="MessageContainer"
                 Storyboard.TargetProperty="Opacity"
-                Duration="0:0:02" Completed="MainHideAnimation_Completed">
-                <EasingDoubleKeyFrame KeyTime="0:0:02" Value="0">
+                Duration="0:0:01" Completed="MainHideAnimation_Completed">
+                <EasingDoubleKeyFrame KeyTime="0:0:01" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CircleEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -59,11 +59,10 @@
     </UserControl.Resources>
     <Grid x:Name="MessageContainer" Height="{Binding ActualHeight,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Width="{Binding ActualWidth,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
         <Grid Background="Black" Opacity="0.7"/>
-        <Grid Width="600" Height="150"  Background="Purple" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Grid Width="600" Height="150"  Background="#FF282457" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Margin="25">
                 <TextBlock Text="Please wait..."/>
-                <TextBlock Text="System starting up." Style="{StaticResource MessageText}"/>
-                
+                <TextBlock Text="Checking for new events." Style="{StaticResource MessageText}"/>
             </StackPanel>
             <Grid.RenderTransform>
                 <TransformGroup>

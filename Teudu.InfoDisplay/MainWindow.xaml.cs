@@ -33,7 +33,6 @@ namespace Teudu.InfoDisplay
             ((ViewModel)this.DataContext).BoardsUpdated += new EventHandler<BoardEventArgs>(MainWindow_BoardsUpdated);
             ((ViewModel)this.DataContext).BeginBackgroundJobs();
             LoadingContainer.Show("");
-            
         }
 
         void MainWindow_BoardsUpdated(object sender, BoardEventArgs e)
