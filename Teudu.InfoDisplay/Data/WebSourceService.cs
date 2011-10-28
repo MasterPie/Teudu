@@ -31,6 +31,7 @@ namespace Teudu.InfoDisplay
             doc = new XmlDocument();
             serviceURI = ConfigurationManager.AppSettings["EventsServiceURI"].ToString();
             wc = new WebClient();
+            wc.Encoding = Encoding.UTF8;
 
             int pollTime = 60*60;
             Int32.TryParse(ConfigurationManager.AppSettings["EventsServicePollInterval"], out pollTime);
@@ -76,7 +77,7 @@ namespace Teudu.InfoDisplay
                 xmlResponse = wc.DownloadString(serviceURI);
 
                 doc.LoadXml(xmlResponse);
-
+                
                 List<Event> events = ReadEvents();
                 e.Result = events;
             }
@@ -103,7 +104,7 @@ namespace Teudu.InfoDisplay
 
         private List<Event> ReadEvents()
         {
-            CultureInfo culture = CultureInfo.InvariantCulture;
+            CultureInfo culture = CultureInfo.CurrentCulture;
             List<Event> retEvents = new List<Event>();
             XmlNode root = doc.DocumentElement;
             try
@@ -135,14 +136,14 @@ namespace Teudu.InfoDisplay
 
                             if (detail.Name.ToLower().Equals("starttime"))
                             {
-                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/'), "yyyy/MM/dd HH:mm:ss UTC", culture, DateTimeStyles.AssumeUniversal, out time))
+                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC","").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out time))
                                     time = DateTime.Now;
                             }
 
                             if (detail.Name.ToLower().Equals("endtime"))
                             {
-                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/'), "yyyy/MM/dd HH:mm:ss UTC", culture, DateTimeStyles.AssumeUniversal, out endTime))
-                                    endTime = DateTime.Now.AddYears(20);
+                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out endTime))
+                                    endTime = time;
                             }
 
                             if (detail.Name.ToLower().Equals("image"))

@@ -19,7 +19,7 @@ namespace Teudu.InfoDisplay
             if (hours < 24)
                 sensibleDate = prefix + " " + Math.Round(hours, 0, MidpointRounding.AwayFromZero).ToString() + " hours";
             else if (hours < 48)
-                sensibleDate = " tomorrow";
+                sensibleDate = "tomorrow";
             else
                 sensibleDate = prefix + " " + Math.Round(TimeSpan.FromMinutes(minutes).TotalDays, 0, MidpointRounding.AwayFromZero) + " days";
 

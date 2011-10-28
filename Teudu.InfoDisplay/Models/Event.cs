@@ -89,7 +89,10 @@ namespace Teudu.InfoDisplay
         {
             string start = time.ToString("dddd, MMMM d, h:mm tt");
             string end = endTime.ToString("h:mm tt");
-            return start + " - " + end;
+            if (EndTime.Equals(StartTime))
+                return start;
+            else
+                return start + " - " + end;
         }
 
         public bool HappeningThisWeek
