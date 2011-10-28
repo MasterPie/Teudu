@@ -19,7 +19,8 @@ namespace Teudu.InfoDisplay
     {
         private const double SCALE_OFFSET = 250;
         private double HeightOffGround = 0;
-        private double CORRESPONDENCE_SCALE_FACTOR = 4;
+        private double CORRESPONDENCE_SCALE_FACTOR_X = 4;
+        private double CORRESPONDENCE_SCALE_FACTOR_Y = 6;
         private double UserClearanceDistance;
         private int maxEventHeight;
 
@@ -27,6 +28,9 @@ namespace Teudu.InfoDisplay
         private double EntryX = 0;
         private double EntryY = 0;
         private bool updatingViewState = false;
+
+        private bool inverted = false;
+        private int inversionFactor = -1;
 
         IKinectService kinectService;
         ISourceService sourceService;
@@ -40,6 +44,20 @@ namespace Teudu.InfoDisplay
             Double.TryParse(ConfigurationManager.AppSettings["HeightOffGround"], out HeightOffGround);
             if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
                 maxEventHeight = 340;
+
+            if (!Double.TryParse(ConfigurationManager.AppSettings["CorrespondenceScaleX"], out CORRESPONDENCE_SCALE_FACTOR_X))
+                CORRESPONDENCE_SCALE_FACTOR_X = 4;
+
+            if (!Double.TryParse(ConfigurationManager.AppSettings["CorrespondenceScaleY"], out CORRESPONDENCE_SCALE_FACTOR_Y))
+                CORRESPONDENCE_SCALE_FACTOR_Y = 6;
+
+            if (!Boolean.TryParse(ConfigurationManager.AppSettings["Inverted"], out inverted))
+                inverted = false;
+
+            if (inverted)
+                inversionFactor = 1;
+            else
+                inversionFactor = -1;
 
 
             this.kinectService = kinectService; 
@@ -264,12 +282,12 @@ namespace Teudu.InfoDisplay
 
         public double DominantArmHandOffsetX
         {
-            get { return -DominantHand.HandOffsetX * CORRESPONDENCE_SCALE_FACTOR; }
+            get { return inversionFactor * DominantHand.HandOffsetX * CORRESPONDENCE_SCALE_FACTOR_X; }
         }
 
         public double DominantArmHandOffsetY
         {
-            get { return -DominantHand.HandOffsetY * CORRESPONDENCE_SCALE_FACTOR; }
+            get { return inversionFactor * DominantHand.HandOffsetY * CORRESPONDENCE_SCALE_FACTOR_Y; }
         }
 
         #endregion

@@ -109,8 +109,6 @@ namespace Teudu.InfoDisplay
             int secondsFrequency = 3600;
             TimeSpan recency = GetRecency();
 
-            if (recency.TotalDays <= 3) //TODO: remove
-                secondsFrequency = 60;
             if (recency.TotalHours < 5)
                 secondsFrequency = 30;
             if (recency.TotalMinutes < 60)
@@ -205,7 +203,7 @@ namespace Teudu.InfoDisplay
                     Details.Opacity = 1;
                     Details.Visibility = System.Windows.Visibility.Visible;
                     //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
-                    //outerBorder.BorderThickness = new Thickness(5);
+                    outerBorder.BorderThickness = new Thickness(5);
                 }
                 else
                 {
@@ -213,6 +211,7 @@ namespace Teudu.InfoDisplay
                     Details.Visibility = System.Windows.Visibility.Hidden;
                     outerBorder.BorderThickness = new Thickness(0);
                     //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
+                    //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
                 }
             }
         }
@@ -229,12 +228,18 @@ namespace Teudu.InfoDisplay
 
         private void AppearAnimation_Completed(object sender, EventArgs e)
         {
-            this.EventContainer.Opacity = 100;
+            this.EventContainer.Opacity = 1;
         }
 
         private void SlideUp_Completed(object sender, EventArgs e)
         {
             slideUpTimer.Start();
+        }
+
+        private void DetailsAppearAnimation_Completed(object sender, EventArgs e)
+        {
+            Details.Opacity = 0;
+            Details.Visibility = System.Windows.Visibility.Hidden;
         }
     }
 }

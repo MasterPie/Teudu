@@ -11,9 +11,9 @@
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="Details"
                 Storyboard.TargetProperty="Opacity" IsAdditive="True"
-                Duration="0:0:0" FillBehavior="Stop">
-                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="1" KeySpline="0.25,0.5,0.75,1"/>
+                Duration="0:0:1" FillBehavior="Stop" Completed="DetailsAppearAnimation_Completed">
+                <!--<LinearDoubleKeyFrame KeyTime="0:0:0" Value="1"/>-->
+                <SplineDoubleKeyFrame KeyTime="0:0:1" Value="0" KeySpline="0.25,0.5,0.75,1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AppearAnimation" x:Name="AppearAnimation">
@@ -53,7 +53,7 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <Border x:Name="outerBorder" BorderBrush="#FFF3F0e9">
+        <Border x:Name="outerBorder" BorderBrush="#FFd17702">
             <StackPanel x:Name="EventContainer">
                 <Image x:Name="image" Panel.ZIndex="10" Stretch="Uniform" Source="/Teudu.InfoDisplay;component/Images/default.jpg" 
                        StretchDirection="DownOnly" VerticalAlignment="Top"/>

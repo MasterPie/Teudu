@@ -67,11 +67,11 @@ namespace Teudu.InfoDisplay
                 int numEvents = BoardModel.Events.Count;
 
                 if (numEvents <= 15)
-                    this.Height = 340 * 3 + (20 * 3);
+                    this.Height = maxEventHeight * 3 + (20 * 3);
                 if(numEvents <= 10)
-                    this.Height = 340 * 2 + (20 * 2);
+                    this.Height = maxEventHeight * 2 + (20 * 2);
                 if (numEvents <= 5)
-                    this.Height = 340 + 20;
+                    this.Height = maxEventHeight + 20;
 
                 BoardModel.Events.OrderBy(y=>y.StartTime).ToList<Event>().ForEach(x => this.Board.Children.Add(new EventControl()
                 {
