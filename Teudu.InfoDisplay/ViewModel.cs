@@ -83,6 +83,16 @@ namespace Teudu.InfoDisplay
             set
             {
                 maxBoardWidth = value;
+                
+            }
+        }
+
+        private double maxBoardHeight = 0;
+        public double MaxBoardHeight
+        {
+            set
+            {
+                maxBoardHeight = value;
             }
         }
 
@@ -165,6 +175,7 @@ namespace Teudu.InfoDisplay
                 }
 
                 this.OnPropertyChanged("Engaged");
+                this.OnPropertyChanged("DistanceFromInvisScreen");
             } 
         #endregion
 
@@ -180,6 +191,20 @@ namespace Teudu.InfoDisplay
             {
                 return (LeftHandActive || RightHandActive) && !(LeftHandActive && RightHandActive);
             }
+        }
+
+        public double DistanceFromInvisScreen
+        {
+            get
+            {
+                if (leftArm.HandZ < rightArm.HandZ)
+                    return leftArm.HandZ - UserClearanceDistance;
+                else if (rightArm.HandZ <= leftArm.HandZ)
+                    return rightArm.HandZ - UserClearanceDistance;
+                else
+                    return 2;
+                
+                }
         }
 
         public bool LeftArmInFront
@@ -255,7 +280,7 @@ namespace Teudu.InfoDisplay
                 else if (EntryX - value + oldGlobalX < -maxBoardWidth + App.Current.MainWindow.ActualWidth / 2)
                     globalX = -maxBoardWidth + App.Current.MainWindow.ActualWidth / 2;
                 else
-                    globalX = EntryX - value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX"); Trace.WriteLine("GlobalX: " + globalX);
+                    globalX = EntryX - value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX");
             }
             get {
                 if (firstEntry)
@@ -268,10 +293,12 @@ namespace Teudu.InfoDisplay
             set {
                 if (EntryY - value + oldGlobalY > (App.Current.MainWindow.ActualHeight / 2 - 250))
                     globalY = App.Current.MainWindow.ActualHeight / 2 - 250;
-                else if (EntryY - value + oldGlobalY < (3*-maxEventHeight - 60))
-                    globalY = (3 * -maxEventHeight - 60);
+                else if (EntryY - value + oldGlobalY < (-maxBoardHeight + maxEventHeight)) //3*-maxEventHeight - 60
+                    globalY = (-maxBoardHeight +maxEventHeight);
                 else
                     globalY = EntryY - value + oldGlobalY; this.OnPropertyChanged("GlobalOffsetY");
+
+                //Trace.WriteLine("maxBoardHeight" + -maxBoardHeight);
             }
             get
             {

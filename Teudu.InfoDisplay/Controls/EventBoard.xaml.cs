@@ -28,12 +28,30 @@ namespace Teudu.InfoDisplay
             InitializeComponent();
             //ScaleLevel = 1;
             this.Loaded += new RoutedEventHandler(EventBoard_Loaded);
+            this.Board.LayoutUpdated += new EventHandler(Board_LayoutUpdated);
+        }
+
+        void Board_LayoutUpdated(object sender, EventArgs e)
+        {
+            int childCount = this.Board.Children.Count;
+            foreach (UIElement element in this.Board.Children)
+            {
+                element.SetValue(Canvas.ZIndexProperty, childCount);
+                childCount--;
+            }
+            contentHeight = this.Board.ActualHeight;
         }
 
         void EventBoard_Loaded(object sender, RoutedEventArgs e)
         {
             this.Board.MaxWidth = App.Current.MainWindow.ActualWidth - 40;
             this.InvalidateMeasure();
+        }
+
+        private double contentHeight = 0;
+        public double ContentHeight
+        {
+            get { return contentHeight; }
         }
 
         public string BoardTitle
@@ -73,13 +91,13 @@ namespace Teudu.InfoDisplay
                 if (numEvents <= 5)
                     this.Height = maxEventHeight + 20;
 
-                BoardModel.Events.OrderBy(y=>y.StartTime).ToList<Event>().ForEach(x => this.Board.Children.Add(new EventControl()
-                {
+                BoardModel.Events.OrderBy(y=>y.StartTime).ToList<Event>().ForEach(x => this.Board.Children.Add(new EventControl(){
                     Event = x,
                     Width = eventWidth,
                     MaxHeight = maxEventHeight,
-                    Margin = new Thickness(0,0,20,20)
-                }));
+                    Margin = new Thickness(0,0,20,20),
+                    }));
+                
                 this.OnPropertyChanged("BoardTitle");
             }
         }

@@ -26,12 +26,14 @@ namespace Teudu.InfoDisplay
         DispatcherTimer trackingResetTimer;
 
         Dictionary<Board, double> positionOffsets;
+        Dictionary<Board, EventBoard> modelView;
 
         public BoardPagedControl()
         {
             InitializeComponent();
 
             positionOffsets = new Dictionary<Board, double>();
+            modelView = new Dictionary<Board, EventBoard>();
             sbAdvance = new Storyboard();
 
             trackingResetTimer = new DispatcherTimer();
@@ -46,6 +48,7 @@ namespace Teudu.InfoDisplay
             trackingResetTimer.Stop();
             ((ViewModel)this.DataContext).UpdateBrowse(-positionOffsets[boardMaster.Current], 0);
             ((ViewModel)this.DataContext).MaxBoardWidth = this.BoardContainer.ActualWidth;
+            ((ViewModel)this.DataContext).MaxBoardHeight = modelView[boardMaster.Current].ContentHeight;
             SetBindings();
             isShifting = false;
         }
@@ -76,23 +79,22 @@ namespace Teudu.InfoDisplay
         {
             double from = -positionOffsets[boardMaster.Next] + this.ActualWidth / 2 + boardInbetween;
             double to = -positionOffsets[boardMaster.Current];
+            ((ViewModel)this.DataContext).MaxBoardHeight = modelView[boardMaster.Current].ContentHeight;
             ShiftBoard(from, to);
-            //this.Crumbs.Current = e.Board;
-            //isShifting = false;
         }
 
         void boardMaster_BoardAdvanced(object sender, BoardEventArgs e)
         {
             double from = -positionOffsets[boardMaster.Prev] - this.ActualWidth / 2 + boardInbetween;
             double to = -positionOffsets[boardMaster.Current];
+            ((ViewModel)this.DataContext).MaxBoardHeight = modelView[boardMaster.Current].ContentHeight;
             ShiftBoard(from, to);
-            //this.Crumbs.Current = e.Board;
-            //isShifting = false;
         }
 
         private void CreateBoardViews()
         {
             positionOffsets.Clear();
+            modelView.Clear();
             this.TitleContainer.Children.Clear();
             this.BoardContainer.Children.Clear();
             int i = 0;
@@ -109,6 +111,7 @@ namespace Teudu.InfoDisplay
                 boardTitle.Board = x;
 
                 positionOffsets.Add(x, (boardView.Width * i++));
+                modelView.Add(x, boardView);
 
                 this.TitleContainer.Children.Add(boardTitle);
                 this.BoardContainer.Children.Add(boardView);

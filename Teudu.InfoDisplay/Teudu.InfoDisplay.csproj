@@ -126,7 +126,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BoolColorConverter.cs" />
+    <Compile Include="ValueConverters\BoolColorConverter.cs" />
     <Compile Include="Controls\BoardCrumbs.xaml.cs">
       <DependentUpon>BoardCrumbs.xaml</DependentUpon>
     </Compile>
@@ -144,7 +144,12 @@
     </Compile>
     <Compile Include="Debug\BindableTraceListener.cs" />
     <Compile Include="Debug\SimulatedKinectService.cs" />
-    <Compile Include="EngagedSymbolConverter.cs" />
+    <Compile Include="ValueConverters\EngagedColorConverter.cs" />
+    <Compile Include="ValueConverters\EngagedSymbolConverter.cs" />
+    <Compile Include="ValueConverters\HandDistanceToLineTranslateConverter.cs" />
+    <Compile Include="Controls\HandStatusControl.xaml.cs">
+      <DependentUpon>HandStatusControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helper.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Eventing\BoardEventArgs.cs" />
@@ -168,7 +173,7 @@
     <Compile Include="IBoardService.cs" />
     <Compile Include="KinectTools.cs" />
     <Compile Include="Models\NotifyingDateTime.cs" />
-    <Compile Include="OffsetNavigatorConverter.cs" />
+    <Compile Include="ValueConverters\OffsetNavigatorConverter.cs" />
     <Compile Include="Eventing\PanEventArgs.cs" />
     <Compile Include="Models\MomentaryBoardService.cs" />
     <Compile Include="Eventing\ScaleEventArgs.cs" />
@@ -178,8 +183,8 @@
     <Compile Include="Eventing\SkeletonEventArgs.cs" />
     <Compile Include="Eventing\SourceEventArgs.cs" />
     <Compile Include="Eventing\SwipeEventArgs.cs" />
-    <Compile Include="PrettyDateConverter.cs" />
-    <Compile Include="SlowedOffsetNavigationConverter.cs" />
+    <Compile Include="ValueConverters\PrettyDateConverter.cs" />
+    <Compile Include="ValueConverters\SlowedOffsetNavigationConverter.cs" />
     <Compile Include="SwipeType.cs" />
     <Compile Include="ThreadSafeRandom.cs" />
     <Compile Include="TrackedJoints.cs" />
@@ -220,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LoadingPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HandStatusControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

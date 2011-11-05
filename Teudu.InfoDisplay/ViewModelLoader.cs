@@ -18,8 +18,8 @@ namespace Teudu.InfoDisplay
         { 
             kinectService = new UserKinectService();
             //kinectService = new Debug.SimulatedKinectService();
-            //sourceService = new Test.FileSourceService("eventstest.xml");
-            sourceService = new WebSourceService();
+            sourceService = new Test.FileSourceService("events.xml");
+            //sourceService = new WebSourceService();
             boardService = new MomentaryBoardService();
             var prop = DesignerProperties.IsInDesignModeProperty; 
             var isInDesignMode = (bool)DependencyPropertyDescriptor
