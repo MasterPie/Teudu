@@ -116,7 +116,7 @@ namespace Teudu.InfoDisplay
                             boardLookup.Add(cat.Name.Trim().ToLower(), new Board(cat.Name) { Events = new List<Event>() { x } });
                     });
 
-                    if (x.HappeningThisWeek)
+                    //if (x.HappeningThisWeek)
                         boardLookup["hot"].Events.Add(x);
                 }
             });

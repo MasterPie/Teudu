@@ -176,7 +176,7 @@ namespace Teudu.InfoDisplay
 
                 try
                 {
-                    wc.DownloadFile(uri, imageDirectory + fileName);
+                    //wc.DownloadFile(uri, imageDirectory + fileName);
                 }
                 catch (Exception)
                 {

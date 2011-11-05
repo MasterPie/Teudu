@@ -93,7 +93,7 @@ namespace Teudu.InfoDisplay
         {
             VisibleLocation_work();
 
-            TranslateTransform shiftLeft = new TranslateTransform(-Details.ActualWidth - App.Current.MainWindow.ActualWidth / 30, 0);
+            TranslateTransform shiftLeft = new TranslateTransform(this.ActualWidth + App.Current.MainWindow.ActualWidth / 30, 0);
             Details.RenderTransform = shiftLeft;
         }
 
@@ -110,13 +110,13 @@ namespace Teudu.InfoDisplay
             TimeSpan recency = GetRecency();
 
             if (recency.TotalHours < 5)
-                secondsFrequency = 30;
+                secondsFrequency = 90;
             if (recency.TotalMinutes < 60)
-                secondsFrequency = 15;
+                secondsFrequency = 60;
             if (recency.TotalMinutes < 30)
-                secondsFrequency = 10;
+                secondsFrequency = 30;
             if (recency.TotalMinutes < 5)
-                secondsFrequency = 5;
+                secondsFrequency = 15;
 
             return secondsFrequency;
         }
@@ -200,17 +200,17 @@ namespace Teudu.InfoDisplay
             {
                 if (value)
                 {
-                    Details.Opacity = 1;
+                    Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Visible;
-                    //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
+                    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
                     outerBorder.BorderThickness = new Thickness(5);
                 }
                 else
                 {
-                    Details.Opacity = 0;
+                    //Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Hidden;
                     outerBorder.BorderThickness = new Thickness(0);
-                    //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
+                    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
                     //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
                 }
             }
@@ -238,8 +238,8 @@ namespace Teudu.InfoDisplay
 
         private void DetailsAppearAnimation_Completed(object sender, EventArgs e)
         {
-            Details.Opacity = 0;
-            Details.Visibility = System.Windows.Visibility.Hidden;
+            //Details.Opacity = 1;
+            //Details.Visibility = System.Windows.Visibility.Visible;
         }
     }
 }

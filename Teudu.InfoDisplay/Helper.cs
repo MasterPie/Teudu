@@ -11,19 +11,23 @@ namespace Teudu.InfoDisplay
         {
             string sensibleDate = "";
             if (minutes < 60)
-                sensibleDate = prefix + " " + minutes.ToString() + " minutes";
+                sensibleDate = prefix + " " + Math.Round(minutes, 0, MidpointRounding.AwayFromZero).ToString() + " minutes";
 
             double hours = TimeSpan.FromMinutes(minutes).TotalHours;
 
 
-            if (hours < 24)
-                sensibleDate = prefix + " " + Math.Round(hours, 0, MidpointRounding.AwayFromZero).ToString() + " hours";
-            else if (hours < 48)
-                sensibleDate = "tomorrow";
-            else
-                sensibleDate = prefix + " " + Math.Round(TimeSpan.FromMinutes(minutes).TotalDays, 0, MidpointRounding.AwayFromZero) + " days";
+            if (minutes >= 60)
+            {
+                if (hours < 12)
+                    sensibleDate = prefix + " " + Math.Round(hours, 0, MidpointRounding.AwayFromZero).ToString() + " hours";
+                else if (hours < 24)
+                    sensibleDate = "today";
+                else if (hours < 48)
+                    sensibleDate = "tomorrow";
+                else
+                    sensibleDate = prefix + " " + Math.Round(TimeSpan.FromMinutes(minutes).TotalDays, 0, MidpointRounding.AwayFromZero) + " days";
 
-
+            }
 
             return sensibleDate;
 

@@ -17,12 +17,12 @@
             <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
         </Style>        
     </UserControl.Resources>
-    <Canvas Background="#FF100C44" VerticalAlignment="Top">
-        <StackPanel Orientation="Vertical" Background="#FF100C44" >
-            <Grid Panel.ZIndex="80" Height="100" Background="#FF100C44">
-                <teudu:BoardCrumbs Height="50" Margin="25,20,0,0" Background="#FF100C44" x:Name="Crumbs"/>
+    <Canvas Background="{Binding Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" VerticalAlignment="Top">
+        <StackPanel Orientation="Vertical" Background="{Binding Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" >
+            <Grid Panel.ZIndex="80" Height="100" Background="{Binding Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+                <teudu:BoardCrumbs Height="50" Margin="25,20,0,0" Background="{Binding Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" x:Name="Crumbs"/>
             </Grid>
-            <Canvas Background="#FF100C44" Panel.ZIndex="80" Height="130" Width="1920">
+            <Canvas Background="{Binding Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Panel.ZIndex="80" Height="130" Width="1920">
                 <StackPanel Orientation="Horizontal" x:Name="TitleContainer" Panel.ZIndex="60">
                     <StackPanel.RenderTransform>
                         <TransformGroup>
