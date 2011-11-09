@@ -63,7 +63,7 @@ namespace Teudu.InfoDisplay
 
     public struct Torso
     {
-        public double Y, X;
+        public double Y, X, Z;
     }
 
     public struct Spine

@@ -21,6 +21,7 @@ namespace Teudu.InfoDisplay
         private double HeightOffGround = 0;
         private double CORRESPONDENCE_SCALE_FACTOR_X = 4;
         private double CORRESPONDENCE_SCALE_FACTOR_Y = 6;
+        private double HALF_ARMSPAN = 0.3;
         private double UserClearanceDistance;
         private int maxEventHeight;
 
@@ -70,6 +71,7 @@ namespace Teudu.InfoDisplay
 
             leftArm = new Arm();
             rightArm = new Arm();
+            torso = new Torso();
         }
 
         public void BeginBackgroundJobs()
@@ -144,6 +146,11 @@ namespace Teudu.InfoDisplay
                 this.leftArm.HandY = e.LeftHandPosition.Y;
                 this.leftArm.HandZ = e.LeftHandPosition.Z;
 
+                this.torso.X = e.TorsoPosition.X;
+                this.torso.Y = e.TorsoPosition.Y;
+                this.torso.Z = e.TorsoPosition.Z;
+
+
                 if(Engaged)
                     firstEntry = false;
 
@@ -175,6 +182,7 @@ namespace Teudu.InfoDisplay
                 }
 
                 this.OnPropertyChanged("Engaged");
+                this.OnPropertyChanged("TooClose");
                 this.OnPropertyChanged("DistanceFromInvisScreen");
             } 
         #endregion
@@ -184,12 +192,21 @@ namespace Teudu.InfoDisplay
 
         Arm leftArm;
         Arm rightArm;
+        Torso torso;
 
         public bool Engaged
         {
             get
             {
-                return (LeftHandActive || RightHandActive) && !(LeftHandActive && RightHandActive);
+                return (LeftHandActive || RightHandActive) && !(LeftHandActive && RightHandActive) && !TooClose;
+            }
+        }
+
+        public bool TooClose
+        {
+            get
+            {
+                return torso.Z < (UserClearanceDistance + HALF_ARMSPAN);
             }
         }
 
