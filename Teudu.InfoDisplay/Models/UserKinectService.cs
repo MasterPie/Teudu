@@ -21,9 +21,7 @@ namespace Teudu.InfoDisplay
         public void Initialize() 
         {
            
-            runtime = new Runtime();
             
-            runtime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(runtime_SkeletonFrameReady);
 
             kinectRetryTimer = new DispatcherTimer();
             kinectRetryTimer.Interval = TimeSpan.FromSeconds(5);
@@ -49,6 +47,10 @@ namespace Teudu.InfoDisplay
         {
             try
             {
+                runtime = Runtime.Kinects[0];
+
+                runtime.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(runtime_SkeletonFrameReady);
+
                 runtime.Initialize(RuntimeOptions.UseSkeletalTracking);
                 runtime.SkeletonEngine.TransformSmooth = true;
                 runtime.SkeletonEngine.SmoothParameters = new TransformSmoothParameters()
@@ -73,6 +75,7 @@ namespace Teudu.InfoDisplay
             var skeleton = e.SkeletonFrame.Skeletons
                 .Where(s => s.TrackingState == SkeletonTrackingState.Tracked)
                 .OrderBy(x => x.Position.Z) //track closest
+                .ThenBy(y => Math.Abs(y.Position.X)) //track centermost
                 .FirstOrDefault(); 
 
             if (skeleton == null)
@@ -80,6 +83,7 @@ namespace Teudu.InfoDisplay
 
             var rightHandPosition = skeleton.Joints[JointID.HandRight].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
             var leftHandPosition = skeleton.Joints[JointID.HandLeft].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
+            var torsoPosition = skeleton.Joints[JointID.HipCenter].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
 
             isTrackingSkeleton = true;
 
@@ -87,7 +91,8 @@ namespace Teudu.InfoDisplay
             { 
                 this.SkeletonUpdated(this, new SkeletonEventArgs() { 
                     LeftHandPosition = leftHandPosition, 
-                    RightHandPosition = rightHandPosition
+                    RightHandPosition = rightHandPosition,
+                    TorsoPosition = torsoPosition
                 }); 
             } 
         }

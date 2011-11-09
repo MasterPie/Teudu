@@ -10,6 +10,7 @@
         <teudu:BoolColorConverter x:Key="boolConverter"/>
         <teudu:EngagedColorConverter x:Key="engagedConverter"/>
         <teudu:EngagedSymbolConverter x:Key="symbolConverter"/>
+        <teudu:BoolToOpacityConverter x:Key="opacityConverter"/>
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Helvetica Neue LT Std"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
@@ -22,9 +23,10 @@
             <teudu:BoardPagedControl Background="{Binding Path=Engaged, Converter={StaticResource engagedConverter}}"  x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10" Margin="0,0,0,0"/>
         </StackPanel>
         <TextBlock Text="{Binding Path=Engaged, Converter={StaticResource symbolConverter}, FallbackValue=+}" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center" Foreground="{Binding Path=Engaged, Converter={StaticResource boolConverter}, FallbackValue=Red}"/>
-        <TextBlock Text="{Binding Source={StaticResource notifyingDate},Path=Now, Converter={StaticResource dateConverter}}" Panel.ZIndex="99" Width="340" HorizontalAlignment="Right" Margin="0,25,50,0" TextAlignment="Right"/>
+        <TextBlock Text="{Binding Source={StaticResource notifyingDate},Path=Now, Converter={StaticResource dateConverter}}" Panel.ZIndex="99" HorizontalAlignment="Right" Margin="0,25,50,0" TextAlignment="Right"/>
         <teudu:HandStatusControl Panel.ZIndex="99" HorizontalAlignment="Right" Margin="0,60,50,0" VerticalAlignment="Top"/>
-        <teudu:LoadingPopup x:Name="LoadingContainer" Panel.ZIndex="100"/>
+        <teudu:LoadingPopup x:Name="LoadingContainer" Panel.ZIndex="100" />
+        <TextBlock Text="Please stand back a bit so Teudu can see you better." FontSize="26" Foreground="Red" Panel.ZIndex="99" HorizontalAlignment="Center" Margin="0,20,0,0" TextAlignment="Center" Opacity="{Binding Path=TooClose, Converter={StaticResource opacityConverter}, FallbackValue=0}"/>
         <!--<Image Source="/Teudu.InfoDisplay;component/Images/CeilidhImage.png" Panel.ZIndex="80" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="50,0,0,25" Width="300"/>-->
     </Grid>
 </Window>

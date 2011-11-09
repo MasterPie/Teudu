@@ -58,6 +58,13 @@
                 <Image x:Name="image" Panel.ZIndex="10" Stretch="Uniform" Source="/Teudu.InfoDisplay;component/Images/default.jpg" 
                        StretchDirection="DownOnly" VerticalAlignment="Top"/>
                 <!--Source="/Teudu.InfoDisplay;component/Images/"-->
+                <!--<StackPanel.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                        <SkewTransform x:Name="eventTilt" AngleX="-2" AngleY="-2"/>
+                        <TranslateTransform Y="8" X="10"/>
+                    </TransformGroup>
+                </StackPanel.RenderTransform>-->
             </StackPanel>
         </Border>
         <Canvas>

@@ -41,6 +41,18 @@ namespace Teudu.InfoDisplay
             trackingResetTimer.Tick += new EventHandler(trackingResetTimer_Tick);
 
             this.Loaded += new RoutedEventHandler(BoardNavigatorControl_Loaded);
+            this.BoardContainer.LayoutUpdated += new EventHandler(BoardContainer_LayoutUpdated);
+        }
+
+        void BoardContainer_LayoutUpdated(object sender, EventArgs e)
+        {
+
+            int childCount = this.BoardContainer.Children.Count;
+            foreach (UIElement element in this.BoardContainer.Children)
+            {
+                element.SetValue(Canvas.ZIndexProperty, childCount);
+                childCount--;
+            }
         }
 
         void trackingResetTimer_Tick(object sender, EventArgs e)

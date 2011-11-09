@@ -203,7 +203,9 @@ namespace Teudu.InfoDisplay
                     Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Visible;
                     ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
-                    outerBorder.BorderThickness = new Thickness(5);
+                    outerBorder.BorderThickness = new Thickness(2);
+                    //eventTilt.AngleX = 2;
+                    //eventTilt.AngleY = -2;
                 }
                 else
                 {
@@ -211,6 +213,8 @@ namespace Teudu.InfoDisplay
                     Details.Visibility = System.Windows.Visibility.Hidden;
                     outerBorder.BorderThickness = new Thickness(0);
                     ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
+                    //eventTilt.AngleX = 0;
+                    //eventTilt.AngleY = 0;
                     //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
                 }
             }

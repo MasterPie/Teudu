@@ -36,8 +36,9 @@ namespace Teudu.InfoDisplay
 
         public void Show(string msg)
         {
-            ((System.Windows.Media.Animation.Storyboard)this.Resources["MainShowAnimation"]).Begin();
+            //((System.Windows.Media.Animation.Storyboard)this.Resources["MainShowAnimation"]).Begin();
             Message = msg;
+            ShowMessage();
             //((System.Windows.Media.Animation.Storyboard)this.Resources["ShowAnimation"]).Begin();
         }
 
