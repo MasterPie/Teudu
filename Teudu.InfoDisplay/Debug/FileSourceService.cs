@@ -55,7 +55,7 @@ namespace Teudu.InfoDisplay.Test
 
         private List<Event> ReadEvents()
         {
-            CultureInfo culture = CultureInfo.InvariantCulture;
+            CultureInfo culture = CultureInfo.CurrentCulture;
             List<Event> retEvents = new List<Event>();
             XmlNode root = doc.DocumentElement;
             try
@@ -87,14 +87,14 @@ namespace Teudu.InfoDisplay.Test
 
                             if (detail.Name.ToLower().Equals("starttime"))
                             {
-                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/'), "yyyy/MM/dd HH:mm:ss UTC", culture, DateTimeStyles.AssumeUniversal, out time))
+                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out time))
                                     time = DateTime.Now;
                             }
 
                             if (detail.Name.ToLower().Equals("endtime"))
                             {
-                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/'), "yyyy/MM/dd HH:mm:ss UTC", culture, DateTimeStyles.AssumeUniversal, out endTime))
-                                    endTime = DateTime.Now.AddYears(20);
+                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out endTime))
+                                    endTime = time;
                             }
 
                             if (detail.Name.ToLower().Equals("image"))

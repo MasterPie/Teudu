@@ -95,6 +95,14 @@ namespace Teudu.InfoDisplay
                 return start + " - " + end;
         }
 
+        public bool HappeningNow
+        {
+            get 
+            {
+                return (this.StartTime <= DateTime.Now && this.EndTime >= DateTime.Now);
+            }
+        }
+
         public bool HappeningThisWeek
         {
             get { return time.Subtract(DateTime.Today) <= new TimeSpan(20, 0, 0, 0) && time >= DateTime.Now; }

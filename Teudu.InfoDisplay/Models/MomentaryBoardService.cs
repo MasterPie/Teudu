@@ -105,7 +105,7 @@ namespace Teudu.InfoDisplay
 
             events.ForEach(x =>
             {
-                if (x.StartTime >= DateTime.Now)
+                if (x.EndTime >= DateTime.Now)
                 {
                     List<Category> categories = x.Categories;
                     categories.ForEach(cat =>
