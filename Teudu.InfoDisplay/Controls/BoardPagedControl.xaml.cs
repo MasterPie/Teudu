@@ -37,7 +37,7 @@ namespace Teudu.InfoDisplay
             sbAdvance = new Storyboard();
 
             trackingResetTimer = new DispatcherTimer();
-            trackingResetTimer.Interval = TimeSpan.FromSeconds(5);
+            trackingResetTimer.Interval = TimeSpan.FromSeconds(2);
             trackingResetTimer.Tick += new EventHandler(trackingResetTimer_Tick);
 
             this.Loaded += new RoutedEventHandler(BoardNavigatorControl_Loaded);

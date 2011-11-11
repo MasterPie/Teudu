@@ -14,6 +14,13 @@ namespace Teudu.InfoDisplay
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             bool val = (bool)value;
+            if (parameter!=null)
+            {
+                bool reverse = false;
+                Boolean.TryParse((string)parameter, out reverse);
+                if (reverse)
+                    val = !val;
+            }
             if(val)
                 return new SolidColorBrush(Color.FromRgb(0, 255, 0));
             else

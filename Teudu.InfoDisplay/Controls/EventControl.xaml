@@ -56,7 +56,15 @@
         <Border x:Name="outerBorder" BorderBrush="#FFFDB14E">
             <StackPanel x:Name="EventContainer">
                 <Image x:Name="image" Panel.ZIndex="10" Stretch="Uniform" Source="/Teudu.InfoDisplay;component/Images/default.jpg" 
-                       StretchDirection="DownOnly" VerticalAlignment="Top"/>
+                       StretchDirection="DownOnly" VerticalAlignment="Top">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform x:Name="imageScale" ScaleX="1" ScaleY="1"/>
+                            <SkewTransform x:Name="eventTilt" AngleX="0" AngleY="0"/>
+                            <TranslateTransform x:Name="eventTranslate" Y="0" X="0"/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
                 <!--Source="/Teudu.InfoDisplay;component/Images/"-->
                 <!--<StackPanel.RenderTransform>
                     <TransformGroup>
@@ -77,7 +85,7 @@
                   Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" 
                   Height="{Binding ActualHeight,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
                 <StackPanel VerticalAlignment="Center" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
-                    <TextBlock Text="Starts in" TextAlignment="Center"/>
+                    <TextBlock Text="{Binding Happening,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" TextAlignment="Center"/>
                     <TextBlock Text="{Binding StartsIn,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Style="{StaticResource EventHappeningTime}" TextAlignment="Center"/>
                 </StackPanel>
                 <Grid.RenderTransform>

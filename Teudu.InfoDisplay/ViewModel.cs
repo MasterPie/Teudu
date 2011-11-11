@@ -183,7 +183,8 @@ namespace Teudu.InfoDisplay
 
                 this.OnPropertyChanged("Engaged");
                 this.OnPropertyChanged("TooClose");
-                this.OnPropertyChanged("DistanceFromInvisScreen");
+                if(!TooClose)
+                    this.OnPropertyChanged("DistanceFromInvisScreen");
             } 
         #endregion
 

@@ -12,7 +12,7 @@
     <Grid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
             <Line Stroke="{Binding Path=Engaged, Converter={StaticResource boolConverter}, FallbackValue=Red}" StrokeThickness="5" Y1="0" Y2="30"/>
-            <Line Stroke="{Binding Path=Engaged, Converter={StaticResource boolConverter}, FallbackValue=Red}" StrokeThickness="10" X1="0" X2="40" VerticalAlignment="Center">
+            <Line Stroke="{Binding Path=TooClose, Converter={StaticResource boolConverter}, ConverterParameter=true, FallbackValue=Red}" StrokeThickness="10" X1="0" X2="40" VerticalAlignment="Center">
                 <Line.RenderTransform>
                     <TranslateTransform X="{Binding Path=DistanceFromInvisScreen, Converter={StaticResource handConverter}, FallbackValue=155}" />
                 </Line.RenderTransform>

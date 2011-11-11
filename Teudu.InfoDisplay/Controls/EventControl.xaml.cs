@@ -72,9 +72,21 @@ namespace Teudu.InfoDisplay
             //if(recency.
         }
 
+        private string happeningText = "Starts in";
+
+        public string Happening
+        {
+            get { return happeningText; }
+        }
+
         void slideUpTimer_Tick(object sender, EventArgs e)
         {
             slideUpTimer.Stop();
+            if (eventModel.HappeningNow)
+            {
+                happeningText = "Happening";
+                this.OnPropertyChanged("Happening");
+            }
             ((System.Windows.Media.Animation.Storyboard)this.Resources["SlideUpAnimation"]).Begin();
         }
 
@@ -156,6 +168,9 @@ namespace Teudu.InfoDisplay
         {
             get
             {
+                if (eventModel.HappeningNow)
+                    return "Now";
+
                 TimeSpan recency = eventModel.StartTime - DateTime.Now;
 
                 return Helper.ToSensibleDate("",recency.TotalMinutes);
@@ -203,18 +218,28 @@ namespace Teudu.InfoDisplay
                     Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Visible;
                     ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
-                    outerBorder.BorderThickness = new Thickness(2);
-                    //eventTilt.AngleX = 2;
-                    //eventTilt.AngleY = -2;
+                    //outerBorder.BorderThickness = new Thickness(2);
+                    imageScale.CenterX = image.ActualWidth / 2;
+                    imageScale.CenterY = image.ActualHeight / 2;
+                    imageScale.ScaleX = 0.97;
+                    imageScale.ScaleY = 0.97;
+                    eventTilt.AngleX = 2;
+                    eventTilt.AngleY = -2;
+                    eventTranslate.X = 8;
+                    eventTranslate.Y = 0;
                 }
                 else
                 {
                     //Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Hidden;
-                    outerBorder.BorderThickness = new Thickness(0);
+                    //outerBorder.BorderThickness = new Thickness(0);
                     ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
-                    //eventTilt.AngleX = 0;
-                    //eventTilt.AngleY = 0;
+                    imageScale.ScaleX = 1;
+                    imageScale.ScaleY = 1;
+                    eventTilt.AngleX = 0;
+                    eventTilt.AngleY = 0;
+                    eventTranslate.X = 0;
+                    eventTranslate.Y = 0;
                     //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
                 }
             }
