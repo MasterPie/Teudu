@@ -10,75 +10,80 @@ using System.Timers;
 using System.Windows.Threading;
 using System.ComponentModel;
 using System.Globalization;
+using System.Xml.Linq;
 
 namespace Teudu.InfoDisplay
 {
-    public class WebSourceService: ISourceService
+    public class WebSourceService: SourceService
     {
-        private XmlDocument doc;
-        private WebClient wc;
-        private string imageDirectory;
-        private string xmlResponse;
+        private XElement root;
+        private WebClient wc;      
         private string serviceURI;
 
-        private BackgroundWorker downloadWorker;
+        private BackgroundWorker XmlDownloadWorker;
         private DispatcherTimer retryTimer;
-        private DispatcherTimer timer;
+        private DispatcherTimer eventSyncTimer;
 
-        public void Initialize()
+        public override void Initialize()
         {
-            imageDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\" + ConfigurationManager.AppSettings["CachedImageDirectory"] + @"\";
-            doc = new XmlDocument();
+            base.Initialize();
             serviceURI = ConfigurationManager.AppSettings["EventsServiceURI"].ToString();
+            
             wc = new WebClient();
             wc.Encoding = Encoding.UTF8;
 
-            int pollTime = 60*60;
+            int pollTime = 3600; //In seconds
             Int32.TryParse(ConfigurationManager.AppSettings["EventsServicePollInterval"], out pollTime);
 
             if (pollTime < 60)
-                pollTime = 60 * 60;
+                pollTime = 3600;
 
-            pollTime = 2;
-
-            timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, pollTime);
-            timer.Tick += new EventHandler(timer_Tick);
+            eventSyncTimer = new DispatcherTimer();
+            eventSyncTimer.Interval = new TimeSpan(0, 0, pollTime);
+            eventSyncTimer.Tick += new EventHandler(eventSyncTimer_Tick);
 
             retryTimer = new DispatcherTimer();
             retryTimer.Interval = TimeSpan.FromSeconds(30);
             retryTimer.Tick += new EventHandler(retryTimer_Tick);
 
-            downloadWorker = new BackgroundWorker();
-            downloadWorker.DoWork += new DoWorkEventHandler(downloadWorker_DoWork);
-            downloadWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(downloadWorker_RunWorkerCompleted);
+            XmlDownloadWorker = new BackgroundWorker();
+            XmlDownloadWorker.DoWork += new DoWorkEventHandler(XmlDownloadWorker_DoWork);
+            XmlDownloadWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(XmlDownloadWorker_RunWorkerCompleted);
         }
 
+        public override void BeginPoll()
+        {
+            if (retryTimer.IsEnabled)
+                retryTimer.Stop();
+
+            XmlDownloadWorker.RunWorkerAsync();
+            eventSyncTimer.Start();
+        }
+
+        /// <summary>
+        /// Retries event downloads on error
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void retryTimer_Tick(object sender, EventArgs e)
         {
             BeginPoll();
         }
 
-        void downloadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Result == null)
-                return;
-
-            if (EventsUpdated != null)
-                EventsUpdated(this, new SourceEventArgs() { Events = (List<Event>)e.Result });
-
-            //timer.Start();
-        }
-
-        void downloadWorker_DoWork(object sender, DoWorkEventArgs e)
+        /// <summary>
+        /// Asynchronous routine that downloads the Xml from the webservice, and then calls other routines to download the images
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void XmlDownloadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                xmlResponse = wc.DownloadString(serviceURI);
+                string xmlResponse = wc.DownloadString(serviceURI);
 
-                doc.LoadXml(xmlResponse);
-                
-                List<Event> events = ReadEvents();
+                root = XElement.Parse(xmlResponse);
+                List<Event> events = ReadEvents(root);
+                events = DownloadImages(events);
                 e.Result = events;
             }
             catch (Exception)
@@ -87,21 +92,33 @@ namespace Teudu.InfoDisplay
             }
         }
 
-        void timer_Tick(object sender, EventArgs e)
+        /// <summary>
+        /// Runs immediately after all the events are downloaded
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void XmlDownloadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            downloadWorker.RunWorkerAsync();
-            timer.Stop();
+            if (e.Result == null)
+                return;
+
+            OnEventsUpdated(this, new SourceEventArgs() { Events = (List<Event>)e.Result });
+
+            eventSyncTimer.Start();
         }
 
-        public void BeginPoll()
+        /// <summary>
+        /// Redownloads events every time timer goes off
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void eventSyncTimer_Tick(object sender, EventArgs e)
         {
-            if (retryTimer.IsEnabled)
-                retryTimer.Stop();
-
-            downloadWorker.RunWorkerAsync();
-            //timer.Start();
+            XmlDownloadWorker.RunWorkerAsync();
+            eventSyncTimer.Stop();
         }
 
+        /*
         private List<Event> ReadEvents()
         {
             CultureInfo culture = CultureInfo.CurrentCulture;
@@ -166,12 +183,32 @@ namespace Teudu.InfoDisplay
             return retEvents;
         }
 
+        */
+        
+        /// <summary>
+        /// Downloads all the images in parallel
+        /// </summary>
+        /// <param name="events"></param>
+        /// <returns></returns>
+        private List<Event> DownloadImages(List<Event> events)
+        {
+            events.AsParallel().ForAll(x => x.Image = DownloadImage(x.Image, x.ID));
+            return events;
+        }
+
+        /// <summary>
+        /// Downloads a single image. If image does not exist (or on error), set path to image as ""
+        /// </summary>
+        /// <param name="uri">Url to download image from</param>
+        /// <param name="id">ID of event</param>
+        /// <returns>New path to downloaded image</returns>
         private string DownloadImage(string uri, int id)
         {
             string fileName = uri;
             if(String.IsNullOrEmpty(fileName))
                 fileName = "";
-            else{
+            else
+            {
                 fileName = id.ToString();
 
                 try
@@ -186,11 +223,10 @@ namespace Teudu.InfoDisplay
             return fileName;
         }
 
-        public event EventHandler<SourceEventArgs> EventsUpdated;
-
-        public void Cleanup()
+        public override void Cleanup()
         {
-            timer.Stop();
+            retryTimer.Stop();
+            eventSyncTimer.Stop();
             wc.Dispose();
         }
     }

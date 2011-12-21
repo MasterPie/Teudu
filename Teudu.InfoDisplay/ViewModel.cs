@@ -18,7 +18,7 @@ namespace Teudu.InfoDisplay
     public class ViewModel: INotifyPropertyChanged
     {
         private const double SCALE_OFFSET = 250;
-        private double HeightOffGround = 0;
+
         private double CORRESPONDENCE_SCALE_FACTOR_X = 4;
         private double CORRESPONDENCE_SCALE_FACTOR_Y = 6;
         private double HALF_ARMSPAN = 0.3;
@@ -37,12 +37,14 @@ namespace Teudu.InfoDisplay
         ISourceService sourceService;
         IBoardService boardService;
 
+        DispatcherTimer appIdle;
+
         public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService) 
         {
             UserClearanceDistance = 1.3;
+            
             Double.TryParse(ConfigurationManager.AppSettings["UserDistanceRequired"], out UserClearanceDistance);
-            HeightOffGround = 0;
-            Double.TryParse(ConfigurationManager.AppSettings["HeightOffGround"], out HeightOffGround);
+
             if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
                 maxEventHeight = 340;
 
@@ -72,6 +74,18 @@ namespace Teudu.InfoDisplay
             leftArm = new Arm();
             rightArm = new Arm();
             torso = new Torso();
+
+            appIdle = new DispatcherTimer();
+            appIdle.Interval = TimeSpan.FromMinutes(5);
+            appIdle.Tick += new EventHandler(appIdle_Tick);
+            //appIdle.Start();
+        }
+
+        void appIdle_Tick(object sender, EventArgs e)
+        {
+            this.sourceService.BeginPoll();
+            appIdle.Stop();
+            appIdle.Start();
         }
 
         public void BeginBackgroundJobs()
@@ -179,6 +193,8 @@ namespace Teudu.InfoDisplay
                         this.OnPropertyChanged("DominantArmHandOffsetX");
                         this.OnPropertyChanged("DominantArmHandOffsetY");
                     }
+                    //appIdle.Stop();
+                    //appIdle.Start();
                 }
 
                 this.OnPropertyChanged("Engaged");
@@ -353,6 +369,6 @@ namespace Teudu.InfoDisplay
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<BoardEventArgs> BoardsUpdated;
-
+        public event EventHandler MadeLargeMovement;
     }
 }

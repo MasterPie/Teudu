@@ -82,11 +82,12 @@ namespace Teudu.InfoDisplay
         void slideUpTimer_Tick(object sender, EventArgs e)
         {
             slideUpTimer.Stop();
-            if (eventModel.HappeningNow)
+            if (eventModel.HappeningNow /*|| (eventModel.HappeningToday && GetRecency().TotalMinutes >= 60)*/)
             {
                 happeningText = "Happening";
                 this.OnPropertyChanged("Happening");
             }
+            
             ((System.Windows.Media.Animation.Storyboard)this.Resources["SlideUpAnimation"]).Begin();
         }
 
@@ -105,7 +106,8 @@ namespace Teudu.InfoDisplay
         {
             VisibleLocation_work();
 
-            TranslateTransform shiftLeft = new TranslateTransform(this.ActualWidth + App.Current.MainWindow.ActualWidth / 30, 0);
+            //TranslateTransform shiftLeft = new TranslateTransform(this.ActualWidth + App.Current.MainWindow.ActualWidth / 30, 0);
+            TranslateTransform shiftLeft = new TranslateTransform(this.ActualWidth - App.Current.MainWindow.ActualWidth / 30, this.ActualHeight / 2 - App.Current.MainWindow.ActualHeight / 30);
             Details.RenderTransform = shiftLeft;
         }
 
@@ -121,7 +123,7 @@ namespace Teudu.InfoDisplay
             int secondsFrequency = 3600;
             TimeSpan recency = GetRecency();
 
-            if (recency.TotalHours < 5)
+            if (recency.TotalHours < 24)
                 secondsFrequency = 90;
             if (recency.TotalMinutes < 60)
                 secondsFrequency = 60;
@@ -217,22 +219,28 @@ namespace Teudu.InfoDisplay
                 {
                     Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Visible;
+                    
                     ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
-                    //outerBorder.BorderThickness = new Thickness(2);
+                    //outerBorder.BorderThickness = new Thickness(5);
+                    image.Opacity = 0.4;
+
                     imageScale.CenterX = image.ActualWidth / 2;
                     imageScale.CenterY = image.ActualHeight / 2;
-                    imageScale.ScaleX = 0.97;
-                    imageScale.ScaleY = 0.97;
-                    eventTilt.AngleX = 2;
-                    eventTilt.AngleY = -2;
-                    eventTranslate.X = 8;
+                    imageScale.ScaleX = 0.95;
+                    imageScale.ScaleY = 0.95;
+                    eventTilt.AngleX = 1;
+                    eventTilt.AngleY = -1;
+                    eventTranslate.X = 3;
                     eventTranslate.Y = 0;
                 }
                 else
                 {
                     //Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Hidden;
-                    //outerBorder.BorderThickness = new Thickness(0);
+                    image.Opacity = 1;
+                    
+                    outerBorder.BorderThickness = new Thickness(0);
+
                     ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
                     imageScale.ScaleX = 1;
                     imageScale.ScaleY = 1;

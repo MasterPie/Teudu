@@ -84,5 +84,6 @@ namespace Teudu.InfoDisplay.Debug
         }
 
         public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+        public event EventHandler NewPlayer;
     }
 }

@@ -239,11 +239,15 @@ namespace Teudu.InfoDisplay
 
         private bool GoPrevious()
         {
+            if (!positionOffsets.ContainsKey(boardMaster.Current))
+                return false;
             return BoardLeftEdgeLocation().X > (-positionOffsets[boardMaster.Current] + this.ActualWidth / 2 + boardInbetween);
         }
 
         private bool GoNext()
         {
+            if (!positionOffsets.ContainsKey(boardMaster.Current))
+                return false;
            return (BoardLeftEdgeLocation().X) < (-positionOffsets[boardMaster.Current] - this.ActualWidth/2 + boardInbetween);
         }
 

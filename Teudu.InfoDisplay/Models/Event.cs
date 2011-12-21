@@ -39,19 +39,19 @@ namespace Teudu.InfoDisplay
         public string Name
         {
             set { name = value; }
-            get { return name; }
+            get { return name.Trim(); }
         }
 
         public string Description
         {
             set { description = value; }
-            get { return description; }
+            get { return description.Trim(); }
         }
 
         public string Location
         {
             set { location = value; }
-            get { return location; }
+            get { return location.Trim(); }
         }
 
         public DateTime StartTime
@@ -100,6 +100,14 @@ namespace Teudu.InfoDisplay
             get 
             {
                 return (this.StartTime <= DateTime.Now && this.EndTime >= DateTime.Now);
+            }
+        }
+
+        public bool HappeningToday
+        {
+            get
+            {
+                return (this.StartTime.Day == DateTime.Now.Day && this.StartTime.Month == DateTime.Now.Month && this.StartTime.Year == DateTime.Now.Year);
             }
         }
 

@@ -7,52 +7,51 @@ using System.Xml;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Globalization;
+using System.Xml.Linq;
 
 namespace Teudu.InfoDisplay.Test
 {
-    public class FileSourceService : ISourceService
+    public class FileSourceService : SourceService
     {
         private string eventsFile;
-        private XmlDocument doc;
-        private BackgroundWorker downloadWorker;
+        private XElement doc;
+        //private XmlDocument doc;
+        private BackgroundWorker IOWorker;
 
         public FileSourceService(string file)
         {
             eventsFile = file;
         }
-        public void Initialize()
+        public override void Initialize()
         {
-            doc = new XmlDocument();
-            downloadWorker = new BackgroundWorker();
-            downloadWorker.DoWork += new DoWorkEventHandler(downloadWorker_DoWork);
-            downloadWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(downloadWorker_RunWorkerCompleted);
+            base.Initialize();
+            IOWorker = new BackgroundWorker();
+            IOWorker.DoWork += new DoWorkEventHandler(downloadWorker_DoWork);
+            IOWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(downloadWorker_RunWorkerCompleted);
         }
 
         void downloadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (EventsUpdated != null)
-                EventsUpdated(this, new SourceEventArgs()
-                {
-                    Events = (List<Event>)e.Result
-                });
+            OnEventsUpdated(this, new SourceEventArgs(){ Events = (List<Event>)e.Result });
         }
 
         void downloadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            List<Event> events = ReadEvents();
+            List<Event> events = ReadEvents(doc);
             e.Result = events;
         }
 
-        public void BeginPoll()
+        public override void BeginPoll()
         {
-            doc.Load(eventsFile);
+            //doc.Load(eventsFile);
+            doc = XElement.Load(eventsFile);
 
-            downloadWorker.RunWorkerAsync();
+            IOWorker.RunWorkerAsync();
            
 
             
         }
-
+        /*
         private List<Event> ReadEvents()
         {
             CultureInfo culture = CultureInfo.CurrentCulture;
@@ -87,13 +86,17 @@ namespace Teudu.InfoDisplay.Test
 
                             if (detail.Name.ToLower().Equals("starttime"))
                             {
-                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out time))
+                                //if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out time))
+                                //    time = DateTime.Now;
+                                if (!DateTime.TryParse(detail.InnerText.Replace("UTC", ""), culture, DateTimeStyles.AssumeLocal, out time))
                                     time = DateTime.Now;
                             }
 
                             if (detail.Name.ToLower().Equals("endtime"))
                             {
-                                if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out endTime))
+                                //if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out endTime))
+                                //    endTime = time;
+                                if (!DateTime.TryParse(detail.InnerText.Replace('-', '/').Replace("UTC", ""), culture, DateTimeStyles.AssumeLocal, out endTime))
                                     endTime = time;
                             }
 
@@ -115,15 +118,11 @@ namespace Teudu.InfoDisplay.Test
             }
             return retEvents;
         }
+        */
 
-        public event EventHandler<SourceEventArgs> EventsUpdated;
-
-        public void Cleanup()
+        public override void Cleanup()
         {
             
         }
-
-
-
     }
 }
