@@ -8,6 +8,7 @@ using Kinect.Toolbox;
 
 using System.Diagnostics;
 using System.Windows.Threading;
+using System.Configuration;
 
 namespace Teudu.InfoDisplay
 {
@@ -15,28 +16,29 @@ namespace Teudu.InfoDisplay
     {
         
         Runtime runtime;
-        bool isTrackingSkeleton;
+        bool isTrackingSkeleton = false;
         DispatcherTimer kinectRetryTimer;
-        
+        double maxUserDistance = -1;
+
+        int currentPlayerId = -1;
+
         public void Initialize() 
         {
-           
-            
-
             kinectRetryTimer = new DispatcherTimer();
             kinectRetryTimer.Interval = TimeSpan.FromSeconds(5);
             kinectRetryTimer.Tick += new EventHandler(kinectRetryTimer_Tick);
-            //TODO: Have timer to poll idle
 
-            
+            if (!Double.TryParse(ConfigurationManager.AppSettings["MaxUserDistance"], out maxUserDistance))
+                maxUserDistance = 3.0;
+
             StartKinect();
-                
-                /*Smoothing = .75f,
-                    JitterRadius = 0.05f,
-                    MaxDeviationRadius = 0.04f*/
-            
         }
 
+        /// <summary>
+        /// Runs when Kinect camera fails to initialize
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void kinectRetryTimer_Tick(object sender, EventArgs e)
         {
             kinectRetryTimer.Stop();
@@ -69,17 +71,31 @@ namespace Teudu.InfoDisplay
                 kinectRetryTimer.Start();
             }
         }
-
+        
+        /// <summary>
+        /// Runs when the Kinect recalculates the skeletons in a scene (which happens constantly)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void runtime_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e) 
         { 
             var skeleton = e.SkeletonFrame.Skeletons
-                .Where(s => s.TrackingState == SkeletonTrackingState.Tracked)
-                .OrderBy(x => x.Position.Z) //track closest
-                .ThenBy(y => Math.Abs(y.Position.X)) //track centermost
-                .FirstOrDefault(); 
+                .Where(s => s.TrackingState == SkeletonTrackingState.Tracked && s.Position.Z <=  maxUserDistance) //Tracked skeletons and those skeletons in range
+                .OrderBy(x => Math.Sqrt(Math.Pow(Math.Abs(x.Position.X),2) + Math.Pow(Math.Abs(x.Position.Z),2))) //track closest
+                //.ThenBy(y => Math.Abs(y.Position.X)) //track centermost
+                .FirstOrDefault();
 
             if (skeleton == null)
+            {
+                isTrackingSkeleton = false;
                 return;
+            }
+
+            if (skeleton.TrackingID != currentPlayerId)
+            {
+                currentPlayerId = skeleton.TrackingID;
+                this.NewPlayer(this, new EventArgs());
+            }
 
             var rightHandPosition = skeleton.Joints[JointID.HandRight].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
             var leftHandPosition = skeleton.Joints[JointID.HandLeft].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;
@@ -105,11 +121,14 @@ namespace Teudu.InfoDisplay
             } 
         }        
         
-        public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+        
 
         public bool IsIdle
         {
             get { return !isTrackingSkeleton; }
         }
+
+        public event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+        public event EventHandler NewPlayer;
     }
 }

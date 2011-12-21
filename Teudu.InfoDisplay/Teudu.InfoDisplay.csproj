@@ -125,6 +125,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\SourceService.cs" />
     <Compile Include="ValueConverters\BoolColorConverter.cs" />
     <Compile Include="Controls\BoardCrumbs.xaml.cs">
       <DependentUpon>BoardCrumbs.xaml</DependentUpon>
@@ -311,6 +312,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\CeilidhImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\silhouette.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\hand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\larrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\rarrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

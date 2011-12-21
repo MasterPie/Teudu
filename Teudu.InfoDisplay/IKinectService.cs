@@ -10,6 +10,7 @@ namespace Teudu.InfoDisplay
         void Initialize();
         bool IsIdle { get; }
         void Cleanup(); 
-        event EventHandler<SkeletonEventArgs> SkeletonUpdated;   
+        event EventHandler<SkeletonEventArgs> SkeletonUpdated;
+        event EventHandler NewPlayer;
     }
 }

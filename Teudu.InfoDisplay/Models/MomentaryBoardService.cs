@@ -101,11 +101,11 @@ namespace Teudu.InfoDisplay
         {
             boards.Clear();
             Dictionary<string, Board> boardLookup = new Dictionary<string, Board>();
-            boardLookup.Add("hot", new Board("Hot Events"));
+            boardLookup.Add("hot", new Board("Upcoming"));
 
             events.ForEach(x =>
             {
-                if (x.EndTime >= DateTime.Now)
+                if (x.EndTime >= DateTime.Now || true)
                 {
                     List<Category> categories = x.Categories;
                     categories.ForEach(cat =>

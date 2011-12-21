@@ -8,15 +8,44 @@
     <UserControl.Resources>
         <teudu:HandDistanceToLineTranslateConverter x:Key="handConverter"/>
         <teudu:BoolColorConverter x:Key="boolConverter"/>
+        <teudu:BoolToOpacityConverter x:Key="opacityConverter"/>
     </UserControl.Resources>
     <Grid>
+        <Image Source="/Teudu.InfoDisplay;component/Images/larrow.png" Height="40" Opacity="{Binding Path=Engaged, Converter={StaticResource opacityConverter}, FallbackValue=1,ConverterParameter=true}">
+            <Image.RenderTransform>
+                <TranslateTransform X="0"></TranslateTransform>
+            </Image.RenderTransform>
+        </Image>
+        <Image Source="/Teudu.InfoDisplay;component/Images/rarrow.png" Height="40" Opacity="{Binding Path=Engaged, Converter={StaticResource opacityConverter}, FallbackValue=0, ConverterParameter=false}">
+            <Image.RenderTransform>
+                <TranslateTransform X="0"></TranslateTransform>
+            </Image.RenderTransform>
+        </Image>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
-            <Line Stroke="{Binding Path=Engaged, Converter={StaticResource boolConverter}, FallbackValue=Red}" StrokeThickness="5" Y1="0" Y2="30"/>
-            <Line Stroke="{Binding Path=TooClose, Converter={StaticResource boolConverter}, ConverterParameter=true, FallbackValue=Red}" StrokeThickness="10" X1="0" X2="40" VerticalAlignment="Center">
+            <Line Stroke="{Binding Path=Engaged, Converter={StaticResource boolConverter}, FallbackValue=Red}" StrokeThickness="5" Y1="0" Y2="40">
                 <Line.RenderTransform>
-                    <TranslateTransform X="{Binding Path=DistanceFromInvisScreen, Converter={StaticResource handConverter}, FallbackValue=155}" />
+                    <TranslateTransform X="3"/>
                 </Line.RenderTransform>
             </Line>
+
+            <!--<Line Stroke="{Binding Path=TooClose, Converter={StaticResource boolConverter}, ConverterParameter=true, FallbackValue=Red}" StrokeThickness="10" X1="0" X2="40" VerticalAlignment="Center">
+                <Line.RenderTransform>
+                    <TranslateTransform X="{Binding Path=DistanceFromInvisScreen, Converter={StaticResource handConverter}, FallbackValue=120}" />
+                </Line.RenderTransform>
+            </Line>-->
+
+            <Image Source="/Teudu.InfoDisplay;component/Images/hand.png" Height="40">
+                <Image.RenderTransform>
+                    <TranslateTransform X="{Binding Path=DistanceFromInvisScreen, Converter={StaticResource handConverter}, FallbackValue=120}" />
+                </Image.RenderTransform>
+            </Image>
+
         </StackPanel>
+        <Image Source="/Teudu.InfoDisplay;component/Images/silhouette.png" Height="60">
+            <Image.RenderTransform>
+                <TranslateTransform X="85" Y="-5"/>
+            </Image.RenderTransform>
+        </Image>
+        
     </Grid>
 </UserControl>
