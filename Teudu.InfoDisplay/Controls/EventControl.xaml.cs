@@ -87,6 +87,12 @@ namespace Teudu.InfoDisplay
                 happeningText = "Happening";
                 this.OnPropertyChanged("Happening");
             }
+
+            if (eventModel.Happened)
+            {
+                happeningText = "";
+                this.OnPropertyChanged("Happening");
+            }
             
             ((System.Windows.Media.Animation.Storyboard)this.Resources["SlideUpAnimation"]).Begin();
         }
@@ -173,9 +179,10 @@ namespace Teudu.InfoDisplay
                 if (eventModel.HappeningNow)
                     return "Now";
 
-                TimeSpan recency = eventModel.StartTime - DateTime.Now;
+                if (eventModel.Happened)
+                    return "Happened";
 
-                return Helper.ToSensibleDate("",recency.TotalMinutes);
+                return Helper.ToCountableTime(eventModel.StartTime);
             }
         }
 

@@ -75,6 +75,15 @@
     <Reference Include="Kinect.Toolbox">
       <HintPath>packages\KinectToolbox.1.1.0\lib\Kinect.Toolbox.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Research.Kinect, Version=1.0.0.45, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Private>False</Private>
@@ -125,16 +134,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\GuideControl.xaml.cs">
+      <DependentUpon>GuideControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HandMovementBoundsControl.xaml.cs">
+      <DependentUpon>HandMovementBoundsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Data\SourceService.cs" />
+    <Compile Include="Eventing\HelpMessageEventArgs.cs" />
+    <Compile Include="IHelpService.cs" />
+    <Compile Include="Models\InstructionalHelpService.cs" />
+    <Compile Include="Models\UserState.cs" />
     <Compile Include="ValueConverters\BoolColorConverter.cs" />
     <Compile Include="Controls\BoardCrumbs.xaml.cs">
       <DependentUpon>BoardCrumbs.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\BoardPagedControl.xaml.cs">
       <DependentUpon>BoardPagedControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\BoardsStatisticsControl.xaml.cs">
-      <DependentUpon>BoardsStatisticsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\BoardTitleControl.xaml.cs">
       <DependentUpon>BoardTitleControl.xaml</DependentUpon>
@@ -151,12 +167,9 @@
     <Compile Include="Controls\HandStatusControl.xaml.cs">
       <DependentUpon>HandStatusControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helper.cs" />
+    <Compile Include="Util\Helper.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Eventing\BoardEventArgs.cs" />
-    <Compile Include="Controls\BoardNavigatorControl.xaml.cs">
-      <DependentUpon>BoardNavigatorControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\Category.cs" />
     <Compile Include="Eventing\CategoryChangeEventArgs.cs" />
     <Compile Include="Eventing\DelegateCommand.cs" />
@@ -175,20 +188,16 @@
     <Compile Include="KinectTools.cs" />
     <Compile Include="Models\NotifyingDateTime.cs" />
     <Compile Include="ValueConverters\OffsetNavigatorConverter.cs" />
-    <Compile Include="Eventing\PanEventArgs.cs" />
     <Compile Include="Models\MomentaryBoardService.cs" />
-    <Compile Include="Eventing\ScaleEventArgs.cs" />
-    <Compile Include="Debug\FileSourceService.cs" />
+    <Compile Include="Data\FileSourceService.cs" />
     <Compile Include="Models\HandsState.cs" />
     <Compile Include="ISourceService.cs" />
     <Compile Include="Eventing\SkeletonEventArgs.cs" />
     <Compile Include="Eventing\SourceEventArgs.cs" />
-    <Compile Include="Eventing\SwipeEventArgs.cs" />
     <Compile Include="ValueConverters\PrettyDateConverter.cs" />
     <Compile Include="ValueConverters\SlowedOffsetNavigationConverter.cs" />
-    <Compile Include="SwipeType.cs" />
-    <Compile Include="ThreadSafeRandom.cs" />
-    <Compile Include="TrackedJoints.cs" />
+    <Compile Include="Util\ThreadSafeRandom.cs" />
+    <Compile Include="Models\TrackedJoints.cs" />
     <Compile Include="Models\UserKinectService.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="ViewModelLoader.cs" />
@@ -197,15 +206,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\BoardNavigatorControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\BoardPagedControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\BoardsStatisticsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -222,6 +223,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\EventDetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GuideControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HandMovementBoundsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -324,6 +333,29 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\rarrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HandMotion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HandOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HandBack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\InvisScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HandMotionAll.png" />
+    <Resource Include="Images\HandMotionNoBL.png" />
+    <Resource Include="Images\HandMotionNoBot.png" />
+    <Resource Include="Images\HandMotionNoBR.png" />
+    <Resource Include="Images\HandMotionNoLeft.png" />
+    <Resource Include="Images\HandMotionNoRight.png" />
+    <Resource Include="Images\HandMotionNoTL.png" />
+    <Resource Include="Images\HandMotionNoTop.png" />
+    <Resource Include="Images\HandMotionNoTR.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

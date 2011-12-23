@@ -45,6 +45,9 @@ namespace Teudu.InfoDisplay
             StartKinect();
         }
 
+        /// <summary>
+        /// Starts up Kinect
+        /// </summary>
         void StartKinect()
         {
             try
