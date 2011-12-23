@@ -74,6 +74,34 @@ namespace Teudu.InfoDisplay.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap HandBack {
+            get {
+                object obj = ResourceManager.GetObject("HandBack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap HandMotion {
+            get {
+                object obj = ResourceManager.GetObject("HandMotion", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap HandOut {
+            get {
+                object obj = ResourceManager.GetObject("HandOut", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap InvisScreen {
+            get {
+                object obj = ResourceManager.GetObject("InvisScreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap larrow {
             get {
                 object obj = ResourceManager.GetObject("larrow", resourceCulture);

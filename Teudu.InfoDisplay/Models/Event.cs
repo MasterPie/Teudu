@@ -95,6 +95,14 @@ namespace Teudu.InfoDisplay
                 return start + " - " + end;
         }
 
+        public bool Happened
+        {
+            get
+            {
+                return (this.EndTime < DateTime.Now);
+            }
+        }
+
         public bool HappeningNow
         {
             get 

@@ -17,12 +17,8 @@ namespace Teudu.InfoDisplay
 {
     public class ViewModel: INotifyPropertyChanged
     {
-        private const double SCALE_OFFSET = 250;
+       
 
-        private double CORRESPONDENCE_SCALE_FACTOR_X = 4;
-        private double CORRESPONDENCE_SCALE_FACTOR_Y = 6;
-        private double HALF_ARMSPAN = 0.3;
-        private double UserClearanceDistance;
         private int maxEventHeight;
 
         private bool firstEntry = true;
@@ -30,38 +26,26 @@ namespace Teudu.InfoDisplay
         private double EntryY = 0;
         private bool updatingViewState = false;
 
-        private bool inverted = false;
-        private int inversionFactor = -1;
-
         IKinectService kinectService;
         ISourceService sourceService;
         IBoardService boardService;
+        IHelpService helpService;
 
-        DispatcherTimer appIdle;
+        DispatcherTimer appIdleTimer;
+        UserState user;
 
-        public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService) 
+        public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService, IHelpService helpService) 
         {
-            UserClearanceDistance = 1.3;
-            
-            Double.TryParse(ConfigurationManager.AppSettings["UserDistanceRequired"], out UserClearanceDistance);
+            user = new UserState();
 
             if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
                 maxEventHeight = 340;
 
-            if (!Double.TryParse(ConfigurationManager.AppSettings["CorrespondenceScaleX"], out CORRESPONDENCE_SCALE_FACTOR_X))
-                CORRESPONDENCE_SCALE_FACTOR_X = 4;
+            idleJobQueue = new Queue<Action>();
 
-            if (!Double.TryParse(ConfigurationManager.AppSettings["CorrespondenceScaleY"], out CORRESPONDENCE_SCALE_FACTOR_Y))
-                CORRESPONDENCE_SCALE_FACTOR_Y = 6;
-
-            if (!Boolean.TryParse(ConfigurationManager.AppSettings["Inverted"], out inverted))
-                inverted = false;
-
-            if (inverted)
-                inversionFactor = 1;
-            else
-                inversionFactor = -1;
-
+            this.helpService = helpService;
+            this.helpService.NewHelpMessage += new EventHandler<HelpMessageEventArgs>(helpService_NewHelpMessage);
+            this.helpService.NewWarningMessage += new EventHandler<HelpMessageEventArgs>(helpService_NewWarningMessage);
 
             this.kinectService = kinectService; 
 
@@ -71,29 +55,62 @@ namespace Teudu.InfoDisplay
             this.boardService = boardService;
             this.boardService.BoardsUpdated += new EventHandler(boardService_BoardsChanged);
 
-            leftArm = new Arm();
-            rightArm = new Arm();
-            torso = new Torso();
 
-            appIdle = new DispatcherTimer();
-            appIdle.Interval = TimeSpan.FromMinutes(5);
-            appIdle.Tick += new EventHandler(appIdle_Tick);
-            //appIdle.Start();
+            appIdleTimer = new DispatcherTimer();
+            appIdleTimer.Interval = TimeSpan.FromSeconds(5);
+            appIdleTimer.Tick += new EventHandler(appIdle_Tick);
+            appIdleTimer.Start();
+            helpService.NewUser(user);
+            BeginBackgroundJobs();
         }
 
-        void appIdle_Tick(object sender, EventArgs e)
+        void helpService_NewWarningMessage(object sender, HelpMessageEventArgs e)
         {
-            this.sourceService.BeginPoll();
-            appIdle.Stop();
-            appIdle.Start();
+            warningMessage = e.Message;
+            this.OnPropertyChanged("WarningMessage");
+            this.OnPropertyChanged("ShowIndicators");
         }
 
+        void helpService_NewHelpMessage(object sender, HelpMessageEventArgs e)
+        {
+            helpMessage = e.Message;
+            helpImage = e.SupplementaryImage;
+            this.OnPropertyChanged("HelpMessage");
+            this.OnPropertyChanged("HelpImage");
+            this.OnPropertyChanged("ShowIndicators");
+        }
+
+        /// <summary>
+        /// Starts up background jobs
+        /// </summary>
         public void BeginBackgroundJobs()
         {
             this.sourceService.BeginPoll();
         }
 
+        private Queue<Action> idleJobQueue;
+        /// <summary>
+        /// Routine that runs whenever the application isn't engaged
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void appIdle_Tick(object sender, EventArgs e)
+        {
+            appIdleTimer.Stop();
+
+            while (idleJobQueue.Count > 0)
+            {
+                Action action = idleJobQueue.Dequeue();
+                action();
+            }
+
+            appIdleTimer.Start();
+        }
+
         private double maxBoardWidth = 0;
+        /// <summary>
+        /// Max width of current board
+        /// </summary>
         public double MaxBoardWidth
         {
             set
@@ -104,6 +121,9 @@ namespace Teudu.InfoDisplay
         }
 
         private double maxBoardHeight = 0;
+        /// <summary>
+        /// Max height of current board
+        /// </summary>
         public double MaxBoardHeight
         {
             set
@@ -112,60 +132,85 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void UpdateBrowse(double x, double y)
         {
             updatingViewState = true;
             oldGlobalX = x;
             oldGlobalY = y;
-            EntryX = DominantArmHandOffsetX;
-            EntryY = DominantArmHandOffsetY;
+            EntryX = user.DominantArmHandOffsetX;
+            EntryY = user.DominantArmHandOffsetY;
             globalX = oldGlobalX;
             globalY = oldGlobalY;
             updatingViewState = false;
         }
 
+        /// <summary>
+        /// Sets boardservice to new events when EventsUpdated is fired
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void sourceService_EventsUpdated(object sender, SourceEventArgs e)
+        {
+            idleJobQueue.Enqueue(new Action(delegate { boardService.Events = e.Events; }));
+        }
+
+        /// <summary>
+        /// Fires when boardservice fires a BoardsChanged event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void boardService_BoardsChanged(object sender, EventArgs e)
         {
             NotifyBoardSubscribers();
         }
 
+        /// <summary>
+        /// Notifies boardsupdated subscribers
+        /// </summary>
         private void NotifyBoardSubscribers()
         {
             this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+            this.kinectService.NewPlayer -= new EventHandler(kinectService_NewPlayer);
             if (BoardsUpdated != null)
                 BoardsUpdated(this, new BoardEventArgs() { BoardService = this.boardService});
+            this.kinectService.NewPlayer += new EventHandler(kinectService_NewPlayer);
             this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
-        }
-
-        void sourceService_EventsUpdated(object sender, SourceEventArgs e)
-        {
-            boardService.Events = e.Events;
         }
 
         #region Kinect
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void kinectService_SkeletonUpdated(object sender, SkeletonEventArgs e) 
         { 
             if (App.Current.MainWindow != null)
             {
                 #region Set vals
 
-                bool wasEngaged = Engaged;
+                bool wasEngaged = user.Touching;
 
-                this.rightArm.HandX = e.RightHandPosition.X;
-                this.rightArm.HandY = e.RightHandPosition.Y;
-                this.rightArm.HandZ = e.RightHandPosition.Z;
+                user.rightArm.HandX = e.RightHandPosition.X;
+                user.rightArm.HandY = e.RightHandPosition.Y;
+                user.rightArm.HandZ = e.RightHandPosition.Z;
 
-                this.leftArm.HandX = e.LeftHandPosition.X;
-                this.leftArm.HandY = e.LeftHandPosition.Y;
-                this.leftArm.HandZ = e.LeftHandPosition.Z;
+                user.leftArm.HandX = e.LeftHandPosition.X;
+                user.leftArm.HandY = e.LeftHandPosition.Y;
+                user.leftArm.HandZ = e.LeftHandPosition.Z;
 
-                this.torso.X = e.TorsoPosition.X;
-                this.torso.Y = e.TorsoPosition.Y;
-                this.torso.Z = e.TorsoPosition.Z;
+                user.torso.X = e.TorsoPosition.X;
+                user.torso.Y = e.TorsoPosition.Y;
+                user.torso.Z = e.TorsoPosition.Z;
+                #endregion   
 
-
-                if(Engaged)
+                if(user.Touching)
                     firstEntry = false;
 
                 if (updatingViewState)
@@ -176,136 +221,141 @@ namespace Teudu.InfoDisplay
                     oldGlobalX = GlobalOffsetX;
                     oldGlobalY = GlobalOffsetY;
 
-                    if (Engaged)
+                    if (user.Touching)
                     {
-                        EntryX = DominantArmHandOffsetX;
-                        EntryY = DominantArmHandOffsetY;
+                        EntryX = user.DominantArmHandOffsetX;
+                        EntryY = user.DominantArmHandOffsetY;
                     }
                 }
-                
-                #endregion                
-                if (Engaged)
+
+                if (user.Touching)
                 {
-                    GlobalOffsetX = DominantArmHandOffsetX;
-                    GlobalOffsetY = DominantArmHandOffsetY;
-                    if (ViewChangeMode == HandsState.Panning)
+                    GlobalOffsetX = user.DominantArmHandOffsetX;
+                    GlobalOffsetY = user.DominantArmHandOffsetY;
+                    if (user.InteractionMode == HandsState.Panning)
                     {
                         this.OnPropertyChanged("DominantArmHandOffsetX");
                         this.OnPropertyChanged("DominantArmHandOffsetY");
                     }
-                    //appIdle.Stop();
-                    //appIdle.Start();
+                    appIdleTimer.Stop();
+                    appIdleTimer.Start();
                 }
 
                 this.OnPropertyChanged("Engaged");
                 this.OnPropertyChanged("TooClose");
-                if(!TooClose)
+                if (!user.TooClose)
                     this.OnPropertyChanged("DistanceFromInvisScreen");
-            } 
-        #endregion
 
-        
+                helpService.UserStateUpdated(user);
+            } 
         }
 
-        Arm leftArm;
-        Arm rightArm;
-        Torso torso;
+        void kinectService_NewPlayer(object sender, EventArgs e)
+        {
+            helpService.NewUser(user);
+        }
 
-        public bool Engaged
+        #endregion
+
+        private string warningMessage = "";
+        public string WarningMessage
         {
             get
             {
-                return (LeftHandActive || RightHandActive) && !(LeftHandActive && RightHandActive) && !TooClose;
+                return warningMessage;
             }
+        }
+
+        private string helpMessage = "";
+        public string HelpMessage
+        {
+            get
+            {
+                return helpMessage;
+            }
+        }
+
+        private string helpImage = "";
+        public string HelpImage
+        {
+            get
+            {
+                return helpImage;
+            }
+        }
+
+        public bool ShowIndicators
+        {
+            get
+            {
+                return helpImage == null || !helpImage.Equals("");
+            }
+        }
+                
+        #region Hand States
+
+        public bool Engaged
+        {
+            get { return user.Touching; }
         }
 
         public bool TooClose
         {
-            get
-            {
-                return torso.Z < (UserClearanceDistance + HALF_ARMSPAN);
-            }
+            get { return user.TooClose; }
         }
 
         public double DistanceFromInvisScreen
         {
             get
             {
-                if (leftArm.HandZ < rightArm.HandZ)
-                    return leftArm.HandZ - UserClearanceDistance;
-                else if (rightArm.HandZ <= leftArm.HandZ)
-                    return rightArm.HandZ - UserClearanceDistance;
-                else
-                    return 2;
-                
-                }
-        }
-
-        public bool LeftArmInFront
-        {
-            get { return leftArm.HandZ < UserClearanceDistance; }
-                //return leftArm.ArmAlmostStraight && LeftHandAboveTorso || (leftArm.HandZ < (spine.Z - 100)); }
-        }
-
-        public bool RightArmInFront
-        {
-            get { return rightArm.HandZ < UserClearanceDistance; }
-                //return rightArm.ArmAlmostStraight && RightHandAboveTorso || (rightArm.HandZ < (spine.Z - 100)); }
-        }
-
-        public HandsState ViewChangeMode
-        {
-            get
-            {
-                HandsState currentState;
-                if (LeftHandActive && RightHandActive)
-                    currentState = HandsState.Zooming;
-                else if ((LeftHandActive && !RightHandActive) || (!LeftHandActive && RightHandActive))
-                    currentState = HandsState.Panning;
-                else
-                    currentState = HandsState.Resting;
-
-                return currentState;
+                return user.DistanceFromInvisScreen;
             }
         }
 
-        #region Hand States
-
-        public bool LeftHandActive
+        public double DominantArmHandOffsetX
         {
-            get{return LeftArmInFront;}
+            get { return user.DominantArmHandOffsetX; }
         }
 
-        public bool RightHandActive
+        public double DominantArmHandOffsetY
         {
-            get{return RightArmInFront;}
+            get { return user.DominantArmHandOffsetY; }
         }
 
-        public Arm DominantHand
-        {
-            get 
-            {
-                if (LeftHandActive)
-                    return leftArm;
-                else
-                    return rightArm;
-
-            }
-        }
-
-        public double HandsDistance
+        public bool MoreCategoriesRight
         {
             get
             {
-                return Math.Sqrt(Math.Pow(this.leftArm.HandX - this.rightArm.HandX, 2) +
-                    Math.Pow(this.leftArm.HandY - this.rightArm.HandY, 2)) / SCALE_OFFSET;
+                return false;
+            }
+        }
+
+        public bool MoreCategoriesLeft
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public bool MoreEventsDown
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public bool MoreEventsUp
+        {
+            get
+            {
+                return false;
             }
         }
 
         private double oldGlobalX = 0;
-        private double oldGlobalY = 0;
         private double globalX = 0;
-        private double globalY = 0;
         public double GlobalOffsetX
         {
             set {
@@ -316,40 +366,36 @@ namespace Teudu.InfoDisplay
                 else
                     globalX = EntryX - value + oldGlobalX; this.OnPropertyChanged("GlobalOffsetX");
             }
-            get {
+            get 
+            {
                 if (firstEntry)
                     return 0;
-                return globalX; }
+                return globalX; 
+            }
         }
 
+        private double oldGlobalY = 0;
+        private double globalY = 0;
         public double GlobalOffsetY
         {
-            set {
+            set 
+            {
                 if (EntryY - value + oldGlobalY > (App.Current.MainWindow.ActualHeight / 2 - 250))
                     globalY = App.Current.MainWindow.ActualHeight / 2 - 250;
-                else if (EntryY - value + oldGlobalY < (-maxBoardHeight + maxEventHeight)) //3*-maxEventHeight - 60
+                else if (EntryY - value + oldGlobalY < (-maxBoardHeight + maxEventHeight))
                     globalY = (-maxBoardHeight +maxEventHeight);
                 else
                     globalY = EntryY - value + oldGlobalY; this.OnPropertyChanged("GlobalOffsetY");
-
-                //Trace.WriteLine("maxBoardHeight" + -maxBoardHeight);
             }
             get
             {
                 if (firstEntry)
                     return 0; 
-                return globalY; }
+                return globalY; 
+            }
         }
 
-        public double DominantArmHandOffsetX
-        {
-            get { return inversionFactor * DominantHand.HandOffsetX * CORRESPONDENCE_SCALE_FACTOR_X; }
-        }
 
-        public double DominantArmHandOffsetY
-        {
-            get { return inversionFactor * DominantHand.HandOffsetY * CORRESPONDENCE_SCALE_FACTOR_Y; }
-        }
 
         #endregion
 
@@ -364,7 +410,8 @@ namespace Teudu.InfoDisplay
         
         public void Cleanup() 
         { 
-            this.kinectService.SkeletonUpdated -= kinectService_SkeletonUpdated; 
+            this.kinectService.SkeletonUpdated -= kinectService_SkeletonUpdated;
+            this.kinectService.NewPlayer -= kinectService_NewPlayer;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

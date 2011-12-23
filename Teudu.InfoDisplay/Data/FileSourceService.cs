@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Xml.Linq;
 
-namespace Teudu.InfoDisplay.Test
+namespace Teudu.InfoDisplay
 {
     public class FileSourceService : SourceService
     {

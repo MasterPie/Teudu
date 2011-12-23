@@ -52,6 +52,9 @@ namespace Teudu.InfoDisplay
 
                 foreach (XElement detail in ev.Elements())
                 {
+                    if (detail.Name.LocalName.ToLower().Equals("name"))
+                        name = detail.Value;
+
                     if (detail.Name.LocalName.ToLower().Equals("description"))
                         description = detail.Value;
 
