@@ -44,6 +44,8 @@ namespace Teudu.InfoDisplay
             idleJobQueue = new Queue<Action>();
 
             this.helpService = helpService;
+            this.helpService.NewWelcomeSequence += new EventHandler(helpService_NewWelcomeSequence);
+            this.helpService.EndWelcomeSequence += new EventHandler(helpService_EndWelcomeSequence);
             this.helpService.NewHelpMessage += new EventHandler<HelpMessageEventArgs>(helpService_NewHelpMessage);
             this.helpService.NewWarningMessage += new EventHandler<HelpMessageEventArgs>(helpService_NewWarningMessage);
 
@@ -64,6 +66,20 @@ namespace Teudu.InfoDisplay
             BeginBackgroundJobs();
         }
 
+        void helpService_EndWelcomeSequence(object sender, EventArgs e)
+        {
+            welcomeSequenceOn = false;
+            this.OnPropertyChanged("GuideShown");
+            this.OnPropertyChanged("ShowIndicators");
+        }
+
+        void helpService_NewWelcomeSequence(object sender, EventArgs e)
+        {
+            welcomeSequenceOn = true;
+            this.OnPropertyChanged("GuideShown");
+            this.OnPropertyChanged("ShowIndicators");
+        }
+
         void helpService_NewWarningMessage(object sender, HelpMessageEventArgs e)
         {
             warningMessage = e.Message;
@@ -75,6 +91,7 @@ namespace Teudu.InfoDisplay
         {
             helpMessage = e.Message;
             helpImage = e.SupplementaryImage;
+            
             this.OnPropertyChanged("HelpMessage");
             this.OnPropertyChanged("HelpImage");
             this.OnPropertyChanged("ShowIndicators");
@@ -284,11 +301,29 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        private bool welcomeSequenceOn = false;
+        public bool WelcomeSequenceHappening
+        {
+            get
+            {
+                return welcomeSequenceOn;
+            }
+        }
+
+        private bool guideVisible = true;
+        public bool GuideShown
+        {
+            get
+            {
+                return WelcomeSequenceHappening;
+            }
+        }
+
         public bool ShowIndicators
         {
             get
             {
-                return helpImage == null || !helpImage.Equals("");
+                return !WelcomeSequenceHappening;
             }
         }
                 

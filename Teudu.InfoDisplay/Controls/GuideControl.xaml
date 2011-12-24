@@ -11,14 +11,36 @@
             <Setter Property="FontSize" Value="28"></Setter>
             <Setter Property="Foreground" Value="Red"></Setter>
         </Style>
-        <Storyboard x:Key="MainShowAnimation" x:Name="MainShowAnimation">
+        <Storyboard x:Key="MainShowAnimation">
             <DoubleAnimationUsingKeyFrames
-                Storyboard.TargetName="MainTranslate"
-                Storyboard.TargetProperty="Y"
-                Duration="0:0:01">
+                Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.Y)"
+                Duration="0:0:01" >
                 <EasingDoubleKeyFrame KeyTime="0:0:01" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CircleEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="MainHideAnimation">
+            <DoubleAnimationUsingKeyFrames
+                Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.Y)"
+                Duration="0:0:01">
+                <EasingDoubleKeyFrame KeyTime="0:0:01" Value="60">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="TextEmphasizeAnimation">
+            <DoubleAnimationUsingKeyFrames
+                Storyboard.TargetProperty="Opacity"
+                Duration="0:0:01">
+                <EasingDoubleKeyFrame KeyTime="0:0:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
@@ -27,21 +49,66 @@
     </UserControl.Resources>
     <Canvas Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
         <teudu:HandMovementBoundsControl Opacity="{Binding Engaged, Converter={StaticResource opacityConverter},ConverterParameter=true}" Panel.ZIndex="99"/>
-        <teudu:HandStatusControl Height="50" Width="100" HorizontalAlignment="Right" Opacity="{Binding ShowIndicators, Converter={StaticResource opacityConverter},ConverterParameter=true}" Panel.ZIndex="99"/>
-        <StackPanel Panel.ZIndex="50" Orientation="Horizontal" Background="#FF06041A" Height="60" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+        <teudu:HandStatusControl Height="50" Width="100" HorizontalAlignment="Right" Opacity="{Binding ShowIndicators, Converter={StaticResource opacityConverter}}" Panel.ZIndex="99"/>
+        <StackPanel Panel.ZIndex="50" Orientation="Horizontal" Background="Black" Height="60" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
             <Grid Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.25*"></ColumnDefinition>
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     <ColumnDefinition Width="0.25*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding HelpImage}" Height="50" HorizontalAlignment="Right" Grid.Column="0"/>
-                <TextBlock Text="{Binding WarningMessage}" HorizontalAlignment="Center" Style="{StaticResource WarningText}" VerticalAlignment="Center" Grid.Column="1"/>
-                <TextBlock Text="{Binding HelpMessage}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1"/>
+                <Image Source="{Binding HelpImage, NotifyOnTargetUpdated=True}" Height="50" HorizontalAlignment="Right" Grid.Column="0">
+                    <Image.Triggers>
+                        <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                            <BeginStoryboard>
+                                <StaticResource ResourceKey="TextEmphasizeAnimation"/>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Image.Triggers>
+                </Image>
+                <TextBlock Text="{Binding WarningMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" Style="{StaticResource WarningText}" VerticalAlignment="Center" Grid.Column="1">
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                            <BeginStoryboard>
+                                <StaticResource ResourceKey="TextEmphasizeAnimation"/>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+                
+                <TextBlock Text="{Binding HelpMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                            <BeginStoryboard>
+                                <StaticResource ResourceKey="TextEmphasizeAnimation"/>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
             </Grid>
             <StackPanel.RenderTransform>
-                <TranslateTransform x:Name="MainTranslate" Y="60"></TranslateTransform>
+                <TransformGroup>
+                    <TranslateTransform x:Name="MainTranslate" Y="60"></TranslateTransform>
+                </TransformGroup>
             </StackPanel.RenderTransform>
+            <StackPanel.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding GuideShown}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <StaticResource ResourceKey="MainShowAnimation"/>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <StaticResource ResourceKey="MainHideAnimation"/>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
         </StackPanel>
     </Canvas>
 </UserControl>

@@ -23,15 +23,5 @@ namespace Teudu.InfoDisplay
         {
             InitializeComponent();
         }
-
-        public void Show()
-        {
-            ((System.Windows.Media.Animation.Storyboard)this.Resources["MainShowAnimation"]).Begin();
-        }
-
-        public void Hide()
-        {
-            MainTranslate.Y = 80;
-        }
     }
 }

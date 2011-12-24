@@ -67,6 +67,13 @@ namespace Teudu.InfoDisplay.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Gradient2 {
+            get {
+                object obj = ResourceManager.GetObject("Gradient2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap hand {
             get {
                 object obj = ResourceManager.GetObject("hand", resourceCulture);

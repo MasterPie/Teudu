@@ -37,7 +37,6 @@ namespace Teudu.InfoDisplay
         void MainWindow_BoardsUpdated(object sender, BoardEventArgs e)
         {
             this.BoardNavigator.BoardMaster = e.BoardService;
-            Guide.Show();
         }
 
         public string VisibleLocation

@@ -18,9 +18,9 @@ namespace Teudu.InfoDisplay
         //private XmlDocument doc;
         private BackgroundWorker IOWorker;
 
-        public FileSourceService(string file)
+        public FileSourceService()
         {
-            eventsFile = file;
+            eventsFile = "events.xml";
         }
         public override void Initialize()
         {
