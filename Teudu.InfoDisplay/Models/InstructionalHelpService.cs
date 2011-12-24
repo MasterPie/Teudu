@@ -25,17 +25,20 @@ namespace Teudu.InfoDisplay
             welcomeMessages = new Queue<string[]>();
 
             welcomeTickerTimer = new DispatcherTimer();
-            welcomeTickerTimer.Interval = TimeSpan.FromSeconds(10);
+            welcomeTickerTimer.Interval = TimeSpan.FromSeconds(5);
             welcomeTickerTimer.Tick += new EventHandler(welcomeTickerTimer_Tick);
         }
 
         
         public void NewUser(UserState state)
         {
+            BuildWelcomeMessages();
+            if (NewWelcomeSequence != null)
+                NewWelcomeSequence(this, new EventArgs());
+
             if (NewHelpMessage != null)
                 NewHelpMessage(this, new HelpMessageEventArgs() { Message = "Welcome new user!" });
             
-            BuildWelcomeMessages();
             welcomeTickerTimer.Start();
         }
 
@@ -53,8 +56,10 @@ namespace Teudu.InfoDisplay
             if (welcomeMessages.Count <= 0)
             {
                 welcomeTickerTimer.Stop();
-                if (NewHelpMessage != null)
-                    NewHelpMessage(this, new HelpMessageEventArgs() { Message = "" });
+
+                if (EndWelcomeSequence != null)
+                    EndWelcomeSequence(this, new EventArgs());
+
                 return;
             }
             string[] welcomeMessage = welcomeMessages.Dequeue();
@@ -82,5 +87,10 @@ namespace Teudu.InfoDisplay
 
         public event EventHandler<HelpMessageEventArgs> NewHelpMessage;
         public event EventHandler<HelpMessageEventArgs> NewWarningMessage;
+
+
+        public event EventHandler NewWelcomeSequence;
+
+        public event EventHandler EndWelcomeSequence;
     }
 }
