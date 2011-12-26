@@ -13,16 +13,23 @@
         </Style>
         <Storyboard x:Key="MainShowAnimation">
             <DoubleAnimationUsingKeyFrames
+                Storyboard.TargetName="Bar"
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.Y)"
-                Duration="0:0:01" >
+                Duration="0:0:07" IsAdditive="False">
                 <EasingDoubleKeyFrame KeyTime="0:0:01" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <LinearDoubleKeyFrame KeyTime="0:0:06" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:07" Value="60">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CircleEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="MainHideAnimation">
+        <!--<Storyboard x:Key="MainHideAnimation">
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.Y)"
                 Duration="0:0:01">
@@ -32,15 +39,21 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+        </Storyboard>-->
         <Storyboard x:Key="TextEmphasizeAnimation">
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="Opacity"
-                Duration="0:0:01">
+                Duration="0:0:05">
                 <EasingDoubleKeyFrame KeyTime="0:0:00" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CubicEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:04" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:05" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
@@ -48,16 +61,16 @@
         <teudu:BoolToOpacityConverter x:Key="opacityConverter"/>
     </UserControl.Resources>
     <Canvas Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
-        <teudu:HandMovementBoundsControl Opacity="{Binding Engaged, Converter={StaticResource opacityConverter},ConverterParameter=true}" Panel.ZIndex="99"/>
-        <teudu:HandStatusControl Height="50" Width="100" HorizontalAlignment="Right" Opacity="{Binding ShowIndicators, Converter={StaticResource opacityConverter}}" Panel.ZIndex="99"/>
-        <StackPanel Panel.ZIndex="50" Orientation="Horizontal" Background="Black" Height="60" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+        
+        <!--<teudu:HandStatusControl Height="50" Width="100" HorizontalAlignment="Right" Opacity="{Binding ShowIndicators, Converter={StaticResource opacityConverter}}" Panel.ZIndex="99"/>-->
+        <StackPanel x:Name="Bar" Panel.ZIndex="50" Orientation="Horizontal" Background="Black" Height="60" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
             <Grid Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.25*"></ColumnDefinition>
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     <ColumnDefinition Width="0.25*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding HelpImage, NotifyOnTargetUpdated=True}" Height="50" HorizontalAlignment="Right" Grid.Column="0">
+                <Image Source="{Binding HelpImage, NotifyOnTargetUpdated=True}" Height="50" HorizontalAlignment="Left" Grid.Column="2">
                     <Image.Triggers>
                         <EventTrigger RoutedEvent="Binding.TargetUpdated">
                             <BeginStoryboard>
@@ -70,6 +83,9 @@
                     <TextBlock.Triggers>
                         <EventTrigger RoutedEvent="Binding.TargetUpdated">
                             <BeginStoryboard>
+                                <StaticResource ResourceKey="MainShowAnimation"/>
+                            </BeginStoryboard>
+                            <BeginStoryboard>
                                 <StaticResource ResourceKey="TextEmphasizeAnimation"/>
                             </BeginStoryboard>
                         </EventTrigger>
@@ -79,6 +95,9 @@
                 <TextBlock Text="{Binding HelpMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
                     <TextBlock.Triggers>
                         <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                            <BeginStoryboard>
+                                <StaticResource ResourceKey="MainShowAnimation"/>
+                            </BeginStoryboard>
                             <BeginStoryboard>
                                 <StaticResource ResourceKey="TextEmphasizeAnimation"/>
                             </BeginStoryboard>
@@ -91,24 +110,6 @@
                     <TranslateTransform x:Name="MainTranslate" Y="60"></TranslateTransform>
                 </TransformGroup>
             </StackPanel.RenderTransform>
-            <StackPanel.Style>
-                <Style>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding GuideShown}" Value="True">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <StaticResource ResourceKey="MainShowAnimation"/>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <StaticResource ResourceKey="MainHideAnimation"/>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Style>
         </StackPanel>
     </Canvas>
 </UserControl>

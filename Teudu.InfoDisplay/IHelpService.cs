@@ -21,8 +21,6 @@ namespace Teudu.InfoDisplay
         void UserStateUpdated(UserState state);
         void Cleanup();
 
-        event EventHandler NewWelcomeSequence;
-        event EventHandler EndWelcomeSequence;
         event EventHandler<HelpMessageEventArgs> NewHelpMessage;
         event EventHandler<HelpMessageEventArgs> NewWarningMessage;
     }

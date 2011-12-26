@@ -44,8 +44,7 @@ namespace Teudu.InfoDisplay
             idleJobQueue = new Queue<Action>();
 
             this.helpService = helpService;
-            this.helpService.NewWelcomeSequence += new EventHandler(helpService_NewWelcomeSequence);
-            this.helpService.EndWelcomeSequence += new EventHandler(helpService_EndWelcomeSequence);
+
             this.helpService.NewHelpMessage += new EventHandler<HelpMessageEventArgs>(helpService_NewHelpMessage);
             this.helpService.NewWarningMessage += new EventHandler<HelpMessageEventArgs>(helpService_NewWarningMessage);
 
@@ -64,20 +63,6 @@ namespace Teudu.InfoDisplay
             appIdleTimer.Start();
             helpService.NewUser(user);
             BeginBackgroundJobs();
-        }
-
-        void helpService_EndWelcomeSequence(object sender, EventArgs e)
-        {
-            welcomeSequenceOn = false;
-            this.OnPropertyChanged("GuideShown");
-            this.OnPropertyChanged("ShowIndicators");
-        }
-
-        void helpService_NewWelcomeSequence(object sender, EventArgs e)
-        {
-            welcomeSequenceOn = true;
-            this.OnPropertyChanged("GuideShown");
-            this.OnPropertyChanged("ShowIndicators");
         }
 
         void helpService_NewWarningMessage(object sender, HelpMessageEventArgs e)
@@ -298,32 +283,6 @@ namespace Teudu.InfoDisplay
             get
             {
                 return helpImage;
-            }
-        }
-
-        private bool welcomeSequenceOn = false;
-        public bool WelcomeSequenceHappening
-        {
-            get
-            {
-                return welcomeSequenceOn;
-            }
-        }
-
-        private bool guideVisible = true;
-        public bool GuideShown
-        {
-            get
-            {
-                return WelcomeSequenceHappening;
-            }
-        }
-
-        public bool ShowIndicators
-        {
-            get
-            {
-                return !WelcomeSequenceHappening;
             }
         }
                 

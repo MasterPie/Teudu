@@ -187,6 +187,7 @@
     <Compile Include="IBoardService.cs" />
     <Compile Include="KinectTools.cs" />
     <Compile Include="Models\NotifyingDateTime.cs" />
+    <Compile Include="ValueConverters\InverseDoubleConverter.cs" />
     <Compile Include="ValueConverters\OffsetNavigatorConverter.cs" />
     <Compile Include="Models\MomentaryBoardService.cs" />
     <Compile Include="Data\FileSourceService.cs" />
