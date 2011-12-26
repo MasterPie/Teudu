@@ -336,9 +336,6 @@
     <Resource Include="Images\rarrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\HandMotion.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\HandOut.png" />
   </ItemGroup>
   <ItemGroup>
@@ -348,18 +345,17 @@
     <Resource Include="Images\InvisScreen.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\HandMotionAll.png" />
-    <Resource Include="Images\HandMotionNoBL.png" />
-    <Resource Include="Images\HandMotionNoBot.png" />
-    <Resource Include="Images\HandMotionNoBR.png" />
-    <Resource Include="Images\HandMotionNoLeft.png" />
-    <Resource Include="Images\HandMotionNoRight.png" />
-    <Resource Include="Images\HandMotionNoTL.png" />
-    <Resource Include="Images\HandMotionNoTop.png" />
-    <Resource Include="Images\HandMotionNoTR.png" />
+    <Resource Include="Images\Gradient2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Gradient2.png" />
+    <Resource Include="Images\Pan.png" />
+    <Resource Include="Images\PanBad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\handactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Screen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

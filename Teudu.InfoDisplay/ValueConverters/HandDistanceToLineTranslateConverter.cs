@@ -14,9 +14,9 @@ namespace Teudu.InfoDisplay
             double val = (double)value;
 
             //int retValue = (int)(val * 85.7143 - 111.429);
-            int retValue = (int)(val * 120*2);
-            if (retValue > 120)
-                retValue = 120;
+            int retValue = (int)(val * 30*2);
+            if (retValue > 30)
+                retValue = 30;
             if (retValue < 0)
                 retValue = 0;
 

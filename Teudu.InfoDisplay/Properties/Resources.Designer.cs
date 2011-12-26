@@ -81,16 +81,16 @@ namespace Teudu.InfoDisplay.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap HandBack {
+        internal static System.Drawing.Bitmap handactive {
             get {
-                object obj = ResourceManager.GetObject("HandBack", resourceCulture);
+                object obj = ResourceManager.GetObject("handactive", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap HandMotion {
+        internal static System.Drawing.Bitmap HandBack {
             get {
-                object obj = ResourceManager.GetObject("HandMotion", resourceCulture);
+                object obj = ResourceManager.GetObject("HandBack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -116,9 +116,30 @@ namespace Teudu.InfoDisplay.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Pan {
+            get {
+                object obj = ResourceManager.GetObject("Pan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap PanBad {
+            get {
+                object obj = ResourceManager.GetObject("PanBad", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap rarrow {
             get {
                 object obj = ResourceManager.GetObject("rarrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Screen {
+            get {
+                object obj = ResourceManager.GetObject("Screen", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

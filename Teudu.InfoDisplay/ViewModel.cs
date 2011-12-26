@@ -245,6 +245,7 @@ namespace Teudu.InfoDisplay
 
                 this.OnPropertyChanged("Engaged");
                 this.OnPropertyChanged("TooClose");
+                this.OnPropertyChanged("OutOfBounds");
                 if (!user.TooClose)
                     this.OnPropertyChanged("DistanceFromInvisScreen");
 
@@ -283,6 +284,46 @@ namespace Teudu.InfoDisplay
             get
             {
                 return helpImage;
+            }
+        }
+
+        public bool OutOfBounds
+        {
+            get
+            {
+                return OutOfBoundsLeft || OutOfBoundsRight || OutOfBoundsTop || OutOfBoundsBottom;
+            }
+        }
+
+        public bool OutOfBoundsRight
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public bool OutOfBoundsBottom
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public bool OutOfBoundsTop
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public bool OutOfBoundsLeft
+        {
+            get
+            {
+                return false;
             }
         }
                 

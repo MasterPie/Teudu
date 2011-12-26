@@ -30,8 +30,19 @@ namespace Teudu.InfoDisplay
             };
 
             return j;
+        }
 
+        public static Vector ScaleTo(this Vector position, int width, int height, float skeletonMaxX, float skeletonMaxY)
+        {
+            Vector pos = new Vector()
+            {
+                X = Scale(width, skeletonMaxX, position.X),
+                Y = Scale(height, skeletonMaxY, -position.Y),
+                Z = position.Z,
+                W = position.W
+            };
 
+            return pos;
         }
 
         //From Coding4Fun source

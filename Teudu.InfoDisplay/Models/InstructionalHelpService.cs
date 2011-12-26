@@ -50,7 +50,7 @@ namespace Teudu.InfoDisplay
             welcomeMessages.Enqueue(new string[]{"Extend your arm towards the screen to TOUCH the invisible screen.","/Teudu.InfoDisplay;component/Images/HandOut.png"});
             welcomeMessages.Enqueue(new string[] { "Pull back your arm to STOP TOUCHING the invisible screen.", "/Teudu.InfoDisplay;component/Images/HandBack.png" });
             welcomeMessages.Enqueue(new string[]{"Indicators on the top right will guide you.",""});
-            welcomeMessages.Enqueue(new string[]{"Enjoy! We hope you find something fun to do!",""});
+            welcomeMessages.Enqueue(new string[]{"Have fun!",""});
         }
 
         void welcomeTickerTimer_Tick(object sender, EventArgs e)
