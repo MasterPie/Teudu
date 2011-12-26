@@ -32,34 +32,32 @@ namespace Teudu.InfoDisplay
         
         public void NewUser(UserState state)
         {
-            BuildWelcomeMessages();
-            if (NewWelcomeSequence != null)
-                NewWelcomeSequence(this, new EventArgs());
+            Dispatcher.CurrentDispatcher.BeginInvoke((Action)(()=> welcomeTickerTimer.Stop()));
+
+            if(!welcomeTickerTimer.IsEnabled)
+                BuildWelcomeMessages();
 
             if (NewHelpMessage != null)
-                NewHelpMessage(this, new HelpMessageEventArgs() { Message = "Welcome new user!" });
+                NewHelpMessage(this, new HelpMessageEventArgs() { Message = "Welcome!" });
             
-            welcomeTickerTimer.Start();
+            Dispatcher.CurrentDispatcher.BeginInvoke((Action)(()=>welcomeTickerTimer.Start()));
         }
 
         private void BuildWelcomeMessages()
         {
+            welcomeMessages.Clear();
             welcomeMessages.Enqueue(new string[] { "This device uses an invisible touch screen.", "/Teudu.InfoDisplay;component/Images/InvisScreen.png" });
             welcomeMessages.Enqueue(new string[]{"Extend your arm towards the screen to TOUCH the invisible screen.","/Teudu.InfoDisplay;component/Images/HandOut.png"});
             welcomeMessages.Enqueue(new string[] { "Pull back your arm to STOP TOUCHING the invisible screen.", "/Teudu.InfoDisplay;component/Images/HandBack.png" });
-            welcomeMessages.Enqueue(new string[]{"Indicators on the bottom right will guide you.",""});
-            welcomeMessages.Enqueue(new string[]{"Enjoy!",""});
+            welcomeMessages.Enqueue(new string[]{"Indicators on the top right will guide you.",""});
+            welcomeMessages.Enqueue(new string[]{"Enjoy! We hope you find something fun to do!",""});
         }
 
         void welcomeTickerTimer_Tick(object sender, EventArgs e)
         {
             if (welcomeMessages.Count <= 0)
             {
-                welcomeTickerTimer.Stop();
-
-                if (EndWelcomeSequence != null)
-                    EndWelcomeSequence(this, new EventArgs());
-
+                Dispatcher.CurrentDispatcher.BeginInvoke((Action)(() => welcomeTickerTimer.Stop()));
                 return;
             }
             string[] welcomeMessage = welcomeMessages.Dequeue();
@@ -88,9 +86,5 @@ namespace Teudu.InfoDisplay
         public event EventHandler<HelpMessageEventArgs> NewHelpMessage;
         public event EventHandler<HelpMessageEventArgs> NewWarningMessage;
 
-
-        public event EventHandler NewWelcomeSequence;
-
-        public event EventHandler EndWelcomeSequence;
     }
 }

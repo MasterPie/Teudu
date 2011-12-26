@@ -113,8 +113,8 @@ namespace Teudu.InfoDisplay
             VisibleLocation_work();
 
             //TranslateTransform shiftLeft = new TranslateTransform(this.ActualWidth + App.Current.MainWindow.ActualWidth / 30, 0);
-            TranslateTransform shiftLeft = new TranslateTransform(this.ActualWidth - App.Current.MainWindow.ActualWidth / 30, this.ActualHeight / 2 - App.Current.MainWindow.ActualHeight / 30);
-            Details.RenderTransform = shiftLeft;
+            //TranslateTransform shiftLeft = new TranslateTransform(this.ActualWidth - App.Current.MainWindow.ActualWidth / 30, this.ActualHeight / 2 - App.Current.MainWindow.ActualHeight / 30);
+            //Details.RenderTransform = shiftLeft;
         }
 
         private TimeSpan GetRecency()
@@ -218,29 +218,36 @@ namespace Teudu.InfoDisplay
             this.OnPropertyChanged("VisibleLocation");
         }
 
+        private bool hovered = false;
         public bool IsSelected
         {
             set
             {
+                hovered = value;
+                this.OnPropertyChanged("IsSelected");
                 if (value)
-                {
-                    Details.Opacity = 0;
-                    Details.Visibility = System.Windows.Visibility.Visible;
-                    
-                    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
-                    //outerBorder.BorderThickness = new Thickness(5);
-                    image.Opacity = 0.4;
-
-                    imageScale.CenterX = image.ActualWidth / 2;
-                    imageScale.CenterY = image.ActualHeight / 2;
-                    imageScale.ScaleX = 0.95;
-                    imageScale.ScaleY = 0.95;
-                    eventTilt.AngleX = 1;
-                    eventTilt.AngleY = -1;
-                    eventTranslate.X = 3;
-                    eventTranslate.Y = 0;
-                }
+                    slideUpTimer.Stop();
                 else
+                    slideUpTimer.Start();
+                //if (value)
+                //{
+                //    Details.Opacity = 0;
+                //    Details.Visibility = System.Windows.Visibility.Visible;
+                    
+                //    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
+                //    //outerBorder.BorderThickness = new Thickness(5);
+                //    image.Opacity = 0.4;
+
+                //    imageScale.CenterX = image.ActualWidth / 2;
+                //    imageScale.CenterY = image.ActualHeight / 2;
+                //    imageScale.ScaleX = 0.95;
+                //    imageScale.ScaleY = 0.95;
+                //    //eventTilt.AngleX = 1;
+                //    //eventTilt.AngleY = -1;
+                //    eventTranslate.X = 3;
+                //    eventTranslate.Y = 0;
+                //}
+                if(!value)
                 {
                     //Details.Opacity = 0;
                     Details.Visibility = System.Windows.Visibility.Hidden;
@@ -251,12 +258,16 @@ namespace Teudu.InfoDisplay
                     ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
                     imageScale.ScaleX = 1;
                     imageScale.ScaleY = 1;
-                    eventTilt.AngleX = 0;
-                    eventTilt.AngleY = 0;
+                    //eventTilt.AngleX = 0;
+                    //eventTilt.AngleY = 0;
                     eventTranslate.X = 0;
                     eventTranslate.Y = 0;
                     //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
                 }
+            }
+            get
+            {
+                return hovered;
             }
         }
 
@@ -284,6 +295,11 @@ namespace Teudu.InfoDisplay
         {
             //Details.Opacity = 1;
             //Details.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        private void ProgressBarAnimation_Completed(object sender, EventArgs e)
+        {
+            ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
         }
     }
 }
