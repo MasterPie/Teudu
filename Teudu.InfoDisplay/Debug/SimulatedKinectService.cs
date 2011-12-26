@@ -7,12 +7,13 @@ namespace Teudu.InfoDisplay.Debug
 {
     public class SimulatedKinectService : IKinectService
     {
+        private bool isTrackingSkeleton = false;
         System.Windows.Threading.DispatcherTimer movementTimer;
         System.Windows.Threading.DispatcherTimer startTimer;
         public void Initialize()
         {
             movementTimer = new System.Windows.Threading.DispatcherTimer();
-            movementTimer.Interval = new TimeSpan(20000);
+            movementTimer.Interval = new TimeSpan(70000);
             movementTimer.Tick += new EventHandler(movementTimer_Tick);
 
             startTimer = new System.Windows.Threading.DispatcherTimer();
@@ -31,7 +32,8 @@ namespace Teudu.InfoDisplay.Debug
 
         void movementTimer_Tick(object sender, EventArgs e)
         {
-            SlowMoveRight();
+            //SlowMoveRight();
+            JagToDown();
         }
 
         public bool IsIdle
@@ -40,20 +42,26 @@ namespace Teudu.InfoDisplay.Debug
         }
         float x = -100f;
         float y = -100f;
+        float invert = -1;
         private void SlowMoveRight()
         {
             
             //.ScaleTo(1920, 1080, 0.4f, 0.4f,true)
             //if (x < 1f)
             //{
-                x += 1f;
+                x -= 0.5f * invert;
                 y += 1f;
+                invert = -invert;
+
+                isTrackingSkeleton = true;
 
                 if (this.SkeletonUpdated != null)
                 {
                     this.SkeletonUpdated(this, new SkeletonEventArgs()
                     {
-                        RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 1, X = x, Y = (float)Math.Sin(Math.Log(x)) }
+                        RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 1.6f, X = x, Y = (float)Math.Sin(Math.Log(x)) }.ScaleTo(1920, 1080, 0.4f, 0.4f),
+                        LeftHandPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 3f, X = x, Y = (float)Math.Sin(Math.Log(x)) }.ScaleTo(1920, 1080, 0.4f, 0.4f),
+                        TorsoPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 4.0f, X = 0, Y = 0 }.ScaleTo(1920, 1080, 0.4f, 0.4f)
                     });
                 }
             //}
@@ -65,14 +73,22 @@ namespace Teudu.InfoDisplay.Debug
 
             //.ScaleTo(1920, 1080, 0.4f, 0.4f,true)
 
-            x += 1f;
-            y += 1f;
+            if (x <= -1f)
+                invert = 1f;
+            if (x >= 1f)
+                invert = -1f;
 
+            x += (0.1f * invert);
+            y += 0.2f;
+
+            
             if (this.SkeletonUpdated != null)
             {
                 this.SkeletonUpdated(this, new SkeletonEventArgs()
                 {
-                    RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 1, X = (float)Math.Sin(y), Y = y }
+                    RightHandPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 1.6f, X = (float)Math.Sin(y), Y = y }.ScaleTo(1920, 1080, 0.4f, 0.4f),
+                    LeftHandPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 3f, X = x, Y = (float)Math.Sin(Math.Log(x)) }.ScaleTo(1920, 1080, 0.4f, 0.4f),
+                    TorsoPosition = new Microsoft.Research.Kinect.Nui.Vector() { Z = 4.0f, X = 0, Y = 0 }.ScaleTo(1920, 1080, 0.4f, 0.4f)
                 });
             }
 

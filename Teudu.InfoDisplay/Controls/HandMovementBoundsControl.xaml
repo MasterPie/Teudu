@@ -3,10 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Ellipse Width="50" Height="50" Fill="Aqua" Grid.Column="0" HorizontalAlignment="Left" Margin="40,0,0,0"/>
-        <Image Source="/Teudu.InfoDisplay;component/Images/HandMotion.png" Width="50" Height="50" Grid.Column="0" HorizontalAlignment="Left" Margin="40,0,0,0"/>
-    </Grid>
+             d:DesignHeight="75" d:DesignWidth="80">
+    <UserControl.Resources>
+        <teudu:BoolToOpacityConverter x:Key="boolToOpacity"/>
+    </UserControl.Resources>
+    <Canvas Background="Black" ClipToBounds="True" Width="80" Height="60">
+        <Grid>
+            <Image Source="/Teudu.InfoDisplay;component/Images/Pan.png" Width="53" Height="50" Opacity="{Binding OutOfBounds,Converter={StaticResource boolToOpacity}, ConverterParameter=true}"/>
+            <Image Source="/Teudu.InfoDisplay;component/Images/PanBad.png" Width="53" Height="50" Opacity="{Binding OutOfBounds,Converter={StaticResource boolToOpacity}}"/>
+            <Grid.RenderTransform>
+                <TranslateTransform X="13" Y="5"/>
+            </Grid.RenderTransform>
+        </Grid>
+            </Canvas>
 </UserControl>

@@ -55,8 +55,25 @@ namespace Teudu.InfoDisplay
             checkRecencyTimer.Interval = TimeSpan.FromMinutes(10);
             checkRecencyTimer.Tick += new EventHandler(checkRecencyTimer_Tick);
 
-            Details.Width = App.Current.MainWindow.ActualWidth / 3.5;
+            Details.Width = App.Current.MainWindow.ActualWidth / 2.5;
+            Details.MaxHeight = 400;
             //Details.Height = App.Current.MainWindow.ActualHeight / 3.5;
+        }
+
+        public double DeltaX
+        {
+            get
+            {
+                return 0.0;
+            }
+        }
+
+        public double DeltaY
+        {
+            get
+            {
+                return 0.0;
+            }
         }
 
         void checkRecencyTimer_Tick(object sender, EventArgs e)

@@ -24,7 +24,7 @@
         <!--<TextBlock Text="{Binding Path=Engaged, Converter={StaticResource symbolConverter}, FallbackValue=+}" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center" Foreground="{Binding Path=Engaged, Converter={StaticResource boolConverter}, FallbackValue=Red}"/>-->
         <TextBlock Text="+" Panel.ZIndex="81" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>
         <TextBlock Text="{Binding Source={StaticResource notifyingDate},Path=Now, Converter={StaticResource dateConverter}}" Panel.ZIndex="99" HorizontalAlignment="Right" Margin="0,25,50,0" TextAlignment="Right"/>
-        <teudu:HandMovementBoundsControl Opacity="{Binding Engaged, Converter={StaticResource opacityConverter},ConverterParameter=true}" Panel.ZIndex="99" HorizontalAlignment="Right" Margin="0,60,300,0" VerticalAlignment="Top"/>
+        <teudu:HandMovementBoundsControl Opacity="{Binding Engaged, Converter={StaticResource opacityConverter}}" Panel.ZIndex="99" HorizontalAlignment="Right" Margin="0,60,250,0" VerticalAlignment="Top"/>
         <teudu:HandStatusControl Panel.ZIndex="99" HorizontalAlignment="Right" Margin="0,60,50,0" VerticalAlignment="Top"/>
         <!--<teudu:LoadingPopup x:Name="LoadingContainer" Panel.ZIndex="100" />-->
         <!--<TextBlock Text="Please stand back a bit so Teudu can see you better." FontSize="32" Foreground="Red" Panel.ZIndex="99" HorizontalAlignment="Center" Margin="0,52,0,0" TextAlignment="Center" Opacity="{Binding Path=TooClose, Converter={StaticResource opacityConverter}, FallbackValue=0}"/>-->

@@ -24,7 +24,7 @@ namespace Teudu.InfoDisplay
             if(val)
                 return new SolidColorBrush(Color.FromRgb(0, 255, 0));
             else
-                return new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                return new SolidColorBrush(Color.FromRgb(158, 31, 99)); //255 0 0
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

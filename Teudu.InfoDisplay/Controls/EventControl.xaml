@@ -9,36 +9,34 @@
              d:DesignHeight="300" d:DesignWidth="220" Focusable="True">
     <UserControl.Resources>
         <teudu:InverseDoubleConverter x:Key="inverseConverter"/>
-        <!--<core:Double x:Key="ImageWidth">{Binding ActualWidth,ElementName=image, Converter={StaticResource inverseConverter}}</core:Double>-->
         <Storyboard x:Key="HoverBeginAnimation" x:Name="HoverBeginAnimation">
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
-                Duration="0:0:05">
+                Duration="0:0:03">
                 <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.95" KeySpline="0.25,0.5,0.75,1"/>
-                <LinearDoubleKeyFrame KeyTime="0:0:03" Value="0.95"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:04" Value="0.7" KeySpline="0.1,0.95,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.7" KeySpline="0.2,1,0.75,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
-                Duration="0:0:05">
+                Duration="0:0:03">
                 <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.95" KeySpline="0.25,0.5,0.75,1"/>
-                <LinearDoubleKeyFrame KeyTime="0:0:03" Value="0.95"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:04" Value="0.7" KeySpline="0.1,0.95,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.7" KeySpline="0.2,1,0.75,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.Opacity)"
-                Duration="0:0:01">
+                Duration="0:0:03">
                 <LinearDoubleKeyFrame KeyTime="0:0:00" Value="1"/>
                 <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.7" KeySpline="0.25,0.5,0.75,1"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:02" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ProgressBarAnimation">
             <DoubleAnimationUsingKeyFrames
                     Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.X)"
-                    Duration="0:0:03" FillBehavior="Stop" Completed="ProgressBarAnimation_Completed">
+                    Duration="0:0:02" FillBehavior="Stop" Completed="ProgressBarAnimation_Completed">
                 <LinearDoubleKeyFrame KeyTime="0:0:00" Value="-230"/>
-                <LinearDoubleKeyFrame KeyTime="0:0:02" Value="-230"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:03" Value="0"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:01" Value="-230"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="HoverStopAnimation" x:Name="HoverStopAnimation">
@@ -70,7 +68,7 @@
                 Storyboard.TargetName="Details"
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
                 Duration="0:0:1" Completed="DetailsAppearAnimation_Completed">
-                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.6"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.7"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CircleEase EasingMode="EaseInOut"/>
@@ -81,7 +79,7 @@
                 Storyboard.TargetName="Details"
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
                 Duration="0:0:1" Completed="DetailsAppearAnimation_Completed">
-                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.6"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.7"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CircleEase EasingMode="EaseInOut" />
@@ -128,50 +126,47 @@
     </UserControl.Resources>
     <Grid>
         <Border x:Name="outerBorder" BorderBrush="#FFFFC125">
-            <!--#FFFDB14E-->
-            <StackPanel x:Name="EventContainer">
+            <Grid x:Name="EventContainer">
                 <Image x:Name="image" Panel.ZIndex="10" Stretch="Uniform" Source="/Teudu.InfoDisplay;component/Images/default.jpg" 
-                       StretchDirection="DownOnly" VerticalAlignment="Top">
-                    <Image.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform x:Name="imageScale" ScaleX="1" ScaleY="1" CenterX="115" CenterY="200"/> <!--TODO: don't hardcode this -->
-                            <SkewTransform x:Name="eventTilt" AngleX="0" AngleY="0"/>
-                            <TranslateTransform x:Name="eventTranslate" Y="0" X="0"/>
-                        </TransformGroup>
-                    </Image.RenderTransform>
-                    <Image.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Value="True">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard Name="st1">
-                                            <StaticResource ResourceKey="HoverBeginAnimation"/>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                    <DataTrigger.ExitActions>
-                                        <StopStoryboard BeginStoryboardName="st1"/>
-                                        <BeginStoryboard>
-                                            <StaticResource ResourceKey="HoverStopAnimation"/>
-                                        </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
-            </StackPanel>
-        </Border>
+                    StretchDirection="DownOnly" VerticalAlignment="Top"/>
 
-
-        <Canvas ClipToBounds="true"  Width="{Binding ActualWidth,ElementName=image}" VerticalAlignment="Center" 
-                Height="{Binding ActualHeight,ElementName=image}" >
             <!-- Progress Bar -->
-            <Grid x:Name="ProgressBar" Background="Green"
-                  Width="{Binding ActualWidth,ElementName=image}" 
-                  Height="{Binding ActualHeight,ElementName=image}">
+            <Canvas ClipToBounds="true"  Width="{Binding ActualWidth,ElementName=image}" VerticalAlignment="Center" 
+                        Height="{Binding ActualHeight,ElementName=image}" Panel.ZIndex="20">
+                        
+                <Grid x:Name="ProgressBar" Background="Green" Opacity="0.7"
+                                Width="{Binding ActualWidth,ElementName=image}" 
+                                Height="{Binding ActualHeight,ElementName=image}">
+                        <Grid.RenderTransform>
+                        <TransformGroup>
+                                <TranslateTransform X="{Binding ActualWidth,ElementName=image, Converter={StaticResource inverseConverter}}"/>
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard Name="st2">
+                                                <StaticResource ResourceKey="ProgressBarAnimation"/>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <StopStoryboard BeginStoryboardName="st2"/>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                    </Grid>
+                </Canvas>
+
                 <Grid.RenderTransform>
                     <TransformGroup>
-                        <TranslateTransform X="{Binding ActualWidth,ElementName=image, Converter={StaticResource inverseConverter}}"/>
+                        <ScaleTransform x:Name="imageScale" ScaleX="1" ScaleY="1" CenterX="115" CenterY="200"/>
+                        <!--TODO: don't hardcode this -->
+                        <SkewTransform x:Name="eventTilt" AngleX="0" AngleY="0"/>
+                        <TranslateTransform x:Name="eventTranslate" Y="0" X="0"/>
                     </TransformGroup>
                 </Grid.RenderTransform>
                 <Grid.Style>
@@ -179,20 +174,23 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Value="True">
                                 <DataTrigger.EnterActions>
-                                    <BeginStoryboard Name="st2">
-                                        <StaticResource ResourceKey="ProgressBarAnimation"/>
+                                    <BeginStoryboard Name="st1">
+                                        <StaticResource ResourceKey="HoverBeginAnimation"/>
                                     </BeginStoryboard>
                                 </DataTrigger.EnterActions>
                                 <DataTrigger.ExitActions>
-                                    <StopStoryboard BeginStoryboardName="st2"/>
+                                    <StopStoryboard BeginStoryboardName="st1"/>
+                                    <BeginStoryboard>
+                                        <StaticResource ResourceKey="HoverStopAnimation"/>
+                                    </BeginStoryboard>
                                 </DataTrigger.ExitActions>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
             </Grid>
-        </Canvas>
-        
+        </Border>
+
         <!--Live tile-->
         <Canvas ClipToBounds="true"  Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" VerticalAlignment="Center" 
                 Height="{Binding ActualHeight,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" >
@@ -211,12 +209,11 @@
             </Grid>
         </Canvas>
         <Canvas>
-            <teudu:EventDetailsControl x:Name="Details"  Opacity="0" Panel.ZIndex="99"
+            <teudu:EventDetailsControl x:Name="Details"  Opacity="0" Panel.ZIndex="99" Canvas.Left="150" Canvas.Top="100"
                 Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,25,0">
                 <teudu:EventDetailsControl.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="1" ScaleY="1"/>
-                        <TranslateTransform X="180" Y="0"/>
                     </TransformGroup>
                 </teudu:EventDetailsControl.RenderTransform>
             </teudu:EventDetailsControl>
