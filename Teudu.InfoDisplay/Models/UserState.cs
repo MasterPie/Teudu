@@ -35,7 +35,7 @@ namespace Teudu.InfoDisplay
         {
             if (!Double.TryParse(ConfigurationManager.AppSettings["InvisibleScreenLocation"], out invisibleScreenLocation))
                 invisibleScreenLocation = 1.3;
-            if (!Double.TryParse(ConfigurationManager.AppSettings["MaxUserDistance"], out invisibleScreenLocation))
+            if (!Double.TryParse(ConfigurationManager.AppSettings["MaxUserDistance"], out userMaxDistance))
                 userMaxDistance = 3.0;
             if (!Boolean.TryParse(ConfigurationManager.AppSettings["Inverted"], out inverted))
                 inverted = false;
@@ -137,7 +137,7 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return torso.Z > userMaxDistance;
+                return torso.Z <= userMaxDistance;
             }
         }
 

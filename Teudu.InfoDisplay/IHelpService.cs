@@ -22,6 +22,5 @@ namespace Teudu.InfoDisplay
         void Cleanup();
 
         event EventHandler<HelpMessageEventArgs> NewHelpMessage;
-        event EventHandler<HelpMessageEventArgs> NewWarningMessage;
     }
 }
