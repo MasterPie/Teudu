@@ -97,7 +97,8 @@ namespace Teudu.InfoDisplay
             if (skeleton.TrackingID != currentPlayerId)
             {
                 currentPlayerId = skeleton.TrackingID;
-                this.NewPlayer(this, new EventArgs());
+                if(this.NewPlayer!=null)
+                    this.NewPlayer(this, new EventArgs());
             }
 
             var rightHandPosition = skeleton.Joints[JointID.HandRight].ScaleTo(1920, 1080, 0.4f, 0.4f, false).Position;

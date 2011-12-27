@@ -19,7 +19,7 @@
     </Window.Resources>
     <Grid Background="{Binding Path=Engaged, Converter={StaticResource engagedConverter}}" Panel.ZIndex="80">
         <Image Source="/Teudu.InfoDisplay;component/Images/Gradient2.png" Panel.ZIndex="5" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-        <teudu:BoardPagedControl  x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10" Margin="0,0,0,0"/>
+        <teudu:BoardPagedControl  x:Name="BoardNavigator" Height="1300" Panel.ZIndex="10" Margin="0,0,0,0" Background="{Binding Path=Engaged, Converter={StaticResource engagedConverter}}"/>
         <teudu:GuideControl x:Name="Guide" Height="60" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" VerticalAlignment="Bottom" Panel.ZIndex="99"/>
         <!--<TextBlock Text="{Binding Path=Engaged, Converter={StaticResource symbolConverter}, FallbackValue=+}" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center" Foreground="{Binding Path=Engaged, Converter={StaticResource boolConverter}, FallbackValue=Red}"/>-->
         <TextBlock Text="+" Panel.ZIndex="81" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>

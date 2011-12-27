@@ -60,22 +60,7 @@ namespace Teudu.InfoDisplay
             //Details.Height = App.Current.MainWindow.ActualHeight / 3.5;
         }
 
-        public double DeltaX
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
-
-        public double DeltaY
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
-
+      
         void checkRecencyTimer_Tick(object sender, EventArgs e)
         {
             slideUpTimer.Interval = TimeSpan.FromSeconds(GetSlideUpFrequency());
@@ -245,7 +230,10 @@ namespace Teudu.InfoDisplay
                 if (value)
                     slideUpTimer.Stop();
                 else
+                {
+                    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
                     slideUpTimer.Start();
+                }
                 //if (value)
                 //{
                 //    Details.Opacity = 0;
@@ -264,23 +252,23 @@ namespace Teudu.InfoDisplay
                 //    eventTranslate.X = 3;
                 //    eventTranslate.Y = 0;
                 //}
-                if(!value)
-                {
-                    //Details.Opacity = 0;
-                    Details.Visibility = System.Windows.Visibility.Hidden;
-                    image.Opacity = 1;
+                //if(!value)
+                //{
+                //    //Details.Opacity = 0;
+                //    Details.Visibility = System.Windows.Visibility.Hidden;
+                //    image.Opacity = 1;
                     
-                    outerBorder.BorderThickness = new Thickness(0);
+                //    outerBorder.BorderThickness = new Thickness(0);
 
-                    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
-                    imageScale.ScaleX = 1;
-                    imageScale.ScaleY = 1;
-                    //eventTilt.AngleX = 0;
-                    //eventTilt.AngleY = 0;
-                    eventTranslate.X = 0;
-                    eventTranslate.Y = 0;
-                    //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
-                }
+                
+                //    imageScale.ScaleX = 1;
+                //    imageScale.ScaleY = 1;
+                //    //eventTilt.AngleX = 0;
+                //    //eventTilt.AngleY = 0;
+                //    eventTranslate.X = 0;
+                //    eventTranslate.Y = 0;
+                //    //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
+                //}
             }
             get
             {

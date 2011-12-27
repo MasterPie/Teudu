@@ -59,6 +59,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <teudu:BoolToOpacityConverter x:Key="opacityConverter"/>
+        <teudu:BoolToVisibleConverter x:Key="visibilityConverter"/>
     </UserControl.Resources>
     <Canvas Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
         
@@ -70,7 +71,7 @@
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     <ColumnDefinition Width="0.25*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding HelpImage, NotifyOnTargetUpdated=True}" Height="50" HorizontalAlignment="Left" Grid.Column="2">
+                <Image Source="{Binding HelpImage, NotifyOnTargetUpdated=True}" Height="50" HorizontalAlignment="Left" Grid.Column="2" Visibility="{Binding ShowingWarning, Converter={StaticResource visibilityConverter}, ConverterParameter=true}">
                     <Image.Triggers>
                         <EventTrigger RoutedEvent="Binding.TargetUpdated">
                             <BeginStoryboard>
@@ -79,7 +80,7 @@
                         </EventTrigger>
                     </Image.Triggers>
                 </Image>
-                <TextBlock Text="{Binding WarningMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" Style="{StaticResource WarningText}" VerticalAlignment="Center" Grid.Column="1">
+                <TextBlock Text="{Binding WarningMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" Style="{StaticResource WarningText}" VerticalAlignment="Center" Grid.Column="1" Visibility="{Binding ShowingWarning, Converter={StaticResource visibilityConverter}}">
                     <TextBlock.Triggers>
                         <EventTrigger RoutedEvent="Binding.TargetUpdated">
                             <BeginStoryboard>
@@ -91,8 +92,8 @@
                         </EventTrigger>
                     </TextBlock.Triggers>
                 </TextBlock>
-                
-                <TextBlock Text="{Binding HelpMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+
+                <TextBlock Text="{Binding HelpMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Visibility="{Binding ShowingWarning, Converter={StaticResource visibilityConverter}, ConverterParameter=true}">
                     <TextBlock.Triggers>
                         <EventTrigger RoutedEvent="Binding.TargetUpdated">
                             <BeginStoryboard>

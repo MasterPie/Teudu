@@ -195,6 +195,7 @@
     <Compile Include="ISourceService.cs" />
     <Compile Include="Eventing\SkeletonEventArgs.cs" />
     <Compile Include="Eventing\SourceEventArgs.cs" />
+    <Compile Include="ValueConverters\BoolToVisibleConverter.cs" />
     <Compile Include="ValueConverters\PrettyDateConverter.cs" />
     <Compile Include="ValueConverters\SlowedOffsetNavigationConverter.cs" />
     <Compile Include="Util\ThreadSafeRandom.cs" />

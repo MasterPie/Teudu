@@ -46,7 +46,6 @@ namespace Teudu.InfoDisplay
             this.helpService = helpService;
 
             this.helpService.NewHelpMessage += new EventHandler<HelpMessageEventArgs>(helpService_NewHelpMessage);
-            this.helpService.NewWarningMessage += new EventHandler<HelpMessageEventArgs>(helpService_NewWarningMessage);
 
             this.kinectService = kinectService; 
 
@@ -61,15 +60,14 @@ namespace Teudu.InfoDisplay
             appIdleTimer.Interval = TimeSpan.FromSeconds(5);
             appIdleTimer.Tick += new EventHandler(appIdle_Tick);
             appIdleTimer.Start();
-            helpService.NewUser(user);
+            //helpService.NewUser(user);
             BeginBackgroundJobs();
         }
 
         void helpService_NewWarningMessage(object sender, HelpMessageEventArgs e)
         {
-            warningMessage = e.Message;
-            this.OnPropertyChanged("WarningMessage");
-            this.OnPropertyChanged("ShowIndicators");
+            //warningMessage = e.Message;
+            //this.OnPropertyChanged("WarningMessage");
         }
 
         void helpService_NewHelpMessage(object sender, HelpMessageEventArgs e)
@@ -79,7 +77,6 @@ namespace Teudu.InfoDisplay
             
             this.OnPropertyChanged("HelpMessage");
             this.OnPropertyChanged("HelpImage");
-            this.OnPropertyChanged("ShowIndicators");
         }
 
         /// <summary>
@@ -187,7 +184,7 @@ namespace Teudu.InfoDisplay
         #region Kinect
 
         /// <summary>
-        /// 
+        /// Handles Skeleton Updated event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -246,9 +243,18 @@ namespace Teudu.InfoDisplay
                 this.OnPropertyChanged("Engaged");
                 this.OnPropertyChanged("TooClose");
                 this.OnPropertyChanged("OutOfBounds");
+                
+                ShowingWarning = false;
                 if (!user.TooClose)
                     this.OnPropertyChanged("DistanceFromInvisScreen");
-
+                else
+                {
+                    warningMessage = "Please step back so Teudu can see you!";
+                    this.OnPropertyChanged("WarningMessage");
+                    ShowingWarning = true;
+                }
+                this.OnPropertyChanged("ShowingWarning");
+                this.OnPropertyChanged("ShowHelp");
                 helpService.UserStateUpdated(user);
             } 
         }
@@ -259,6 +265,26 @@ namespace Teudu.InfoDisplay
         }
 
         #endregion
+
+        private bool warningShown = false;
+        public bool ShowingWarning
+        {
+            set{
+                warningShown = value;
+            }
+            get
+            {
+                return warningShown;
+            }
+        }
+
+        public bool ShowHelp
+        {
+            get
+            {
+                return !ShowingWarning;
+            }
+        }
 
         private string warningMessage = "";
         public string WarningMessage
@@ -451,6 +477,5 @@ namespace Teudu.InfoDisplay
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<BoardEventArgs> BoardsUpdated;
-        public event EventHandler MadeLargeMovement;
     }
 }
