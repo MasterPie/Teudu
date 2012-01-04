@@ -29,17 +29,6 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <!--<Storyboard x:Key="MainHideAnimation">
-            <DoubleAnimationUsingKeyFrames
-                Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.Y)"
-                Duration="0:0:01">
-                <EasingDoubleKeyFrame KeyTime="0:0:01" Value="60">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CircleEase EasingMode="EaseInOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>-->
         <Storyboard x:Key="TextEmphasizeAnimation">
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="Opacity"
@@ -62,8 +51,6 @@
         <teudu:BoolToVisibleConverter x:Key="visibilityConverter"/>
     </UserControl.Resources>
     <Canvas Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
-        
-        <!--<teudu:HandStatusControl Height="50" Width="100" HorizontalAlignment="Right" Opacity="{Binding ShowIndicators, Converter={StaticResource opacityConverter}}" Panel.ZIndex="99"/>-->
         <StackPanel x:Name="Bar" Panel.ZIndex="50" Orientation="Horizontal" Background="Black" Height="60" Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
             <Grid Width="{Binding Width,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>

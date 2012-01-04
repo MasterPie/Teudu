@@ -34,6 +34,7 @@ namespace Teudu.InfoDisplay
                 this.OnPropertyChanged("Title");
                 this.OnPropertyChanged("Description");
                 this.OnPropertyChanged("Date");
+                this.OnPropertyChanged("Cancelled");
             }
         }
 
@@ -55,6 +56,11 @@ namespace Teudu.InfoDisplay
         public string Description
         {
             get { return eventModel.Description; }
+        }
+
+        public bool Cancelled
+        {
+            get { return eventModel.Cancelled; }
         }
 
         void OnPropertyChanged(string property)

@@ -32,6 +32,7 @@ namespace Teudu.InfoDisplay
         IHelpService helpService;
 
         DispatcherTimer appIdleTimer;
+        System.Timers.Timer momentumTimer;
         UserState user;
 
         public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService, IHelpService helpService) 
@@ -55,20 +56,26 @@ namespace Teudu.InfoDisplay
             this.boardService = boardService;
             this.boardService.BoardsUpdated += new EventHandler(boardService_BoardsChanged);
 
+            momentumTimer = new System.Timers.Timer();
+            momentumTimer.Interval = 10;
+            momentumTimer.Elapsed += new ElapsedEventHandler(momentumTimer_Elapsed);
 
             appIdleTimer = new DispatcherTimer();
             appIdleTimer.Interval = TimeSpan.FromSeconds(5);
             appIdleTimer.Tick += new EventHandler(appIdle_Tick);
             appIdleTimer.Start();
-            //helpService.NewUser(user);
+            
             BeginBackgroundJobs();
         }
 
-        void helpService_NewWarningMessage(object sender, HelpMessageEventArgs e)
+        #region Momentum
+        void momentumTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            //warningMessage = e.Message;
-            //this.OnPropertyChanged("WarningMessage");
+            throw new NotImplementedException();
         }
+        #endregion
+
+        #region Help Service
 
         void helpService_NewHelpMessage(object sender, HelpMessageEventArgs e)
         {
@@ -78,6 +85,8 @@ namespace Teudu.InfoDisplay
             this.OnPropertyChanged("HelpMessage");
             this.OnPropertyChanged("HelpImage");
         }
+
+        #endregion
 
         /// <summary>
         /// Starts up background jobs
@@ -131,11 +140,6 @@ namespace Teudu.InfoDisplay
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
         public void UpdateBrowse(double x, double y)
         {
             updatingViewState = true;
@@ -192,10 +196,10 @@ namespace Teudu.InfoDisplay
         { 
             if (App.Current.MainWindow != null)
             {
+                
+
+                bool wasTouching = user.Touching;
                 #region Set vals
-
-                bool wasEngaged = user.Touching;
-
                 user.rightArm.HandX = e.RightHandPosition.X;
                 user.rightArm.HandY = e.RightHandPosition.Y;
                 user.rightArm.HandZ = e.RightHandPosition.Z;
@@ -215,7 +219,7 @@ namespace Teudu.InfoDisplay
                 if (updatingViewState)
                     return;
 
-                if (!wasEngaged)
+                if (!wasTouching)
                 {
                     oldGlobalX = GlobalOffsetX;
                     oldGlobalY = GlobalOffsetY;
@@ -325,7 +329,7 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return false;
+                return globalX >= App.Current.MainWindow.ActualWidth / 2;
             }
         }
 
@@ -333,7 +337,7 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return false;
+                return globalY <= (-maxBoardHeight + maxEventHeight);
             }
         }
 
@@ -341,7 +345,7 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return false;
+                return globalY >= App.Current.MainWindow.ActualHeight / 2 - 250;
             }
         }
 
@@ -349,7 +353,7 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return false;
+                return globalX <= -maxBoardWidth + App.Current.MainWindow.ActualWidth / 2;
             }
         }
                 
