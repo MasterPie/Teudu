@@ -13,12 +13,19 @@ namespace Teudu.InfoDisplay
         private string name;
         private string description;
         private string location;
+        private bool cancelled;
         private DateTime time;
         private DateTime endTime;
         private string image;
         private List<Category> categories;
 
-        public Event(int eventId, string eventName, string eventDescription, string eventLocation, DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories)
+        public Event(int eventId, string eventName, string eventDescription, string eventLocation, DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories) : 
+            this(eventId, eventName, eventDescription, eventLocation, eventTime, eventEndTime, eventImage, eventCategories, false)
+        {
+            
+        }
+
+        public Event(int eventId, string eventName, string eventDescription, string eventLocation, DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories, bool eventCancelled)
         {
             ID = eventId;
             Name = eventName;
@@ -28,6 +35,7 @@ namespace Teudu.InfoDisplay
             EndTime = eventEndTime;
             Image = eventImage;
             Categories = eventCategories;
+            Cancelled = eventCancelled;
         }
 
         public int ID
@@ -83,6 +91,12 @@ namespace Teudu.InfoDisplay
         {
             set { categories = value; }
             get { return categories; }
+        }
+
+        public bool Cancelled
+        {
+            set { cancelled = value; }
+            get { return cancelled; }
         }
 
         public string PrettyTime()

@@ -124,15 +124,36 @@
             <Setter Property="Margin" Value="0,-10,0,0"></Setter>
             <Setter Property="FontSize" Value="40"></Setter>
         </Style>
-        
+        <teudu:BoolToVisibleConverter x:Key="boolVisibilityConverter"/>
     </UserControl.Resources>
     <Grid>
         <Border x:Name="outerBorder" BorderBrush="#FFFFC125">
             <Grid x:Name="EventContainer">
                 <Image x:Name="image" Panel.ZIndex="10" Stretch="Uniform" Source="/Teudu.InfoDisplay;component/Images/default.jpg" 
-                    StretchDirection="DownOnly" VerticalAlignment="Top"/>
+                    StretchDirection="DownOnly" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
-            <!-- Progress Bar -->
+                <!--Cancelled triangle-->
+                <Grid Panel.ZIndex="10" Width="100" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding Cancelled,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Converter={StaticResource boolVisibilityConverter}}">
+                    <Polygon
+                    Points="0,0 100,0 0,100 "
+                    Stroke="Red"
+                    StrokeThickness="2" >
+                        <Polygon.Fill>
+                            <SolidColorBrush Color="Red"/>
+                        </Polygon.Fill>
+                    </Polygon>
+                    <TextBlock Text="Cancelled" Foreground="White" FontSize="20" Height="30" Width="100">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform Y="25" X="17"/>
+                                <RotateTransform Angle="-45" CenterX="15" CenterY="50"/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
+                
+
+                <!-- Progress Bar -->
             <Canvas ClipToBounds="true"  Width="{Binding ActualWidth,ElementName=image}" VerticalAlignment="Center" 
                         Height="{Binding ActualHeight,ElementName=image}" Panel.ZIndex="20">
                         

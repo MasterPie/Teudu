@@ -101,6 +101,9 @@ namespace Teudu.InfoDisplay
 
         void showEventTimer_Tick(object sender, EventArgs e)
         {
+            if (eventModel.Cancelled)
+                return;
+
             ((System.Windows.Media.Animation.Storyboard)this.Resources["AppearAnimation"]).Begin();
             showEventTimer.Stop();
             if (slideEnabled)
@@ -171,7 +174,13 @@ namespace Teudu.InfoDisplay
                 this.Details.Event = value;
                 slideUpTimer.Interval = TimeSpan.FromSeconds(GetSlideUpFrequency());
                 showEventTimer.Start();
+                this.OnPropertyChanged("Cancelled");
             }
+        }
+
+        public bool Cancelled
+        {
+            get { return eventModel.Cancelled; }
         }
 
         public string StartsIn

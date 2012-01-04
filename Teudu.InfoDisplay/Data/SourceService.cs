@@ -40,7 +40,8 @@ namespace Teudu.InfoDisplay
                 int id = -1;
                 string name, description, image, location;
                 name = description = image = location = "";
-                DateTime time = new DateTime();
+                bool cancelled = false;
+                DateTime startTime = new DateTime();
                 DateTime endTime = new DateTime();
                 List<Category> categories = new List<Category>();
 
@@ -64,7 +65,7 @@ namespace Teudu.InfoDisplay
                     if (detail.Name.LocalName.ToLower().Equals("starttime"))
                     {
                         if (!DateTime.TryParseExact(detail.Value.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture,
-                            DateTimeStyles.AssumeLocal, out time))
+                            DateTimeStyles.AssumeLocal, out startTime))
                             continue;
                     }
 
@@ -75,13 +76,19 @@ namespace Teudu.InfoDisplay
                             continue;
                     }
 
+                    if (detail.Name.LocalName.ToLower().Equals("cancelled"))
+                    {
+                        if (!Boolean.TryParse(detail.Value, out cancelled))
+                            cancelled = false;
+                    }
+
                     if (detail.Name.LocalName.ToLower().Equals("image"))
                         image = detail.Value;
 
                     if (detail.Name.LocalName.ToLower().Equals("categories"))
                         detail.Value.Split(',').Distinct().ToList().ForEach(x => categories.Add(new Category(x.Trim())));
                 }
-                retEvents.Add(new Event(id, name, description, location, time, endTime, image, categories));
+                retEvents.Add(new Event(id, name, description, location, startTime, endTime, image, categories,cancelled));
             }
 
             return retEvents;
