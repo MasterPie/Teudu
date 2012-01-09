@@ -13,14 +13,14 @@
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
                 Duration="0:0:03">
-                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.25,0.9,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.2,0.95,0.75,1"/>
                 <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.7" KeySpline="0.3,1,0.75,1"/>
                 <SplineDoubleKeyFrame KeyTime="0:0:03" Value="0.75" KeySpline="0.6,0.2,0.9,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
                 Duration="0:0:03">
-                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.25,0.9,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.2,0.95,0.75,1"/>
                 <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.7" KeySpline="0.3,1,0.75,1"/>
                 <SplineDoubleKeyFrame KeyTime="0:0:03" Value="0.75" KeySpline="0.6,0.2,0.9,1"/>
             </DoubleAnimationUsingKeyFrames>
@@ -28,8 +28,8 @@
                 Storyboard.TargetProperty="(UserControl.Opacity)"
                 Duration="0:0:03">
                 <LinearDoubleKeyFrame KeyTime="0:0:00" Value="1"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.7" KeySpline="0.25,0.5,0.75,1"/>
-                <LinearDoubleKeyFrame KeyTime="0:0:02" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.5" KeySpline="0.25,0.5,0.75,1"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:02" Value="0.7"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ProgressBarAnimation">
@@ -62,14 +62,14 @@
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="Details"
                 Storyboard.TargetProperty="Opacity" IsAdditive="True"
-                Duration="0:0:1" Completed="DetailsAppearAnimation_Completed">
+                Duration="0:0:1">
                 <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
                 <SplineDoubleKeyFrame KeyTime="0:0:1" Value="1" KeySpline="0.25,0.5,0.75,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="Details"
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
-                Duration="0:0:1" Completed="DetailsAppearAnimation_Completed">
+                Duration="0:0:1">
                 <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.7"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -80,7 +80,7 @@
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetName="Details"
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
-                Duration="0:0:1" Completed="DetailsAppearAnimation_Completed">
+                Duration="0:0:1">
                 <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.7"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -133,25 +133,15 @@
                     StretchDirection="DownOnly" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
                 <!--Cancelled triangle-->
-                <Grid Panel.ZIndex="10" Width="100" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding Cancelled,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Converter={StaticResource boolVisibilityConverter}}">
-                    <Polygon
-                    Points="0,0 100,0 0,100 "
-                    Stroke="Red"
-                    StrokeThickness="2" >
-                        <Polygon.Fill>
-                            <SolidColorBrush Color="Red"/>
-                        </Polygon.Fill>
-                    </Polygon>
-                    <TextBlock Text="Cancelled" Foreground="White" FontSize="20" Height="30" Width="100">
-                        <TextBlock.RenderTransform>
-                            <TransformGroup>
-                                <TranslateTransform Y="25" X="17"/>
-                                <RotateTransform Angle="-45" CenterX="15" CenterY="50"/>
-                            </TransformGroup>
-                        </TextBlock.RenderTransform>
-                    </TextBlock>
-                </Grid>
-                
+                <teudu:EventSashControl Text="Cancelled" TriangleFill="Red" TextColor="White"  Panel.ZIndex="10" FontSize="26"
+                                        Visibility="{Binding Cancelled,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, 
+                                        Converter={StaticResource boolVisibilityConverter}}"/>
+
+                <!--Hot! triangle-->
+                <teudu:EventSashControl Text="Hot!" TriangleFill="DarkOrange" Panel.ZIndex="10" TextColor="Yellow" FontSize="36"
+                                        Visibility="{Binding Hot,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, 
+                                        Converter={StaticResource boolVisibilityConverter}}"/>
+
 
                 <!-- Progress Bar -->
             <Canvas ClipToBounds="true"  Width="{Binding ActualWidth,ElementName=image}" VerticalAlignment="Center" 

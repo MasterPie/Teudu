@@ -70,17 +70,16 @@ namespace Teudu.InfoDisplay
             get { return board; }
             set
             {
-                board = value;
-                this.Board.Children.Clear();
                 if (value == null)
                     return;
 
+                board = value;
+                this.Board.Children.Clear();
+                
+
                 int eventWidth = 230;
-                if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventWidth"], out eventWidth))
-                    eventWidth = 230;
-                int maxEventHeight = 340;
-                if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
-                    maxEventHeight = 340;
+                int maxEventHeight = 400;
+
 
                 int numEvents = BoardModel.Events.Count;
 
@@ -102,125 +101,97 @@ namespace Teudu.InfoDisplay
             }
         }
 
-        public void TrackCenterEvent()
-        {
-            this.Dispatcher.BeginInvoke(new Action(this.TrackCenterEvent_work), System.Windows.Threading.DispatcherPriority.Loaded);
-        }
+        //public void TrackCenterEvent()
+        //{
+        //    this.Dispatcher.BeginInvoke(new Action(this.TrackCenterEvent_work), System.Windows.Threading.DispatcherPriority.Loaded);
+        //}
 
-        EventControl currentSelected;
-        public void TrackCenterEvent_work()
-        {
-            EventControl centerEvent = GetCentermostEvent();
-            if (centerEvent != null)
-            {
-                HoveredEvent = centerEvent.Event;
-                centerEvent.IsSelected = true;
-                currentSelected = centerEvent;
-            }
-            else
-            {
-                HoveredEvent = null;
-                currentSelected = null;
-            }
+        //EventControl currentSelected;
+        //public void TrackCenterEvent_work()
+        //{
+        //    EventControl centerEvent = GetCentermostEvent();
+        //    if (centerEvent != null)
+        //    {
+        //        HoveredEvent = centerEvent.Event;
+        //        centerEvent.IsSelected = true;
+        //        currentSelected = centerEvent;
+        //    }
+        //    else
+        //    {
+        //        HoveredEvent = null;
+        //        currentSelected = null;
+        //    }
 
-            if (currentSelected != null)
-                currentSelected.IsSelected = false;
-        }
+        //    if (currentSelected != null)
+        //        currentSelected.IsSelected = false;
+        //}
 
-       // public static readonly RoutedEvent StopShiftEvent = EventManager.RegisterRoutedEvent(
-       //"StopShift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
+        #region Deprecated
+        //private void SnapToNearestEvent()
+        //{
+        //    UIElement closestElement = GetCentermostEvent();
+        //    double centerX = (double)App.Current.MainWindow.ActualWidth / 2;
+        //    double centerY = (double)App.Current.MainWindow.ActualHeight / 2;
+        //    double deltaX, deltaY;
 
-       // public static readonly RoutedEvent ShiftEvent = EventManager.RegisterRoutedEvent(
-       //"Shift", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
-
-       // public static readonly RoutedEvent SnapEvent = EventManager.RegisterRoutedEvent(
-       //"Snap", RoutingStrategy.Tunnel, typeof(RoutedEventHandler), typeof(EventBoard));
-
-       // // Provide CLR accessors for the event
-       // public event RoutedEventHandler Shift
-       // {
-       //     add { AddHandler(ShiftEvent, value); }
-       //     remove { RemoveHandler(ShiftEvent, value); }
-       // }
-
-       // // Provide CLR accessors for the event
-       // public event RoutedEventHandler StopShift
-       // {
-       //     add { AddHandler(StopShiftEvent, value); }
-       //     remove { RemoveHandler(StopShiftEvent, value); }
-       // }
-
-       // // Provide CLR accessors for the event
-       // public event RoutedEventHandler Snap
-       // {
-       //     add { AddHandler(SnapEvent, value); }
-       //     remove { RemoveHandler(SnapEvent, value); }
-       // }
-
-
-        private void SnapToNearestEvent()
-        {
-            UIElement closestElement = GetCentermostEvent();
-            double centerX = (double)App.Current.MainWindow.ActualWidth / 2;
-            double centerY = (double)App.Current.MainWindow.ActualHeight / 2;
-            double deltaX, deltaY;
-
-            if (closestElement == null)
-                return;
+        //    if (closestElement == null)
+        //        return;
             
-            Point topCorner = closestElement.TransformToAncestor(Board).Transform(new Point(0, 0));
-            deltaX = topCorner.X - centerX;
-            deltaY = topCorner.Y - centerY;
+        //    Point topCorner = closestElement.TransformToAncestor(Board).Transform(new Point(0, 0));
+        //    deltaX = topCorner.X - centerX;
+        //    deltaY = topCorner.Y - centerY;
 
-            Point boardCorner = Board.TranslatePoint(new Point(0, 0), App.Current.MainWindow);//Board.TransformToAncestor(App.Current.MainWindow).Transform(new Point(0,0));
+        //    Point boardCorner = Board.TranslatePoint(new Point(0, 0), App.Current.MainWindow);//Board.TransformToAncestor(App.Current.MainWindow).Transform(new Point(0,0));
 
-            //snapX = boardCorner.X - deltaX;
-            //snapY = boardCorner.Y - deltaY;
+        //    //snapX = boardCorner.X - deltaX;
+        //    //snapY = boardCorner.Y - deltaY;
 
-            System.Windows.Media.Animation.Storyboard sbdSnapAnimation = (System.Windows.Media.Animation.Storyboard)FindResource("SnapAnimation");
-            sbdSnapAnimation.Begin(this);
+        //    System.Windows.Media.Animation.Storyboard sbdSnapAnimation = (System.Windows.Media.Animation.Storyboard)FindResource("SnapAnimation");
+        //    sbdSnapAnimation.Begin(this);
             
             
-        }
+        //}
 
-        private EventControl GetCentermostEvent()
-        {
-            EventControl closestElement = null;
-            double centerX = App.Current.MainWindow.ActualWidth / 2;//(double)Board.Parent.GetValue(ActualWidthProperty) / 2;
-            double centerY = App.Current.MainWindow.ActualHeight / 2;// ((double)Board.Parent.GetValue(ActualHeightProperty) / 2);// +100;
+        #endregion
 
-            double deltaX,deltaY;
-            deltaX = deltaY = centerX + centerY;
+        //private EventControl GetCentermostEvent()
+        //{
+        //    EventControl closestElement = null;
+        //    double centerX = App.Current.MainWindow.ActualWidth / 2;//(double)Board.Parent.GetValue(ActualWidthProperty) / 2;
+        //    double centerY = App.Current.MainWindow.ActualHeight / 2;// ((double)Board.Parent.GetValue(ActualHeightProperty) / 2);// +100;
 
-            try
-            {
-                foreach (UIElement element in Board.Children)
-                {
-                    if (!element.GetType().AssemblyQualifiedName.ToLower().Contains("eventcontrol"))
-                        continue;
+        //    double deltaX,deltaY;
+        //    deltaX = deltaY = centerX + centerY;
 
-                    Point topCorner = element.PointToScreen(new Point(0, 0));
-                    double elementCenterX = topCorner.X + (double)element.GetValue(ActualWidthProperty) / 2;
-                    double elementCenterY = topCorner.Y + (double)element.GetValue(ActualHeightProperty) / 2;
+        //    try
+        //    {
+        //        foreach (UIElement element in Board.Children)
+        //        {
+        //            if (!element.GetType().AssemblyQualifiedName.ToLower().Contains("eventcontrol"))
+        //                continue;
 
-                    //Point topCorner = ((EventControl)element).VisibleLocation;
+        //            Point topCorner = element.PointToScreen(new Point(0, 0));
+        //            double elementCenterX = topCorner.X + (double)element.GetValue(ActualWidthProperty) / 2;
+        //            double elementCenterY = topCorner.Y + (double)element.GetValue(ActualHeightProperty) / 2;
 
-                    if (Math.Abs(elementCenterX - centerX) < deltaX || Math.Abs(elementCenterY - centerY) < deltaY)
-                    {
-                        deltaX = Math.Abs(topCorner.X - centerX);
-                        deltaY = Math.Abs(topCorner.Y - centerY);
+        //            //Point topCorner = ((EventControl)element).VisibleLocation;
 
-                        closestElement = (EventControl)element;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                closestElement = null;
-            }
+        //            if (Math.Abs(elementCenterX - centerX) < deltaX || Math.Abs(elementCenterY - centerY) < deltaY)
+        //            {
+        //                deltaX = Math.Abs(topCorner.X - centerX);
+        //                deltaY = Math.Abs(topCorner.Y - centerY);
 
-            return closestElement;
-        }
+        //                closestElement = (EventControl)element;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        closestElement = null;
+        //    }
+
+        //    return closestElement;
+        //}
 
         //double snapX, snapY;
 
@@ -289,7 +260,7 @@ namespace Teudu.InfoDisplay
 
         private void PanAnimationStoryboard_Completed(object sender, EventArgs e)
         {
-            TrackCenterEvent();
+            //TrackCenterEvent();
             //SnapToNearestEvent();
             if (PanCompleted != null)
                 PanCompleted(this, new EventArgs());
@@ -306,14 +277,13 @@ namespace Teudu.InfoDisplay
         public event EventHandler PanCompleted;
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<HoveredEventArgs> HoveredEventChanged;
-        public event EventHandler<CategoryChangeEventArgs> BoardChanged;
 
         private void TranslateTransform_Changed(object sender, EventArgs e)
         {
             //EventControl centerEvent = GetCentermostEvent();
             //if (centerEvent != null)
             //    HoveredEvent = centerEvent.Event;
-            TrackCenterEvent();
+            //TrackCenterEvent();
         }
     }
 }

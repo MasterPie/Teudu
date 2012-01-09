@@ -17,35 +17,28 @@ namespace Teudu.InfoDisplay
 {
     public class ViewModel: INotifyPropertyChanged
     {
-       
-
-        private int maxEventHeight;
-
-        private bool firstEntry = true;
-        private double EntryX = 0;
-        private double EntryY = 0;
-        private bool updatingViewState = false;
+        private const int maxEventHeight = 400;
 
         IKinectService kinectService;
         ISourceService sourceService;
         IBoardService boardService;
         IHelpService helpService;
+        UserState user;
 
         DispatcherTimer appIdleTimer;
         System.Timers.Timer momentumTimer;
-        UserState user;
+        
 
         public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService, IHelpService helpService) 
         {
             user = new UserState();
 
-            if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
-                maxEventHeight = 340;
+            //if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
+                //maxEventHeight = 340;
 
             idleJobQueue = new Queue<Action>();
 
             this.helpService = helpService;
-
             this.helpService.NewHelpMessage += new EventHandler<HelpMessageEventArgs>(helpService_NewHelpMessage);
 
             this.kinectService = kinectService; 
@@ -75,8 +68,13 @@ namespace Teudu.InfoDisplay
         }
         #endregion
 
-        #region Help Service
+        #region Model Event Handlers
 
+        /// <summary>
+        /// Saves help message text and image when NewHelpMessage event is fired
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void helpService_NewHelpMessage(object sender, HelpMessageEventArgs e)
         {
             helpMessage = e.Message;
@@ -84,72 +82,6 @@ namespace Teudu.InfoDisplay
             
             this.OnPropertyChanged("HelpMessage");
             this.OnPropertyChanged("HelpImage");
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Starts up background jobs
-        /// </summary>
-        public void BeginBackgroundJobs()
-        {
-            this.sourceService.BeginPoll();
-        }
-
-        private Queue<Action> idleJobQueue;
-        /// <summary>
-        /// Routine that runs whenever the application isn't engaged
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void appIdle_Tick(object sender, EventArgs e)
-        {
-            appIdleTimer.Stop();
-
-            while (idleJobQueue.Count > 0)
-            {
-                Action action = idleJobQueue.Dequeue();
-                action();
-            }
-
-            appIdleTimer.Start();
-        }
-
-        private double maxBoardWidth = 0;
-        /// <summary>
-        /// Max width of current board
-        /// </summary>
-        public double MaxBoardWidth
-        {
-            set
-            {
-                maxBoardWidth = value;
-                
-            }
-        }
-
-        private double maxBoardHeight = 0;
-        /// <summary>
-        /// Max height of current board
-        /// </summary>
-        public double MaxBoardHeight
-        {
-            set
-            {
-                maxBoardHeight = value;
-            }
-        }
-
-        public void UpdateBrowse(double x, double y)
-        {
-            updatingViewState = true;
-            oldGlobalX = x;
-            oldGlobalY = y;
-            EntryX = user.DominantArmHandOffsetX;
-            EntryY = user.DominantArmHandOffsetY;
-            globalX = oldGlobalX;
-            globalY = oldGlobalY;
-            updatingViewState = false;
         }
 
         /// <summary>
@@ -173,30 +105,15 @@ namespace Teudu.InfoDisplay
         }
 
         /// <summary>
-        /// Notifies boardsupdated subscribers
-        /// </summary>
-        private void NotifyBoardSubscribers()
-        {
-            this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
-            this.kinectService.NewPlayer -= new EventHandler(kinectService_NewPlayer);
-            if (BoardsUpdated != null)
-                BoardsUpdated(this, new BoardEventArgs() { BoardService = this.boardService});
-            this.kinectService.NewPlayer += new EventHandler(kinectService_NewPlayer);
-            this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
-        }
-
-        #region Kinect
-
-        /// <summary>
         /// Handles Skeleton Updated event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void kinectService_SkeletonUpdated(object sender, SkeletonEventArgs e) 
-        { 
+        void kinectService_SkeletonUpdated(object sender, SkeletonEventArgs e)
+        {
             if (App.Current.MainWindow != null)
             {
-                
+
 
                 bool wasTouching = user.Touching;
                 #region Set vals
@@ -211,9 +128,9 @@ namespace Teudu.InfoDisplay
                 user.torso.X = e.TorsoPosition.X;
                 user.torso.Y = e.TorsoPosition.Y;
                 user.torso.Z = e.TorsoPosition.Z;
-                #endregion   
+                #endregion
 
-                if(user.Touching)
+                if (user.Touching)
                     firstEntry = false;
 
                 if (updatingViewState)
@@ -247,29 +164,97 @@ namespace Teudu.InfoDisplay
                 this.OnPropertyChanged("Engaged");
                 this.OnPropertyChanged("TooClose");
                 this.OnPropertyChanged("OutOfBounds");
-                
-                ShowingWarning = false;
+
+                //ShowingWarning = false;
                 if (!user.TooClose)
                     this.OnPropertyChanged("DistanceFromInvisScreen");
-                else
-                {
-                    warningMessage = "Please step back so Teudu can see you!";
-                    this.OnPropertyChanged("WarningMessage");
-                    ShowingWarning = true;
-                }
+                //else
+                //{
+                //    warningMessage = "Please step back so Teudu can see you!";
+                //    this.OnPropertyChanged("WarningMessage");
+                //    ShowingWarning = true;
+                //}
+
+                //if (OutOfBounds)
+                //{
+                //    helpMessage = "To continue movement, pull your hand back and recenter it on the screen";
+                //    this.OnPropertyChanged("HelpMessage");
+                //    ShowingWarning = true;
+                //}
+
+
                 this.OnPropertyChanged("ShowingWarning");
                 this.OnPropertyChanged("ShowHelp");
                 helpService.UserStateUpdated(user);
-            } 
+            }
         }
 
         void kinectService_NewPlayer(object sender, EventArgs e)
         {
             helpService.NewUser(user);
         }
-
         #endregion
 
+        /// <summary>
+        /// Notifies boardsupdated subscribers
+        /// </summary>
+        private void NotifyBoardSubscribers()
+        {
+            this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+            this.kinectService.NewPlayer -= new EventHandler(kinectService_NewPlayer);
+            if (BoardsUpdated != null)
+                BoardsUpdated(this, new BoardEventArgs() { BoardService = this.boardService });
+            this.kinectService.NewPlayer += new EventHandler(kinectService_NewPlayer);
+            this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+        }
+
+        /// <summary>
+        /// Starts up background jobs
+        /// </summary>
+        public void BeginBackgroundJobs()
+        {
+            this.sourceService.BeginPoll();
+        }
+
+        private Queue<Action> idleJobQueue;
+        /// <summary>
+        /// Routine that runs whenever the application isn't engaged
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void appIdle_Tick(object sender, EventArgs e)
+        {
+            appIdleTimer.Stop();
+
+            while (idleJobQueue.Count > 0)
+            {
+                Action action = idleJobQueue.Dequeue();
+                action();
+            }
+
+            appIdleTimer.Start();
+        }
+
+
+        private bool updatingViewState = false;
+        /// <summary>
+        /// Resets movement
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void UpdateBrowse(double x, double y)
+        {
+            updatingViewState = true;
+            oldGlobalX = x;
+            oldGlobalY = y;
+            EntryX = user.DominantArmHandOffsetX;
+            EntryY = user.DominantArmHandOffsetY;
+            globalX = oldGlobalX;
+            globalY = oldGlobalY;
+            updatingViewState = false;
+        }
+
+        #region Help Properties
         private bool warningShown = false;
         public bool ShowingWarning
         {
@@ -317,76 +302,95 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        #endregion
+
+        #region Hand Movement Properties
+
+        /// <summary>
+        /// Returns true if user's hand is out of the viewing area
+        /// </summary>
         public bool OutOfBounds
         {
             get
             {
-                return OutOfBoundsLeft || OutOfBoundsRight || OutOfBoundsTop || OutOfBoundsBottom;
+                return Engaged && (OutOfBoundsLeft || OutOfBoundsRight || OutOfBoundsTop || OutOfBoundsBottom);
             }
         }
 
+        /// <summary>
+        /// Returns true if user's hand is far right out of the viewing area
+        /// </summary>
         public bool OutOfBoundsRight
         {
             get
             {
-                return globalX >= App.Current.MainWindow.ActualWidth / 2;
+                return user.DominantHand.HandX >= 1910;
             }
         }
 
+        /// <summary>
+        /// Returns true if user's hand is far bottom out of the viewing area
+        /// </summary>
         public bool OutOfBoundsBottom
         {
             get
             {
-                return globalY <= (-maxBoardHeight + maxEventHeight);
+                return user.DominantHand.HandY <= 10;
             }
         }
 
+        /// <summary>
+        /// Returns true if user's hand is far top out of the viewing area
+        /// </summary>
         public bool OutOfBoundsTop
         {
             get
             {
-                return globalY >= App.Current.MainWindow.ActualHeight / 2 - 250;
+                return user.DominantHand.HandY >= 1080;
             }
         }
 
+        /// <summary>
+        /// Returns true if the user's hand is far left out of the viewing area
+        /// </summary>
         public bool OutOfBoundsLeft
         {
             get
             {
-                return globalX <= -maxBoardWidth + App.Current.MainWindow.ActualWidth / 2;
+                return user.DominantHand.HandX <= 10;
             }
         }
-                
-        #region Hand States
 
-        public bool Engaged
-        {
-            get { return user.Touching; }
-        }
+        #endregion
 
-        public bool TooClose
+        #region Board Properties
+        private double maxBoardWidth = 0;
+        /// <summary>
+        /// Max width of current board
+        /// </summary>
+        public double MaxBoardWidth
         {
-            get { return user.TooClose; }
-        }
-
-        public double DistanceFromInvisScreen
-        {
-            get
+            set
             {
-                return user.DistanceFromInvisScreen;
+                maxBoardWidth = value;
+
             }
         }
 
-        public double DominantArmHandOffsetX
+        private double maxBoardHeight = 0;
+        /// <summary>
+        /// Max height of current board
+        /// </summary>
+        public double MaxBoardHeight
         {
-            get { return user.DominantArmHandOffsetX; }
+            set
+            {
+                maxBoardHeight = value;
+            }
         }
-
-        public double DominantArmHandOffsetY
-        {
-            get { return user.DominantArmHandOffsetY; }
-        }
-
+        /// <summary>
+        /// Returns true if there are more categories to the right of the current board
+        /// </summary>
         public bool MoreCategoriesRight
         {
             get
@@ -395,6 +399,9 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns true if there are more categories to the left of the current board
+        /// </summary>
         public bool MoreCategoriesLeft
         {
             get
@@ -403,6 +410,9 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns true if there are more events hidden currently at the bottom of the current board
+        /// </summary>
         public bool MoreEventsDown
         {
             get
@@ -411,6 +421,9 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns true if there are events hidden currently at the top of the current board
+        /// </summary>
         public bool MoreEventsUp
         {
             get
@@ -419,8 +432,61 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        #endregion
+                
+        #region Hand States
+
+        /// <summary>
+        /// Returns true if user is "touching" the invisible screen
+        /// </summary>
+        public bool Engaged
+        {
+            get { return user.Touching; }
+        }
+
+        /// <summary>
+        /// Returns true if the user is standing too close to the screen
+        /// </summary>
+        public bool TooClose
+        {
+            get { return user.TooClose; }
+        }
+
+        /// <summary>
+        /// Returns the user's distance from the invisible touch screen
+        /// </summary>
+        public double DistanceFromInvisScreen
+        {
+            get
+            {
+                return user.DistanceFromInvisScreen;
+            }
+        }
+
+        /// <summary>
+        /// Returns the user's active hand's absolute X position
+        /// </summary>
+        public double DominantArmHandOffsetX
+        {
+            get { return user.DominantArmHandOffsetX; }
+        }
+
+        /// <summary>
+        /// Returns the user's active hand's absolute Y position
+        /// </summary>
+        public double DominantArmHandOffsetY
+        {
+            get { return user.DominantArmHandOffsetY; }
+        }
+
+        private bool firstEntry = true;
+
         private double oldGlobalX = 0;
         private double globalX = 0;
+        private double EntryX = 0;
+        /// <summary>
+        /// Returns the relative X offset of the user's hand position for use with panning the UI surface
+        /// </summary>
         public double GlobalOffsetX
         {
             set {
@@ -439,8 +505,12 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        private double EntryY = 0;
         private double oldGlobalY = 0;
         private double globalY = 0;
+        /// <summary>
+        /// Returns the relative Y offset of the user's hand position for use with panning the UI surface
+        /// </summary>
         public double GlobalOffsetY
         {
             set 
@@ -459,9 +529,6 @@ namespace Teudu.InfoDisplay
                 return globalY; 
             }
         }
-
-
-
         #endregion
 
         

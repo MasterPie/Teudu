@@ -19,6 +19,5 @@ namespace Teudu.InfoDisplay
         event EventHandler BoardsUpdated;
         event EventHandler<BoardEventArgs> BoardRegressed;
         event EventHandler<BoardEventArgs> BoardAdvanced;
-        event EventHandler<BoardEventArgs> ActiveBoardChanged;
     }
 }

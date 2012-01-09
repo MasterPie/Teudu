@@ -36,6 +36,8 @@ namespace Teudu.InfoDisplay
             
 
             imageDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\" + ConfigurationManager.AppSettings["CachedImageDirectory"]  + @"\";
+
+
             Boolean.TryParse(ConfigurationManager.AppSettings["TileSlidesEnabled"], out slideEnabled);
 
             centerCheckTimer = new DispatcherTimer();
@@ -57,25 +59,21 @@ namespace Teudu.InfoDisplay
 
             Details.Width = App.Current.MainWindow.ActualWidth / 2.5;
             Details.MaxHeight = 400;
-            //Details.Height = App.Current.MainWindow.ActualHeight / 3.5;
         }
 
       
         void checkRecencyTimer_Tick(object sender, EventArgs e)
         {
             slideUpTimer.Interval = TimeSpan.FromSeconds(GetSlideUpFrequency());
-            EmphasizeIfNeeded();
+            this.OnPropertyChanged("Hot");
         }
 
-        private void EmphasizeIfNeeded()
+        public bool Hot
         {
-            TimeSpan recency = GetRecency();
-
-            //if(recency.
+            get { return false; }
         }
 
         private string happeningText = "Starts in";
-
         public string Happening
         {
             get { return happeningText; }
@@ -84,7 +82,7 @@ namespace Teudu.InfoDisplay
         void slideUpTimer_Tick(object sender, EventArgs e)
         {
             slideUpTimer.Stop();
-            if (eventModel.HappeningNow /*|| (eventModel.HappeningToday && GetRecency().TotalMinutes >= 60)*/)
+            if (eventModel.HappeningNow || eventModel.HappeningToday || eventModel.HappeningTomorrow /*|| (eventModel.HappeningToday && GetRecency().TotalMinutes >= 60)*/)
             {
                 happeningText = "Happening";
                 this.OnPropertyChanged("Happening");
@@ -101,9 +99,6 @@ namespace Teudu.InfoDisplay
 
         void showEventTimer_Tick(object sender, EventArgs e)
         {
-            if (eventModel.Cancelled)
-                return;
-
             ((System.Windows.Media.Animation.Storyboard)this.Resources["AppearAnimation"]).Begin();
             showEventTimer.Stop();
             if (slideEnabled)
@@ -116,10 +111,6 @@ namespace Teudu.InfoDisplay
         void animateLiveTimer_Tick(object sender, EventArgs e)
         {
             VisibleLocation_work();
-
-            //TranslateTransform shiftLeft = new TranslateTransform(this.ActualWidth + App.Current.MainWindow.ActualWidth / 30, 0);
-            //TranslateTransform shiftLeft = new TranslateTransform(this.ActualWidth - App.Current.MainWindow.ActualWidth / 30, this.ActualHeight / 2 - App.Current.MainWindow.ActualHeight / 30);
-            //Details.RenderTransform = shiftLeft;
         }
 
         private TimeSpan GetRecency()
@@ -146,6 +137,9 @@ namespace Teudu.InfoDisplay
             return secondsFrequency;
         }
 
+        /// <summary>
+        /// Gets or sets the Event model to back the control
+        /// </summary>
         public Event Event
         {
             get { return this.eventModel; }
@@ -170,6 +164,8 @@ namespace Teudu.InfoDisplay
 
                     System.Diagnostics.Trace.WriteLine(e.ToString());
                 }
+                if (eventModel.Cancelled)
+                    slideEnabled = false;
 
                 this.Details.Event = value;
                 slideUpTimer.Interval = TimeSpan.FromSeconds(GetSlideUpFrequency());
@@ -243,41 +239,6 @@ namespace Teudu.InfoDisplay
                     ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Stop();
                     slideUpTimer.Start();
                 }
-                //if (value)
-                //{
-                //    Details.Opacity = 0;
-                //    Details.Visibility = System.Windows.Visibility.Visible;
-                    
-                //    ((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
-                //    //outerBorder.BorderThickness = new Thickness(5);
-                //    image.Opacity = 0.4;
-
-                //    imageScale.CenterX = image.ActualWidth / 2;
-                //    imageScale.CenterY = image.ActualHeight / 2;
-                //    imageScale.ScaleX = 0.95;
-                //    imageScale.ScaleY = 0.95;
-                //    //eventTilt.AngleX = 1;
-                //    //eventTilt.AngleY = -1;
-                //    eventTranslate.X = 3;
-                //    eventTranslate.Y = 0;
-                //}
-                //if(!value)
-                //{
-                //    //Details.Opacity = 0;
-                //    Details.Visibility = System.Windows.Visibility.Hidden;
-                //    image.Opacity = 1;
-                    
-                //    outerBorder.BorderThickness = new Thickness(0);
-
-                
-                //    imageScale.ScaleX = 1;
-                //    imageScale.ScaleY = 1;
-                //    //eventTilt.AngleX = 0;
-                //    //eventTilt.AngleY = 0;
-                //    eventTranslate.X = 0;
-                //    eventTranslate.Y = 0;
-                //    //((System.Windows.Media.Animation.Storyboard)this.Resources["DetailsAppearAnimation"]).Begin();
-                //}
             }
             get
             {
@@ -303,12 +264,6 @@ namespace Teudu.InfoDisplay
         private void SlideUp_Completed(object sender, EventArgs e)
         {
             slideUpTimer.Start();
-        }
-
-        private void DetailsAppearAnimation_Completed(object sender, EventArgs e)
-        {
-            //Details.Opacity = 1;
-            //Details.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void ProgressBarAnimation_Completed(object sender, EventArgs e)

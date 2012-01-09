@@ -37,7 +37,7 @@ namespace Teudu.InfoDisplay
 
             if (pollTime < 60)
                 pollTime = 3600;
-
+            
             eventSyncTimer = new DispatcherTimer();
             eventSyncTimer.Interval = new TimeSpan(0, 0, pollTime);
             eventSyncTimer.Tick += new EventHandler(eventSyncTimer_Tick);

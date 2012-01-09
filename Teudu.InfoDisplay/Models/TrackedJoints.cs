@@ -14,7 +14,7 @@ namespace Teudu.InfoDisplay
 
         public bool ArmAlmostStraight
         {
-            get { return ((MaxArmSpan - CurrentArmSpan) <= 20); } //TODO: Adjust alpha
+            get { return ((MaxArmSpan - CurrentArmSpan) <= 20); }
         }
 
         public double MaxArmSpan

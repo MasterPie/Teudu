@@ -74,6 +74,19 @@ namespace Teudu.InfoDisplay.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Gradient3 {
+            get {
+                object obj = ResourceManager.GetObject("Gradient3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.IO.UnmanagedMemoryStream guidePopup {
+            get {
+                return ResourceManager.GetStream("guidePopup", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap hand {
             get {
                 object obj = ResourceManager.GetObject("hand", resourceCulture);
