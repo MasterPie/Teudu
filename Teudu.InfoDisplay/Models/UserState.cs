@@ -26,7 +26,7 @@ namespace Teudu.InfoDisplay
         private double CORRESPONDENCE_SCALE_FACTOR_X = 4;
         private double CORRESPONDENCE_SCALE_FACTOR_Y = 6;
         private const double SCALE_OFFSET = 250;
-        private double userMaxDistance;
+        private double userMinDistance;
         private double invisibleScreenLocation;
         private bool inverted;
         private double inversionFactor;
@@ -35,8 +35,8 @@ namespace Teudu.InfoDisplay
         {
             if (!Double.TryParse(ConfigurationManager.AppSettings["InvisibleScreenLocation"], out invisibleScreenLocation))
                 invisibleScreenLocation = 1.3;
-            if (!Double.TryParse(ConfigurationManager.AppSettings["MaxUserDistance"], out userMaxDistance))
-                userMaxDistance = 3.0;
+            if (!Double.TryParse(ConfigurationManager.AppSettings["MinUserDistance"], out userMinDistance))
+                userMinDistance = 3.0;
             if (!Boolean.TryParse(ConfigurationManager.AppSettings["Inverted"], out inverted))
                 inverted = false;
             if (!Double.TryParse(ConfigurationManager.AppSettings["CorrespondenceScaleX"], out CORRESPONDENCE_SCALE_FACTOR_X))
@@ -88,7 +88,7 @@ namespace Teudu.InfoDisplay
 
         public double DominantArmHandOffsetX
         {
-            get { return inversionFactor * DominantHand.HandOffsetX * CORRESPONDENCE_SCALE_FACTOR_X; }
+            get {return inversionFactor * DominantHand.HandOffsetX * CORRESPONDENCE_SCALE_FACTOR_X; }
         }
 
         public double DominantArmHandOffsetY
@@ -137,7 +137,7 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return torso.Z <= userMaxDistance;
+                return torso.Z <= userMinDistance;
             }
         }
 
@@ -160,6 +160,58 @@ namespace Teudu.InfoDisplay
             get
             {
                 return torso.Z - invisibleScreenLocation;
+            }
+        }
+
+        public bool OutOfBounds
+        {
+            get
+            {
+                return Touching && (OutOfBoundsLeft || OutOfBoundsRight || OutOfBoundsTop || OutOfBoundsBottom);
+            }
+        }
+
+        /// <summary>
+        /// Returns true if user's hand is far right out of the viewing area
+        /// </summary>
+        public bool OutOfBoundsRight
+        {
+            get
+            {
+                return DominantHand.HandX >= 1910;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if user's hand is far bottom out of the viewing area
+        /// </summary>
+        public bool OutOfBoundsBottom
+        {
+            get
+            {
+                return DominantHand.HandY <= 10;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if user's hand is far top out of the viewing area
+        /// </summary>
+        public bool OutOfBoundsTop
+        {
+            get
+            {
+                return DominantHand.HandY >= 1080;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the user's hand is far left out of the viewing area
+        /// </summary>
+        public bool OutOfBoundsLeft
+        {
+            get
+            {
+                return DominantHand.HandX <= 10;
             }
         }
     }

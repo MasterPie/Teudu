@@ -36,11 +36,11 @@ namespace Teudu.InfoDisplay
                 retDateString = "happening now";
             else if (DateTime.Now.Date.AddDays(1) == time.Date)
                 retDateString = "tomorrow";
-            else if (difference.Minutes < 60)
+            else if (difference.TotalMinutes < 60)
                 retDateString = prefix + " " + difference.Minutes.ToString() + " minutes";
-            else if (difference.Hours < 12)
+            else if (difference.TotalHours < 12)
                 retDateString = prefix + " " + difference.Hours.ToString() + " hours";
-            else if (difference.Hours < 24)
+            else if (difference.TotalHours < 24)
                 retDateString = "today";
             else
                 retDateString = prefix + " " + difference.Days + " days";

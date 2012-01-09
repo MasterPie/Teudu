@@ -134,6 +134,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\EventSashControl.xaml.cs">
+      <DependentUpon>EventSashControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GuideControl.xaml.cs">
       <DependentUpon>GuideControl.xaml</DependentUpon>
     </Compile>
@@ -188,6 +191,8 @@
     <Compile Include="KinectTools.cs" />
     <Compile Include="Models\NotifyingDateTime.cs" />
     <Compile Include="ValueConverters\InverseDoubleConverter.cs" />
+    <Compile Include="ValueConverters\OffsetMovementBoundsXConverter.cs" />
+    <Compile Include="ValueConverters\OffsetMovementBoundsYConverter.cs" />
     <Compile Include="ValueConverters\OffsetNavigatorConverter.cs" />
     <Compile Include="Models\MomentaryBoardService.cs" />
     <Compile Include="Data\FileSourceService.cs" />
@@ -225,6 +230,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\EventDetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EventSashControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -357,6 +366,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Screen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sounds\guidePopup.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Gradient3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -58,7 +58,7 @@
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     <ColumnDefinition Width="0.25*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding HelpImage, NotifyOnTargetUpdated=True}" Height="50" HorizontalAlignment="Left" Grid.Column="2" Visibility="{Binding ShowingWarning, Converter={StaticResource visibilityConverter}, ConverterParameter=true}">
+                <Image Source="{Binding HelpImage, NotifyOnTargetUpdated=True}" Height="50" HorizontalAlignment="Left" Grid.Column="2">
                     <Image.Triggers>
                         <EventTrigger RoutedEvent="Binding.TargetUpdated">
                             <BeginStoryboard>
@@ -67,7 +67,7 @@
                         </EventTrigger>
                     </Image.Triggers>
                 </Image>
-                <TextBlock Text="{Binding WarningMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" Style="{StaticResource WarningText}" VerticalAlignment="Center" Grid.Column="1" Visibility="{Binding ShowingWarning, Converter={StaticResource visibilityConverter}}">
+                <!--<TextBlock Text="{Binding WarningMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" Style="{StaticResource WarningText}" VerticalAlignment="Center" Grid.Column="1" Visibility="{Binding ShowingWarning, Converter={StaticResource visibilityConverter}}">
                     <TextBlock.Triggers>
                         <EventTrigger RoutedEvent="Binding.TargetUpdated">
                             <BeginStoryboard>
@@ -78,11 +78,12 @@
                             </BeginStoryboard>
                         </EventTrigger>
                     </TextBlock.Triggers>
-                </TextBlock>
+                </TextBlock>-->
 
-                <TextBlock Text="{Binding HelpMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Visibility="{Binding ShowingWarning, Converter={StaticResource visibilityConverter}, ConverterParameter=true}">
+                <TextBlock Text="{Binding HelpMessage, NotifyOnTargetUpdated=True}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
                     <TextBlock.Triggers>
                         <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                            <SoundPlayerAction Source="/Teudu.InfoDisplay;component/Sounds/guidePopup.wav" />
                             <BeginStoryboard>
                                 <StaticResource ResourceKey="MainShowAnimation"/>
                             </BeginStoryboard>

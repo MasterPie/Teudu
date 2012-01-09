@@ -37,7 +37,7 @@ namespace Teudu.InfoDisplay
         {
             get {
                 if (currBoard >= 0 && currBoard < boards.Count)
-                    //return boards[(currBoard)%boards.Count];
+
                     return boards[currBoard];
                 else
                     return null;
@@ -50,7 +50,7 @@ namespace Teudu.InfoDisplay
             {
                 if (currBoard >= (boards.Count - 1))
                     return null;
-                //return boards[(currBoard + 1)%boards.Count];
+
                 return boards[currBoard + 1];
             }
         }
@@ -59,8 +59,6 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                //if (currBoard <= 0)
-                //    return boards[boards.Count-1];
                 if (currBoard > 0)
                     return boards[currBoard - 1];
                 else
@@ -72,7 +70,6 @@ namespace Teudu.InfoDisplay
         {
             if (currBoard < boards.Count - 1)
             {
-                //currBoard = (currBoard + 1) % boards.Count;
                 currBoard++;
                 if (BoardAdvanced != null)
                     BoardAdvanced(this, new BoardEventArgs() { Board = Current, Previous = Prev, Next = Next, BoardService = this });
@@ -90,10 +87,6 @@ namespace Teudu.InfoDisplay
                     BoardRegressed(this, new BoardEventArgs() { Board = Current, Previous = Prev, Next = Next, BoardService = this });
                 return true;
             }
-            //else
-            //    currBoard = boards.Count;
-            ////return false;
-            //return true;
             return false;
         }
 
@@ -105,7 +98,7 @@ namespace Teudu.InfoDisplay
 
             events.ForEach(x =>
             {
-                if (x.EndTime >= DateTime.Now || true)
+                if (x.HappeningWithinTwoWeeks)
                 {
                     List<Category> categories = x.Categories;
                     categories.ForEach(cat =>
@@ -116,7 +109,7 @@ namespace Teudu.InfoDisplay
                             boardLookup.Add(cat.Name.Trim().ToLower(), new Board(cat.Name) { Events = new List<Event>() { x } });
                     });
 
-                    //if (x.HappeningThisWeek)
+                    if (x.HappeningThisWeek)
                         boardLookup["hot"].Events.Add(x);
                 }
             });
@@ -148,6 +141,5 @@ namespace Teudu.InfoDisplay
         public event EventHandler BoardsUpdated;
         public event EventHandler<BoardEventArgs> BoardRegressed;
         public event EventHandler<BoardEventArgs> BoardAdvanced;
-        public event EventHandler<BoardEventArgs> ActiveBoardChanged;
     }
 }

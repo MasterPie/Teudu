@@ -5,7 +5,6 @@ using System.Text;
 using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
 using Kinect.Toolbox;
-
 using System.Diagnostics;
 using System.Windows.Threading;
 using System.Configuration;
@@ -85,7 +84,6 @@ namespace Teudu.InfoDisplay
             var skeleton = e.SkeletonFrame.Skeletons
                 .Where(s => s.TrackingState == SkeletonTrackingState.Tracked && s.Position.Z <=  maxUserDistance) //Tracked skeletons and those skeletons in range
                 .OrderBy(x => Math.Sqrt(Math.Pow(Math.Abs(x.Position.X),2) + Math.Pow(Math.Abs(x.Position.Z),2))) //track closest
-                //.ThenBy(y => Math.Abs(y.Position.X)) //track centermost
                 .FirstOrDefault();
 
             if (skeleton == null)
@@ -94,6 +92,7 @@ namespace Teudu.InfoDisplay
                 return;
             }
 
+            //Is the user different from before?
             if (skeleton.TrackingID != currentPlayerId)
             {
                 currentPlayerId = skeleton.TrackingID;
@@ -125,8 +124,6 @@ namespace Teudu.InfoDisplay
             } 
         }        
         
-        
-
         public bool IsIdle
         {
             get { return !isTrackingSkeleton; }

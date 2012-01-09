@@ -8,14 +8,59 @@
              d:DesignHeight="75" d:DesignWidth="80">
     <UserControl.Resources>
         <teudu:BoolToOpacityConverter x:Key="boolToOpacity"/>
+        <teudu:OffsetMovementBoundsXConverter x:Key="offsetXScaler"/>
+        <teudu:OffsetMovementBoundsYConverter x:Key="offsetYScaler"/>
+        <Storyboard x:Key="MainAppearAnimation">
+            <DoubleAnimationUsingKeyFrames
+                    Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                    Duration="0:0:01" FillBehavior="Stop">
+                <LinearDoubleKeyFrame KeyTime="0:0:00" Value="0.2"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                    Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                    Duration="0:0:01" FillBehavior="Stop">
+                <LinearDoubleKeyFrame KeyTime="0:0:00" Value="0.2"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </UserControl.Resources>
-    <Canvas Background="Black" ClipToBounds="True" Width="80" Height="60">
+    <Canvas Background="#FF2E0834" ClipToBounds="True" Width="80" Height="60" Opacity="{Binding Engaged, Converter={StaticResource boolToOpacity}}">
         <Grid>
-            <Image Source="/Teudu.InfoDisplay;component/Images/Pan.png" Width="53" Height="50" Opacity="{Binding OutOfBounds,Converter={StaticResource boolToOpacity}, ConverterParameter=true}"/>
-            <Image Source="/Teudu.InfoDisplay;component/Images/PanBad.png" Width="53" Height="50" Opacity="{Binding OutOfBounds,Converter={StaticResource boolToOpacity}}"/>
+            <Image Source="/Teudu.InfoDisplay;component/Images/Pan.png" Width="53" Height="50" Opacity="{Binding OutOfBounds,Converter={StaticResource boolToOpacity}, ConverterParameter=true}" Margin="-25 -25 0 0"/>
+            <Image Source="/Teudu.InfoDisplay;component/Images/PanBad.png" Width="53" Height="50" Opacity="{Binding OutOfBounds,Converter={StaticResource boolToOpacity}}" Margin="-25 -25 0 0"/>
             <Grid.RenderTransform>
-                <TranslateTransform X="13" Y="5"/>
+                <TranslateTransform X="{Binding DominantArmHandOffsetX, Converter={StaticResource offsetXScaler}, ConverterParameter=80}" Y="{Binding DominantArmHandOffsetY, Converter={StaticResource offsetXScaler}, ConverterParameter=60}"/>
             </Grid.RenderTransform>
         </Grid>
-            </Canvas>
+        <Canvas.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform ScaleX="1" ScaleY="1" CenterX="40" CenterY="30" />
+            </TransformGroup>
+        </Canvas.RenderTransform>
+        <Canvas.Style>
+            <Style>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Engaged}" Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Name="st2">
+                                <StaticResource ResourceKey="MainAppearAnimation"/>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <StopStoryboard BeginStoryboardName="st2"/>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Canvas.Style>
+    </Canvas>
 </UserControl>

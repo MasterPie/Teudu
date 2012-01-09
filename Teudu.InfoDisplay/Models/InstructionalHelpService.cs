@@ -65,17 +65,33 @@ namespace Teudu.InfoDisplay
                 NewHelpMessage(this, new HelpMessageEventArgs() { Message = welcomeMessage[0], SupplementaryImage = welcomeMessage[1] });
         }
 
-
+        private bool wasOutOfBounds = false;
         public void UserStateUpdated(UserState state)
         {
             if (state.TooClose)
                 SendWarning("Please stand back a bit so Teudu can see you better.");
+
+            if (!wasOutOfBounds && state.OutOfBounds)
+            {
+                wasOutOfBounds = true;
+                SendHelp("To continue movement, pull your hand back and recenter it on the screen","");
+            }
+
+
+            if (!state.OutOfBounds)
+                wasOutOfBounds = false;
         }
 
         private void SendWarning(string warning)
         {
             if (NewWarningMessage != null)
                 NewWarningMessage(this, new HelpMessageEventArgs() { Message = warning });
+        }
+
+        private void SendHelp(string help, string img)
+        {
+            if (NewHelpMessage != null)
+                NewHelpMessage(this, new HelpMessageEventArgs() { Message = help, SupplementaryImage = img});
         }
 
         public void Cleanup()

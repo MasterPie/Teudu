@@ -103,10 +103,10 @@ namespace Teudu.InfoDisplay
         {
             string start = time.ToString("dddd, MMMM d, h:mm tt");
             string end = endTime.ToString("h:mm tt");
-            if (EndTime.Equals(StartTime))
-                return start;
-            else
+            if (StartTime.Date.Equals(endTime.Date))
                 return start + " - " + end;
+            else
+                return start + " - " + endTime.ToString("dddd, MMMM d, h:mm tt");
         }
 
         public bool Happened
@@ -133,9 +133,22 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        public bool HappeningTomorrow
+        {
+            get
+            {
+                return (this.StartTime.Date.Equals(DateTime.Now.AddDays(1).Date));
+            }
+        }
+
         public bool HappeningThisWeek
         {
-            get { return time.Subtract(DateTime.Today) <= new TimeSpan(20, 0, 0, 0) && time >= DateTime.Now; }
+            get { return time.Subtract(DateTime.Today) <= new TimeSpan(7, 0, 0, 0) && time >= DateTime.Now; }
+        }
+
+        public bool HappeningWithinTwoWeeks
+        {
+            get { return time.Subtract(DateTime.Today) <= new TimeSpan(14, 0, 0, 0) && time >= DateTime.Now; }
         }
     }
 }

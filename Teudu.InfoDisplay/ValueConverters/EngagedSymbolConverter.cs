@@ -13,6 +13,14 @@ namespace Teudu.InfoDisplay
         {
             bool val = (bool)value;
 
+            if (parameter != null)
+            {
+                bool reverse = false;
+                Boolean.TryParse((string)parameter, out reverse);
+                if (reverse)
+                    val = !val;
+            }
+
             if (val)
                 return "+";
             else
