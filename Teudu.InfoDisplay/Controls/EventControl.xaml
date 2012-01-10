@@ -223,7 +223,7 @@
             </Grid>
         </Canvas>
         <Canvas>
-            <teudu:EventDetailsControl x:Name="Details"  Opacity="0" Panel.ZIndex="99" Canvas.Left="150" Canvas.Top="100"
+            <teudu:EventDetailsControl x:Name="Details"  Opacity="0" Panel.ZIndex="99" Canvas.Left="150" Canvas.Top="50"
                 Height="{Binding Height,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" Margin="0,0,25,0">
                 <teudu:EventDetailsControl.RenderTransform>
                     <TransformGroup>
