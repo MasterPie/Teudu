@@ -40,7 +40,7 @@ namespace Teudu.InfoDisplay
 
         public string Title
         {
-            get { return eventModel.Name; }
+            get { return Shorten(eventModel.Name, 75); }
         }
 
         public string Date
@@ -50,12 +50,12 @@ namespace Teudu.InfoDisplay
 
         public string Location
         {
-            get { return eventModel.Location; }
+            get { return Shorten(eventModel.Location, 50); }
         }
 
         public string Description
         {
-            get { return eventModel.Description; }
+            get { return Shorten(eventModel.Description, 355); }
         }
 
         public bool Cancelled
@@ -69,6 +69,14 @@ namespace Teudu.InfoDisplay
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(property));
             }
+        }
+
+        public string Shorten(string text, int maxChars)
+        {
+            if (text.Length > maxChars)
+                return text.Substring(0, maxChars - 6) + " . . .";
+            else
+                return text;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

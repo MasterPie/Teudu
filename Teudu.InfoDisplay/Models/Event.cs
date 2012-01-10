@@ -47,19 +47,19 @@ namespace Teudu.InfoDisplay
         public string Name
         {
             set { name = value; }
-            get { return name.Trim(); }
+            get { return StripNewLines(name.Trim().Replace(Environment.NewLine," ")); }
         }
 
         public string Description
         {
             set { description = value; }
-            get { return description.Trim(); }
+            get { return StripNewLines(description.Trim()); }
         }
 
         public string Location
         {
             set { location = value; }
-            get { return location.Trim(); }
+            get { return StripNewLines(location.Trim()); }
         }
 
         public DateTime StartTime
@@ -149,6 +149,11 @@ namespace Teudu.InfoDisplay
         public bool HappeningWithinTwoWeeks
         {
             get { return time.Subtract(DateTime.Today) <= new TimeSpan(14, 0, 0, 0) && time >= DateTime.Now; }
+        }
+
+        private string StripNewLines(string text)
+        {
+            return text.Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ").Replace(Environment.NewLine, " ");
         }
     }
 }
