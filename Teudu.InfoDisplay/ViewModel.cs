@@ -15,7 +15,7 @@ using System.Configuration;
 
 namespace Teudu.InfoDisplay
 {
-    public class ViewModel: INotifyPropertyChanged
+    public class ViewModel: DependencyObject, INotifyPropertyChanged
     {
         private const int maxEventHeight = 400;
 
@@ -25,9 +25,7 @@ namespace Teudu.InfoDisplay
         IHelpService helpService;
         UserState user;
 
-        DispatcherTimer appIdleTimer;
-        System.Timers.Timer momentumTimer;
-        
+        DispatcherTimer appIdleTimer;        
 
         public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService, IHelpService helpService) 
         {
@@ -49,10 +47,6 @@ namespace Teudu.InfoDisplay
             this.boardService = boardService;
             this.boardService.BoardsUpdated += new EventHandler(boardService_BoardsChanged);
 
-            momentumTimer = new System.Timers.Timer();
-            momentumTimer.Interval = 10;
-            momentumTimer.Elapsed += new ElapsedEventHandler(momentumTimer_Elapsed);
-
             appIdleTimer = new DispatcherTimer();
             appIdleTimer.Interval = TimeSpan.FromSeconds(5);
             appIdleTimer.Tick += new EventHandler(appIdle_Tick);
@@ -61,11 +55,35 @@ namespace Teudu.InfoDisplay
             BeginBackgroundJobs();
         }
 
-        #region Momentum
-        void momentumTimer_Elapsed(object sender, ElapsedEventArgs e)
+        #region Momentum [inactive]
+        private double displacementX;
+        private double displacementY;
+        private DateTime momentumStart;
+
+        public TimeSpan MovementDuration
         {
-            throw new NotImplementedException();
+            get { return TimeSpan.FromSeconds(1); }
         }
+
+        public void RunMomentum(double toX, double toY)
+        {
+            DateTime startTime = DateTime.Now;
+            while (!user.Touching && DateTime.Now <= startTime.AddSeconds(2))
+            {
+                if (toX < GlobalOffsetX)
+                    GlobalOffsetX = GlobalOffsetX - 1;
+
+                if (toX > GlobalOffsetX)
+                    GlobalOffsetX = GlobalOffsetX + 1;
+
+                if (toY < GlobalOffsetY)
+                    GlobalOffsetY = GlobalOffsetY - 1;
+
+                if (toY > GlobalOffsetY)
+                    GlobalOffsetY = GlobalOffsetY + 1;
+            }
+        }
+
         #endregion
 
         #region Model Event Handlers
@@ -165,22 +183,8 @@ namespace Teudu.InfoDisplay
                 this.OnPropertyChanged("TooClose");
                 this.OnPropertyChanged("OutOfBounds");
 
-                //ShowingWarning = false;
                 if (!user.TooClose)
                     this.OnPropertyChanged("DistanceFromInvisScreen");
-                //else
-                //{
-                //    warningMessage = "Please step back so Teudu can see you!";
-                //    this.OnPropertyChanged("WarningMessage");
-                //    ShowingWarning = true;
-                //}
-
-                //if (OutOfBounds)
-                //{
-                //    helpMessage = "To continue movement, pull your hand back and recenter it on the screen";
-                //    this.OnPropertyChanged("HelpMessage");
-                //    ShowingWarning = true;
-                //}
 
 
                 this.OnPropertyChanged("ShowingWarning");

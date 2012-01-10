@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
+using System.ComponentModel;
 
 namespace Teudu.InfoDisplay
 {
@@ -41,7 +42,8 @@ namespace Teudu.InfoDisplay
             trackingResetTimer.Tick += new EventHandler(trackingResetTimer_Tick);
 
             this.Loaded += new RoutedEventHandler(BoardNavigatorControl_Loaded);
-            this.BoardContainer.LayoutUpdated += new EventHandler(BoardContainer_LayoutUpdated);
+            this.BoardContainer.LayoutUpdated += new EventHandler(BoardContainer_LayoutUpdated);           
+
         }
 
         void BoardContainer_LayoutUpdated(object sender, EventArgs e)
@@ -159,6 +161,7 @@ namespace Teudu.InfoDisplay
             BindingOperations.SetBinding(BoardPosition, TranslateTransform.YProperty, bindingY);
             BindingOperations.SetBinding(TitlePosition, TranslateTransform.XProperty, bindingX);
         }
+
         Storyboard sbAdvance;
         private void Advance()
         {
