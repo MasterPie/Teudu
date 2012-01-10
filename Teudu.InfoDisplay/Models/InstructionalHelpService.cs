@@ -68,9 +68,6 @@ namespace Teudu.InfoDisplay
         private bool wasOutOfBounds = false;
         public void UserStateUpdated(UserState state)
         {
-            if (state.TooClose)
-                SendWarning("Please stand back a bit so Teudu can see you better.");
-
             if (!wasOutOfBounds && state.OutOfBounds)
             {
                 wasOutOfBounds = true;

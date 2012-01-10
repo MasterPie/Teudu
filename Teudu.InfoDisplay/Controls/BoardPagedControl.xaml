@@ -15,7 +15,7 @@
             <Setter Property="FontFamily" Value="Helvetica Neue LT Std"></Setter>
             <Setter Property="FontSize" Value="120"></Setter>
             <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
-        </Style>        
+        </Style>
     </UserControl.Resources>
     <Canvas Background="{Binding Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" VerticalAlignment="Top">
         <StackPanel Orientation="Vertical" Background="{Binding Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
