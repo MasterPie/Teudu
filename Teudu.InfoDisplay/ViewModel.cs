@@ -48,7 +48,7 @@ namespace Teudu.InfoDisplay
             this.boardService.BoardsUpdated += new EventHandler(boardService_BoardsChanged);
 
             appIdleTimer = new DispatcherTimer();
-            appIdleTimer.Interval = TimeSpan.FromSeconds(5);
+            appIdleTimer.Interval = TimeSpan.FromMinutes(1);
             appIdleTimer.Tick += new EventHandler(appIdle_Tick);
             appIdleTimer.Start();
             
@@ -182,10 +182,13 @@ namespace Teudu.InfoDisplay
                 this.OnPropertyChanged("Engaged");
                 this.OnPropertyChanged("TooClose");
                 this.OnPropertyChanged("OutOfBounds");
+                this.OnPropertyChanged("InRange");
+                this.OnPropertyChanged("OutOfRange");
 
                 if (!user.TooClose)
                     this.OnPropertyChanged("DistanceFromInvisScreen");
 
+                
 
                 this.OnPropertyChanged("ShowingWarning");
                 this.OnPropertyChanged("ShowHelp");
@@ -235,7 +238,8 @@ namespace Teudu.InfoDisplay
                 Action action = idleJobQueue.Dequeue();
                 action();
             }
-
+            boardService.Reset();
+            this.OnPropertyChanged("OutOfRange");
             appIdleTimer.Start();
         }
 
@@ -533,6 +537,22 @@ namespace Teudu.InfoDisplay
                 return globalY; 
             }
         }
+
+        public bool UserPresent
+        {
+            get { return !kinectService.IsIdle; }
+        }
+
+        public bool InRange
+        {
+            get { return user.TorsoInRange; }
+        }
+
+        public bool OutOfRange
+        {
+            get { return !InRange && UserPresent; }
+        }
+
         #endregion
 
         

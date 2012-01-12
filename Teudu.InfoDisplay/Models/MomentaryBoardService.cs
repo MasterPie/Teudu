@@ -66,6 +66,14 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        public bool Reset()
+        {
+            currBoard = 0;
+            if (BoardsUpdated != null)
+                BoardsUpdated(this, new EventArgs());
+            return true;
+        }
+
         public bool AdvanceCurrent()
         {
             if (currBoard < boards.Count - 1)

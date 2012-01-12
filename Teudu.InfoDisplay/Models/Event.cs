@@ -133,6 +133,14 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        public bool HappeningInTwelve
+        {
+            get
+            {
+                return (this.StartTime <= DateTime.Now.AddHours(12));
+            }
+        }
+
         public bool HappeningTomorrow
         {
             get

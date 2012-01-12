@@ -163,5 +163,12 @@ namespace Teudu.InfoDisplay.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap silhouettemissing {
+            get {
+                object obj = ResourceManager.GetObject("silhouettemissing", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

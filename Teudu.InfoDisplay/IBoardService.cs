@@ -12,6 +12,7 @@ namespace Teudu.InfoDisplay
         Board Current{get;}
         Board Next { get; }
         Board Prev { get; }
+        bool Reset();
         bool AdvanceCurrent();
         bool RegressCurrent();
         void Cleanup();
