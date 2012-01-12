@@ -36,7 +36,7 @@ namespace Teudu.InfoDisplay
             if (!Double.TryParse(ConfigurationManager.AppSettings["InvisibleScreenLocation"], out invisibleScreenLocation))
                 invisibleScreenLocation = 1.3;
             if (!Double.TryParse(ConfigurationManager.AppSettings["MinUserDistance"], out userMinDistance))
-                userMinDistance = 3.0;
+                userMinDistance = 2.0;
             if (!Boolean.TryParse(ConfigurationManager.AppSettings["Inverted"], out inverted))
                 inverted = false;
             if (!Double.TryParse(ConfigurationManager.AppSettings["CorrespondenceScaleX"], out CORRESPONDENCE_SCALE_FACTOR_X))

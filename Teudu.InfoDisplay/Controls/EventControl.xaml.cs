@@ -82,7 +82,7 @@ namespace Teudu.InfoDisplay
         void slideUpTimer_Tick(object sender, EventArgs e)
         {
             slideUpTimer.Stop();
-            if (eventModel.HappeningNow || eventModel.HappeningToday || eventModel.HappeningTomorrow /*|| (eventModel.HappeningToday && GetRecency().TotalMinutes >= 60)*/)
+            if (eventModel.HappeningNow || (eventModel.HappeningToday && !eventModel.HappeningInTwelve) || eventModel.HappeningTomorrow /*|| (eventModel.HappeningToday && GetRecency().TotalMinutes >= 60)*/)
             {
                 happeningText = "Happening";
                 this.OnPropertyChanged("Happening");
@@ -133,7 +133,7 @@ namespace Teudu.InfoDisplay
                 secondsFrequency = 30;
             if (recency.TotalMinutes < 5)
                 secondsFrequency = 15;
-
+            
             return secondsFrequency;
         }
 

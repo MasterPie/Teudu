@@ -80,7 +80,7 @@ namespace Teudu.InfoDisplay
             try
             {
                 string xmlResponse = wc.DownloadString(serviceURI);
-
+                wc.Dispose();
                 root = XElement.Parse(xmlResponse);
                 List<Event> events = ReadEvents(root);
                 events = DownloadImages(events);
@@ -213,7 +213,10 @@ namespace Teudu.InfoDisplay
 
                 try
                 {
-                    wc.DownloadFile(uri, imageDirectory + fileName);
+                    using (WebClient downloadClient = new WebClient())
+                    {
+                        downloadClient.DownloadFile(uri, imageDirectory + fileName);
+                    }
                 }
                 catch (Exception)
                 {
