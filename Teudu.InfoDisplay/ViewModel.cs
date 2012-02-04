@@ -15,7 +15,7 @@ using System.Configuration;
 
 namespace Teudu.InfoDisplay
 {
-    public class ViewModel: DependencyObject, INotifyPropertyChanged
+    public class ViewModel: INotifyPropertyChanged
     {
         private const int maxEventHeight = 400;
 
@@ -30,9 +30,6 @@ namespace Teudu.InfoDisplay
         public ViewModel(IKinectService kinectService, ISourceService sourceService, IBoardService boardService, IHelpService helpService) 
         {
             user = new UserState();
-
-            //if (!Int32.TryParse(ConfigurationManager.AppSettings["MaxEventHeight"], out maxEventHeight))
-                //maxEventHeight = 340;
 
             idleJobQueue = new Queue<Action>();
 
@@ -51,40 +48,40 @@ namespace Teudu.InfoDisplay
             appIdleTimer.Interval = TimeSpan.FromMinutes(1);
             appIdleTimer.Tick += new EventHandler(appIdle_Tick);
             appIdleTimer.Start();
-            
-            BeginBackgroundJobs();
         }
 
-        #region Momentum [inactive]
-        private double displacementX;
-        private double displacementY;
-        private DateTime momentumStart;
-
-        public TimeSpan MovementDuration
+        /// <summary>
+        /// Starts up background jobs
+        /// </summary>
+        public void BeginBackgroundJobs()
         {
-            get { return TimeSpan.FromSeconds(1); }
+            this.sourceService.BeginPoll();
         }
 
-        public void RunMomentum(double toX, double toY)
+        #region Background jobs
+
+        private Queue<Action> idleJobQueue;
+        /// <summary>
+        /// Routine that runs whenever the application isn't engaged
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void appIdle_Tick(object sender, EventArgs e)
         {
-            DateTime startTime = DateTime.Now;
-            while (!user.Touching && DateTime.Now <= startTime.AddSeconds(2))
+            appIdleTimer.Stop();
+
+            while (idleJobQueue.Count > 0)
             {
-                if (toX < GlobalOffsetX)
-                    GlobalOffsetX = GlobalOffsetX - 1;
-
-                if (toX > GlobalOffsetX)
-                    GlobalOffsetX = GlobalOffsetX + 1;
-
-                if (toY < GlobalOffsetY)
-                    GlobalOffsetY = GlobalOffsetY - 1;
-
-                if (toY > GlobalOffsetY)
-                    GlobalOffsetY = GlobalOffsetY + 1;
+                Action action = idleJobQueue.Dequeue();
+                action();
             }
+            boardService.Reset();
+            this.OnPropertyChanged("OutOfRange");
+            appIdleTimer.Start();
         }
 
         #endregion
+
 
         #region Model Event Handlers
 
@@ -102,6 +99,7 @@ namespace Teudu.InfoDisplay
             this.OnPropertyChanged("HelpImage");
         }
 
+        private bool initialEventSet = true;
         /// <summary>
         /// Sets boardservice to new events when EventsUpdated is fired
         /// </summary>
@@ -109,7 +107,13 @@ namespace Teudu.InfoDisplay
         /// <param name="e"></param>
         void sourceService_EventsUpdated(object sender, SourceEventArgs e)
         {
-            idleJobQueue.Enqueue(new Action(delegate { boardService.Events = e.Events; }));
+            if (initialEventSet)
+            {
+                initialEventSet = false;
+                boardService.Events = e.Events;
+            }
+            else
+                idleJobQueue.Enqueue(new Action(delegate { boardService.Events = e.Events; }));
         }
 
         /// <summary>
@@ -120,6 +124,19 @@ namespace Teudu.InfoDisplay
         void boardService_BoardsChanged(object sender, EventArgs e)
         {
             NotifyBoardSubscribers();
+        }
+
+        /// <summary>
+        /// Notifies boardsupdated subscribers
+        /// </summary>
+        private void NotifyBoardSubscribers()
+        {
+            this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
+            this.kinectService.NewPlayer -= new EventHandler(kinectService_NewPlayer);
+            if (BoardsUpdated != null)
+                BoardsUpdated(this, new BoardEventArgs() { BoardService = this.boardService });
+            this.kinectService.NewPlayer += new EventHandler(kinectService_NewPlayer);
+            this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
         }
 
         /// <summary>
@@ -188,10 +205,6 @@ namespace Teudu.InfoDisplay
                 if (!user.TooClose)
                     this.OnPropertyChanged("DistanceFromInvisScreen");
 
-                
-
-                this.OnPropertyChanged("ShowingWarning");
-                this.OnPropertyChanged("ShowHelp");
                 helpService.UserStateUpdated(user);
             }
         }
@@ -202,54 +215,13 @@ namespace Teudu.InfoDisplay
         }
         #endregion
 
-        /// <summary>
-        /// Notifies boardsupdated subscribers
-        /// </summary>
-        private void NotifyBoardSubscribers()
-        {
-            this.kinectService.SkeletonUpdated -= new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
-            this.kinectService.NewPlayer -= new EventHandler(kinectService_NewPlayer);
-            if (BoardsUpdated != null)
-                BoardsUpdated(this, new BoardEventArgs() { BoardService = this.boardService });
-            this.kinectService.NewPlayer += new EventHandler(kinectService_NewPlayer);
-            this.kinectService.SkeletonUpdated += new System.EventHandler<SkeletonEventArgs>(kinectService_SkeletonUpdated);
-        }
-
-        /// <summary>
-        /// Starts up background jobs
-        /// </summary>
-        public void BeginBackgroundJobs()
-        {
-            this.sourceService.BeginPoll();
-        }
-
-        private Queue<Action> idleJobQueue;
-        /// <summary>
-        /// Routine that runs whenever the application isn't engaged
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void appIdle_Tick(object sender, EventArgs e)
-        {
-            appIdleTimer.Stop();
-
-            while (idleJobQueue.Count > 0)
-            {
-                Action action = idleJobQueue.Dequeue();
-                action();
-            }
-            boardService.Reset();
-            this.OnPropertyChanged("OutOfRange");
-            appIdleTimer.Start();
-        }
-
 
         private bool updatingViewState = false;
         /// <summary>
-        /// Resets movement
+        /// Updates the View's current browse state location (based on which board is currently viewing)
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">x displacement of the view</param>
+        /// <param name="y">y displacement of the view</param>
         public void UpdateBrowse(double x, double y)
         {
             updatingViewState = true;
@@ -263,36 +235,10 @@ namespace Teudu.InfoDisplay
         }
 
         #region Help Properties
-        private bool warningShown = false;
-        public bool ShowingWarning
-        {
-            set{
-                warningShown = value;
-            }
-            get
-            {
-                return warningShown;
-            }
-        }
-
-        public bool ShowHelp
-        {
-            get
-            {
-                return !ShowingWarning;
-            }
-        }
-
-        private string warningMessage = "";
-        public string WarningMessage
-        {
-            get
-            {
-                return warningMessage;
-            }
-        }
-
         private string helpMessage = "";
+        /// <summary>
+        /// The current help message to be shown
+        /// </summary>
         public string HelpMessage
         {
             get
@@ -302,6 +248,9 @@ namespace Teudu.InfoDisplay
         }
 
         private string helpImage = "";
+        /// <summary>
+        /// The current help image to be shown
+        /// </summary>
         public string HelpImage
         {
             get
@@ -538,16 +487,25 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns true if the KinectService is tracking a user
+        /// </summary>
         public bool UserPresent
         {
             get { return !kinectService.IsIdle; }
         }
 
+        /// <summary>
+        /// Returns true if the user's body is in range to use the application
+        /// </summary>
         public bool InRange
         {
             get { return user.TorsoInRange; }
         }
 
+        /// <summary>
+        /// Returns true if the user is not in range to use the application
+        /// </summary>
         public bool OutOfRange
         {
             get { return !InRange && UserPresent; }
@@ -571,6 +529,9 @@ namespace Teudu.InfoDisplay
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// Event raised when the boards of the BoardService are updated
+        /// </summary>
         public event EventHandler<BoardEventArgs> BoardsUpdated;
     }
 }

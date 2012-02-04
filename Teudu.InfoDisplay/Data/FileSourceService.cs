@@ -15,7 +15,6 @@ namespace Teudu.InfoDisplay
     {
         private string eventsFile;
         private XElement doc;
-        //private XmlDocument doc;
         private BackgroundWorker IOWorker;
 
         public FileSourceService()
@@ -30,11 +29,21 @@ namespace Teudu.InfoDisplay
             IOWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(downloadWorker_RunWorkerCompleted);
         }
 
+        /// <summary>
+        /// Worker method that runs when the event data has been read from the Xml document
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">e.Result contains a List of events that were parsed from the Xml</param>
         void downloadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             OnEventsUpdated(this, new SourceEventArgs(){ Events = (List<Event>)e.Result });
         }
 
+        /// <summary>
+        /// Asynchronous worker method that reads the Xml document describing the event data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void downloadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             List<Event> events = ReadEvents(doc);
@@ -43,86 +52,15 @@ namespace Teudu.InfoDisplay
 
         public override void BeginPoll()
         {
-            //doc.Load(eventsFile);
             doc = XElement.Load(eventsFile);
 
             IOWorker.RunWorkerAsync();
-           
-
-            
         }
-        /*
-        private List<Event> ReadEvents()
-        {
-            CultureInfo culture = CultureInfo.CurrentCulture;
-            List<Event> retEvents = new List<Event>();
-            XmlNode root = doc.DocumentElement;
-            try
-            {
-                foreach (XmlNode node in root.ChildNodes)
-                {
-                    if (node.Name.ToLower().Equals("event"))
-                    {
-                        int id = -1;
-                        string name, description, image, location;
-                        name = description = image = location = "";
-                        DateTime time = new DateTime();
-                        DateTime endTime = new DateTime();
-                        List<Category> categories = new List<Category>();
 
-                        if (node.Attributes.GetNamedItem("id") != null)
-                            Int32.TryParse(node.Attributes.GetNamedItem("id").Value, out id);
-
-                        foreach (XmlNode detail in node.ChildNodes)
-                        {
-                            if (detail.Name.ToLower().Equals("name"))
-                                name = detail.InnerText;
-
-                            if (detail.Name.ToLower().Equals("description"))
-                                description = detail.InnerText;
-
-                            if (detail.Name.ToLower().Equals("location"))
-                                location = detail.InnerText;
-
-                            if (detail.Name.ToLower().Equals("starttime"))
-                            {
-                                //if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out time))
-                                //    time = DateTime.Now;
-                                if (!DateTime.TryParse(detail.InnerText.Replace("UTC", ""), culture, DateTimeStyles.AssumeLocal, out time))
-                                    time = DateTime.Now;
-                            }
-
-                            if (detail.Name.ToLower().Equals("endtime"))
-                            {
-                                //if (!DateTime.TryParseExact(detail.InnerText.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture, DateTimeStyles.AssumeLocal, out endTime))
-                                //    endTime = time;
-                                if (!DateTime.TryParse(detail.InnerText.Replace('-', '/').Replace("UTC", ""), culture, DateTimeStyles.AssumeLocal, out endTime))
-                                    endTime = time;
-                            }
-
-                            if (detail.Name.ToLower().Equals("image"))
-                                image = detail.InnerText;
-
-                            if (detail.Name.ToLower().Equals("categories"))
-                                detail.InnerText.Split(',').Distinct().ToList().ForEach(x => categories.Add(new Category(x.Trim())));
-                        }
-
-                        retEvents.Add(new Event(id, name, description, location,time, endTime, image, categories));
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e.ToString());
-                //need to do something with it
-            }
-            return retEvents;
-        }
-        */
 
         public override void Cleanup()
         {
-            
+            //do nothing?
         }
     }
 }

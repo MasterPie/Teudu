@@ -19,13 +19,15 @@ namespace Teudu.InfoDisplay
         private string image;
         private List<Category> categories;
 
-        public Event(int eventId, string eventName, string eventDescription, string eventLocation, DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories) : 
+        public Event(int eventId, string eventName, string eventDescription, string eventLocation, 
+            DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories) : 
             this(eventId, eventName, eventDescription, eventLocation, eventTime, eventEndTime, eventImage, eventCategories, false)
         {
             
         }
 
-        public Event(int eventId, string eventName, string eventDescription, string eventLocation, DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories, bool eventCancelled)
+        public Event(int eventId, string eventName, string eventDescription, string eventLocation, 
+            DateTime eventTime, DateTime eventEndTime, string eventImage, List<Category> eventCategories, bool eventCancelled)
         {
             ID = eventId;
             Name = eventName;

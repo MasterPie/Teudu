@@ -33,6 +33,9 @@ namespace Teudu.InfoDisplay
             set { events = value; }
         }
 
+        /// <summary>
+        /// Returns the farthest date an event in this board starts
+        /// </summary>
         public DateTime MaxDate
         {
             get

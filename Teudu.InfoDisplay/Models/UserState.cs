@@ -13,7 +13,7 @@ namespace Teudu.InfoDisplay
     using System.Configuration;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Models the interaction state of the current user
     /// </summary>
     public class UserState
     {
@@ -50,6 +50,9 @@ namespace Teudu.InfoDisplay
                 inversionFactor = -1;
         }
 
+        /// <summary>
+        /// Returns the user's interaction mode. Currently, only Panning is supported by the application
+        /// </summary>
         public HandsState InteractionMode
         {
             get
@@ -66,6 +69,9 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns true if the user is touching the invisible screen
+        /// </summary>
         public bool Touching 
         {
             get
@@ -74,6 +80,9 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns the user's dominant (user's active) hand
+        /// </summary>
         public Arm DominantHand
         {
             get
@@ -86,16 +95,26 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns the dominant (user's active) hand's X displacement from starting point
+        /// </summary>
         public double DominantArmHandOffsetX
         {
             get {return inversionFactor * DominantHand.HandOffsetX * CORRESPONDENCE_SCALE_FACTOR_X; }
         }
 
+
+        /// <summary>
+        /// Returns the dominant (user's active) hand's Y displacement from starting point
+        /// </summary>
         public double DominantArmHandOffsetY
         {
             get { return inversionFactor * DominantHand.HandOffsetY * CORRESPONDENCE_SCALE_FACTOR_Y; }
         }
 
+        /// <summary>
+        /// Returns the distance between the left and right hands
+        /// </summary>
         public double HandsDistance
         {
             get
@@ -110,6 +129,9 @@ namespace Teudu.InfoDisplay
             get { return LeftArmInFront; }
         }
 
+        /// <summary>
+        /// Returns true if user's left hand is touching the invisible screen
+        /// </summary>
         public bool LeftArmInFront
         {
             get { return leftArm.HandZ < invisibleScreenLocation; }
@@ -120,11 +142,17 @@ namespace Teudu.InfoDisplay
             get { return RightArmInFront; }
         }
 
+        /// <summary>
+        /// Returns true if user's right hand is touching the invisible screen
+        /// </summary>
         public bool RightArmInFront
         {
             get { return rightArm.HandZ < invisibleScreenLocation; }
         }
 
+        /// <summary>
+        /// Returns true if the user is too close to the display (and therefore cannot use the application)
+        /// </summary>
         public bool TooClose
         {
             get
@@ -133,6 +161,9 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns true if the user's body is in range for using the application
+        /// </summary>
         public bool TorsoInRange
         {
             get
@@ -141,6 +172,9 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns the user's hand's distance from the invisible screen
+        /// </summary>
         public double DistanceFromInvisScreen
         {
             get
@@ -155,6 +189,9 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns the user's full body distance from the invisible screen
+        /// </summary>
         public double TorsoDistanceFromInvisScreen
         {
             get
@@ -163,6 +200,9 @@ namespace Teudu.InfoDisplay
             }
         }
 
+        /// <summary>
+        /// Returns true if user's hand is out of the viewing area (from any side)
+        /// </summary>
         public bool OutOfBounds
         {
             get
