@@ -28,6 +28,11 @@ namespace Teudu.InfoDisplay
 
         public abstract void BeginPoll();
 
+        /// <summary>
+        /// Parses an Xml document for event data
+        /// </summary>
+        /// <param name="root">The Xml document root</param>
+        /// <returns>List of events described by the Xml document</returns>
         protected List<Event> ReadEvents(XElement root)
         {
             if (!root.HasElements)

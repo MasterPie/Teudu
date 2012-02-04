@@ -13,7 +13,7 @@ namespace Teudu.InfoDisplay
     using System.Windows.Threading;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// A HelpService that provides instructional help messages to the user
     /// </summary>
     public class InstructionalHelpService : IHelpService
     {
@@ -28,8 +28,7 @@ namespace Teudu.InfoDisplay
             welcomeTickerTimer.Interval = TimeSpan.FromSeconds(5);
             welcomeTickerTimer.Tick += new EventHandler(welcomeTickerTimer_Tick);
         }
-
-        
+  
         public void NewUser(UserState state)
         {
             Dispatcher.CurrentDispatcher.BeginInvoke((Action)(()=> welcomeTickerTimer.Stop()));
@@ -43,6 +42,9 @@ namespace Teudu.InfoDisplay
             Dispatcher.CurrentDispatcher.BeginInvoke((Action)(()=>welcomeTickerTimer.Start()));
         }
 
+        /// <summary>
+        /// Builds the queue of welcome messages to use in a Welcome help message sequence
+        /// </summary>
         private void BuildWelcomeMessages()
         {
             welcomeMessages.Clear();
@@ -53,6 +55,11 @@ namespace Teudu.InfoDisplay
             welcomeMessages.Enqueue(new string[]{"Have fun!",""});
         }
 
+        /// <summary>
+        /// Method called when the welcome timer interval elapses. Sends the next welcome message in the queue.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void welcomeTickerTimer_Tick(object sender, EventArgs e)
         {
             if (welcomeMessages.Count <= 0)
@@ -79,12 +86,6 @@ namespace Teudu.InfoDisplay
                 wasOutOfBounds = false;
         }
 
-        private void SendWarning(string warning)
-        {
-            if (NewWarningMessage != null)
-                NewWarningMessage(this, new HelpMessageEventArgs() { Message = warning });
-        }
-
         private void SendHelp(string help, string img)
         {
             if (NewHelpMessage != null)
@@ -97,7 +98,6 @@ namespace Teudu.InfoDisplay
         }
 
         public event EventHandler<HelpMessageEventArgs> NewHelpMessage;
-        public event EventHandler<HelpMessageEventArgs> NewWarningMessage;
 
     }
 }
