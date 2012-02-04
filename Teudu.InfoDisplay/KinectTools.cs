@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Coding4Fun.Kinect.Wpf;
-using Microsoft.Research.Kinect.Nui;
+using Microsoft.Kinect;
 
 namespace Teudu.InfoDisplay
 {
@@ -14,32 +14,25 @@ namespace Teudu.InfoDisplay
             if (!originCenter)
                 return Coding4Fun.Kinect.Wpf.SkeletalExtensions.ScaleTo(joint, width, height, skeletonMaxX, skeletonMaxY);
 
-            Vector pos = new Vector()
+            SkeletonPoint pos = new SkeletonPoint()
             {
                 X = Scale(width, skeletonMaxX, joint.Position.X),
                 Y = Scale(height, skeletonMaxY, -joint.Position.Y),
                 Z = joint.Position.Z,
-                W = joint.Position.W
             };
 
-            Joint j = new Joint()
-            {
-                ID = joint.ID,
-                TrackingState = joint.TrackingState,
-                Position = pos
-            };
+            joint.Position = pos;
 
-            return j;
+            return joint;
         }
 
-        public static Vector ScaleTo(this Vector position, int width, int height, float skeletonMaxX, float skeletonMaxY)
+        public static SkeletonPoint ScaleTo(this SkeletonPoint position, int width, int height, float skeletonMaxX, float skeletonMaxY)
         {
-            Vector pos = new Vector()
+            SkeletonPoint pos = new SkeletonPoint()
             {
                 X = Scale(width, skeletonMaxX, position.X),
                 Y = Scale(height, skeletonMaxY, -position.Y),
                 Z = position.Z,
-                W = position.W
             };
 
             return pos;

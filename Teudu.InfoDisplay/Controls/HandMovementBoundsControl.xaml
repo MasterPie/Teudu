@@ -14,20 +14,20 @@
             <DoubleAnimationUsingKeyFrames
                     Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
                     Duration="0:0:01" FillBehavior="Stop">
-                <LinearDoubleKeyFrame KeyTime="0:0:00" Value="0.2"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:00" Value="0.01"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
+                        <ElasticEase EasingMode="EaseOut" Oscillations="2"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                     Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
                     Duration="0:0:01" FillBehavior="Stop">
-                <LinearDoubleKeyFrame KeyTime="0:0:00" Value="0.2"/>
+                <LinearDoubleKeyFrame KeyTime="0:0:00" Value="0.01"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:01" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
+                        <ElasticEase EasingMode="EaseOut" Oscillations="2"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
