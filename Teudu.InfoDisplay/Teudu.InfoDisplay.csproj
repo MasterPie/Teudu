@@ -68,13 +68,17 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Coding4Fun.Kinect.Wpf, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Coding4Fun.Kinect.Wpf, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Release\Coding4Fun.Kinect.Wpf.dll</HintPath>
+      <HintPath>packages\Coding4Fun.Kinect.Wpf.1.5.0\lib\Coding4Fun.Kinect.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Kinect.Toolbox">
       <HintPath>packages\KinectToolbox.1.1.0\lib\Kinect.Toolbox.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Coding4Fun.Kinect.Wpf.1.5.0\lib\Microsoft.Expression.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Kinect, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -84,7 +88,6 @@
     <Reference Include="Microsoft.Practices.Unity.Configuration">
       <HintPath>packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Research.Kinect, Version=1.0.0.45, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Private>False</Private>
     </Reference>

@@ -12,17 +12,17 @@
         <Storyboard x:Key="HoverBeginAnimation" x:Name="HoverBeginAnimation">
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
-                Duration="0:0:03">
-                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.2,0.95,0.75,1"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.7" KeySpline="0.3,1,0.75,1"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:03" Value="0.75" KeySpline="0.6,0.2,0.9,1"/>
+                Duration="0:0:02">
+                <!--<SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.2,0.95,0.75,1"/>-->
+                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.7" KeySpline="0.3,1,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.75" KeySpline="0.6,0.2,0.9,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
-                Duration="0:0:03">
-                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.2,0.95,0.75,1"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.7" KeySpline="0.3,1,0.75,1"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:03" Value="0.75" KeySpline="0.6,0.2,0.9,1"/>
+                Duration="0:0:02">
+                <!--<SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.2,0.95,0.75,1"/>-->
+                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.7" KeySpline="0.3,1,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.75" KeySpline="0.6,0.2,0.9,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.Opacity)"
@@ -35,10 +35,10 @@
         <Storyboard x:Key="ProgressBarAnimation">
             <DoubleAnimationUsingKeyFrames
                     Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.X)"
-                    Duration="0:0:02" FillBehavior="Stop" Completed="ProgressBarAnimation_Completed">
+                    Duration="0:0:01" FillBehavior="Stop" Completed="ProgressBarAnimation_Completed">
                 <LinearDoubleKeyFrame KeyTime="0:0:00" Value="-230"/>
-                <LinearDoubleKeyFrame KeyTime="0:0:01" Value="-230"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0"/>
+                <!--<LinearDoubleKeyFrame KeyTime="0:0:01" Value="-230"/>-->
+                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="HoverStopAnimation" x:Name="HoverStopAnimation">
