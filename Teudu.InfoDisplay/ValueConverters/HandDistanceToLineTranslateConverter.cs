@@ -20,7 +20,7 @@ namespace Teudu.InfoDisplay
             if (retValue < 0)
                 retValue = 0;
 
-            return retValue;
+            return retValue + 40;
             
         }
 
