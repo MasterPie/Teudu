@@ -77,6 +77,7 @@ namespace Teudu.InfoDisplay
             }
             boardService.Reset();
             this.OnPropertyChanged("OutOfRange");
+            NewUserGuidesShowing = true;
             appIdleTimer.Start();
         }
 
@@ -194,6 +195,8 @@ namespace Teudu.InfoDisplay
                     }
                     appIdleTimer.Stop();
                     appIdleTimer.Start();
+
+                    NewUserGuidesShowing = false; // because he finished his instructional training
                 }
 
                 this.OnPropertyChanged("Engaged");
@@ -212,6 +215,7 @@ namespace Teudu.InfoDisplay
         void kinectService_NewPlayer(object sender, EventArgs e)
         {
             helpService.NewUser(user);
+            NewUserGuidesShowing = true;
         }
         #endregion
 
@@ -513,7 +517,23 @@ namespace Teudu.InfoDisplay
 
         #endregion
 
-        
+
+        private bool newUserGuidesShowing = false;
+        public bool NewUserGuidesShowing
+        {
+            get
+            {
+                return newUserGuidesShowing;
+            }
+
+            set
+            {
+                newUserGuidesShowing = value;
+                this.OnPropertyChanged("NewUserGuidesShowing");
+            }
+
+        }
+
         void OnPropertyChanged(string property) 
         { 
             if (this.PropertyChanged != null) 

@@ -115,6 +115,13 @@ namespace Teudu.InfoDisplay.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap HandOutBounds {
+            get {
+                object obj = ResourceManager.GetObject("HandOutBounds", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap InvisScreen {
             get {
                 object obj = ResourceManager.GetObject("InvisScreen", resourceCulture);

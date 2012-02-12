@@ -11,6 +11,8 @@
         <teudu:EngagedColorConverter x:Key="engagedConverter"/>
         <teudu:EngagedSymbolConverter x:Key="symbolConverter"/>
         <teudu:BoolToOpacityConverter x:Key="opacityConverter"/>
+        <teudu:HandDistanceToOpacityConverter x:Key="handConverter"/>
+        <teudu:BoolToVisibleConverter x:Key="boolVisibleConverter"/>
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Helvetica Neue LT Std"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
@@ -24,6 +26,7 @@
         <TextBlock Text="{Binding Path=OutOfBounds, Converter={StaticResource symbolConverter}, FallbackValue=+, ConverterParameter=true}" Panel.ZIndex="99" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center" Foreground="{Binding Path=OutOfBounds, Converter={StaticResource boolConverter}, FallbackValue=Red, ConverterParameter=true}"/>
         <!--<TextBlock Text="+" Panel.ZIndex="81" VerticalAlignment="Center" FontSize="64" HorizontalAlignment="Center" TextAlignment="Center"/>-->
         <TextBlock Text="{Binding Source={StaticResource notifyingDate},Path=Now, Converter={StaticResource dateConverter}}" Panel.ZIndex="99" HorizontalAlignment="Right" Margin="0,25,50,0" TextAlignment="Right"/>
+        <teudu:TouchAssistControl Panel.ZIndex="99" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="{Binding Path=DistanceFromInvisScreen, Converter={StaticResource handConverter}}" Visibility="{Binding Path=NewUserGuidesShowing, Converter={StaticResource boolVisibleConverter}}"/>
         <teudu:HandMovementBoundsControl Panel.ZIndex="99" HorizontalAlignment="Right" Margin="0,60,250,0" VerticalAlignment="Top"/>
         <teudu:HandStatusControl Panel.ZIndex="99" HorizontalAlignment="Right" Margin="0,60,50,0" VerticalAlignment="Top"/>
         <!--<teudu:LoadingPopup x:Name="LoadingContainer" Panel.ZIndex="100" />-->

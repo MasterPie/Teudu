@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="Teudu.InfoDisplay.Controls.OutOfBoundsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" xmlns:teudu="clr-namespace:Teudu.InfoDisplay"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <teudu:BoolToOpacityConverter x:Key="opacityConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Rectangle Stroke="Black" StrokeThickness="2" Height="80" Width="150" />
+        <Image Source="/Teudu.InfoDisplay;component/Images/handoutbounds.png" Height="60" Width="56" Opacity="{Binding Path=OutOfBoundsLeft, Converter={StaticResource opacityConverter}}" Margin="-210 0 0 0"/>
+        <Image Source="/Teudu.InfoDisplay;component/Images/handoutbounds.png" Height="60" Width="56" Opacity="{Binding Path=OutOfBoundsRight, Converter={StaticResource opacityConverter}}" Margin="210 0 0 0"/>
+        <Image Source="/Teudu.InfoDisplay;component/Images/handoutbounds.png" Height="60" Width="56" Opacity="{Binding Path=OutOfBoundsTop, Converter={StaticResource opacityConverter}}" Margin="0 -150 0 0"/>
+        <Image Source="/Teudu.InfoDisplay;component/Images/handoutbounds.png" Height="60" Width="56" Opacity="{Binding Path=OutOfBoundsBottom, Converter={StaticResource opacityConverter}}" Margin="0 150 0 0"/>
+    </Grid>
+</UserControl>

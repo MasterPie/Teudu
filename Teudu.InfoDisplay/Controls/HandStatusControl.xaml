@@ -34,7 +34,9 @@
     </UserControl.Resources>
     <Grid>
     <Grid Height="60" Width="150" Opacity="{Binding InRange, Converter={StaticResource opacityConverter}}">
-        <Image Source="/Teudu.InfoDisplay;component/Images/screen.png" Height="60" Width="13" Margin="-140,0,0,0"/>
+            <TextBlock Text="Engaged" VerticalAlignment="Center" Opacity="{Binding Path=Engaged, Converter={StaticResource opacityConverter}}" Margin="-60,0,0,0"/>
+            <TextBlock Text="Disengaged" VerticalAlignment="Center" Opacity="{Binding Path=Engaged, Converter={StaticResource opacityConverter},ConverterParameter=true}" Margin="-60,0,0,0"/>
+            <Image Source="/Teudu.InfoDisplay;component/Images/screen.png" Height="60" Width="13" Margin="-20,0,0,0"/>
         <!--<Image Source="/Teudu.InfoDisplay;component/Images/larrow.png" Height="40" Width="50" Opacity="{Binding Path=Engaged, Converter={StaticResource opacityConverter}, FallbackValue=1,ConverterParameter=true}">
             <Image.RenderTransform>
                 <TranslateTransform X="0"></TranslateTransform>
@@ -45,10 +47,10 @@
                 <TranslateTransform X="0"></TranslateTransform>
             </Image.RenderTransform>
         </Image>-->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Width="100">
             <Line Stroke="{Binding Path=Engaged, Converter={StaticResource boolConverter}, FallbackValue=Red}" StrokeThickness="3" Y1="0" Y2="40" StrokeDashArray="1,2">
                 <Line.RenderTransform>
-                    <TranslateTransform X="3"/>
+                    <TranslateTransform X="43"/>
                 </Line.RenderTransform>
             </Line>
 
@@ -62,15 +64,15 @@
                 <Image Source="/Teudu.InfoDisplay;component/Images/hand.png" Height="30" Opacity="{Binding Path=Engaged, Converter={StaticResource opacityConverter},ConverterParameter=true}"/>
                 <Image Source="/Teudu.InfoDisplay;component/Images/handactive.png" Height="30" Opacity="{Binding Path=Engaged, Converter={StaticResource opacityConverter}}"/>
                 <Grid.RenderTransform>
-                    <TranslateTransform X="{Binding Path=DistanceFromInvisScreen, Converter={StaticResource handConverter}, FallbackValue=30}"/>
+                    <TranslateTransform X="{Binding Path=DistanceFromInvisScreen, Converter={StaticResource handConverter}, FallbackValue=70}"/>
                 </Grid.RenderTransform>
             </Grid>
         </StackPanel>
-        <Image Source="/Teudu.InfoDisplay;component/Images/silhouette.png" Height="50">
+        <!--<Image Source="/Teudu.InfoDisplay;component/Images/silhouette.png" Height="50">
             <Image.RenderTransform>
                 <TranslateTransform X="30" Y="0"/>
             </Image.RenderTransform>
-        </Image>
+        </Image>-->
         <Grid.RenderTransform>
             <TransformGroup>
                 <ScaleTransform ScaleX="1" ScaleY="1" CenterX="75" CenterY="30" />
