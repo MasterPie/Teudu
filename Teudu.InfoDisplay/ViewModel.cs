@@ -202,6 +202,10 @@ namespace Teudu.InfoDisplay
                 this.OnPropertyChanged("Engaged");
                 this.OnPropertyChanged("TooClose");
                 this.OnPropertyChanged("OutOfBounds");
+                this.OnPropertyChanged("OutOfBoundsLeft");
+                this.OnPropertyChanged("OutOfBoundsTop");
+                this.OnPropertyChanged("OutOfBoundsRight");
+                this.OnPropertyChanged("OutOfBoundsBottom");
                 this.OnPropertyChanged("InRange");
                 this.OnPropertyChanged("OutOfRange");
 
@@ -285,6 +289,8 @@ namespace Teudu.InfoDisplay
         {
             get
             {
+                if (user.DominantHand.HandX >= 1910)
+                    System.Console.WriteLine("out of bounds right: {0}", user.DominantHand.HandX);
                 return user.DominantHand.HandX >= 1910;
             }
         }
@@ -296,7 +302,8 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return user.DominantHand.HandY <= 10;
+                return user.DominantHand.HandY >= 1080;
+                
             }
         }
 
@@ -307,7 +314,7 @@ namespace Teudu.InfoDisplay
         {
             get
             {
-                return user.DominantHand.HandY >= 1080;
+                return user.DominantHand.HandY <= 10;
             }
         }
 

@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Teudu.InfoDisplay.Controls
+namespace Teudu.InfoDisplay
 {
     /// <summary>
     /// Interaction logic for OutOfBoundsControl.xaml
