@@ -7,6 +7,6 @@
              d:DesignHeight="368" d:DesignWidth="594">
     <StackPanel Margin="0 40 0 0">
         <Rectangle Stroke="White" StrokeThickness="2" Height="80" Width="150" />
-        <TextBlock Foreground="White" Text="USE YOUR ARM" TextAlignment="Center"/>
+        <TextBlock Foreground="White" Text="USE YOUR ARM" TextAlignment="Center" Margin="0 5 0 0"/>
     </StackPanel>
 </UserControl>
