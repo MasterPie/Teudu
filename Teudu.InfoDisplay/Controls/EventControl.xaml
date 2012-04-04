@@ -14,15 +14,15 @@
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
                 Duration="0:0:02">
                 <!--<SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.2,0.95,0.75,1"/>-->
-                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.7" KeySpline="0.3,1,0.75,1"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.75" KeySpline="0.6,0.2,0.9,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.8" KeySpline="0.3,1,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.85" KeySpline="0.6,0.2,0.9,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
                 Duration="0:0:02">
                 <!--<SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.9" KeySpline="0.2,0.95,0.75,1"/>-->
-                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.7" KeySpline="0.3,1,0.75,1"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.75" KeySpline="0.6,0.2,0.9,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:01" Value="0.8" KeySpline="0.3,1,0.75,1"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:02" Value="0.85" KeySpline="0.6,0.2,0.9,1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames
                 Storyboard.TargetProperty="(UserControl.Opacity)"
