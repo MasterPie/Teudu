@@ -19,6 +19,7 @@ namespace Teudu.InfoDisplay
         private XElement root;
         private WebClient wc;      
         private string serviceURI;
+        private string serviceImageRoot;
 
         private BackgroundWorker XmlDownloadWorker;
         private DispatcherTimer retryTimer;
@@ -28,7 +29,8 @@ namespace Teudu.InfoDisplay
         {
             base.Initialize();
             serviceURI = ConfigurationManager.AppSettings["EventsServiceURI"].ToString();
-            
+            serviceImageRoot = ConfigurationManager.AppSettings["EventsServiceImageRoot"].ToString();
+
             wc = new WebClient();
             wc.Encoding = Encoding.UTF8;
 
@@ -148,7 +150,7 @@ namespace Teudu.InfoDisplay
                 {
                     using (WebClient downloadClient = new WebClient())
                     {
-                        downloadClient.DownloadFile(uri, imageDirectory + fileName);
+                        downloadClient.DownloadFile(serviceImageRoot + uri, imageDirectory + fileName);
                     }
                 }
                 catch (Exception)
