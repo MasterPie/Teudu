@@ -1,0 +1,277 @@
+<events>
+  <event id="44">
+    <name>
+      League of Legends Tournament
+
+
+    </name>
+    <description>
+      5v5 Round-Robin LOL Tournament
+
+      If you are unable to arrange a team of 5 but still want to participate sign-up and show up we may be able to arrange team's of 5 at the event, plus there is a ton of free food available and nerf gun wars so even if we are unable to get you on a team there still lots of stuff to do. 
+
+    </description>
+    <datetime>2012-05-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 19:00:00 -0500</starttime>
+    <endtime>2012-05-10 22:00:00 -0500</endtime>
+    <location>Rashid Auditorium, Gates</location>
+    <image>League_of_Legends_LOGO.jpg</image>
+    <categories>Fun &amp; Games</categories>
+  </event>
+  <event id="45">
+    <name>
+      Starcraft 2 Tournament
+
+
+    </name>
+    <description>
+      At GG Fest, Saturday December Third, we're going to be running a SC2 tournament. Unsure what the prizes will be, but we will be casting the finals (maybe a few other matches as well) in Rashid. The tournament is open to all leagues, so everyone should come out and play! blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+    </description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 19:00:00 -0500</starttime>
+    <endtime>2012-05-10 22:00:00 -0500</endtime>
+    <location>Rashid Auditorium, Gates</location>
+    <image>starcraft-2-logo.png</image>
+    <categories>Fun &amp; Games</categories>
+  </event>
+  <event id="46">
+    <name>
+      Opening Reception, Posner Center Exhibit This is a test of lines to see it cut off
+
+
+    </name>
+    <description>* NOTE: This is a DEMO event. The actual event happened a while ago.
+    
+University Libraries hosts an opening reception for "The Last Minstrel: Sir Walter Scott and the Minstrelsy of the Scottish Borders," an exhibit by Sheila Liming. Liming is a Ph.D. candiate in English and Literary and Cultural Studies. This exhibit is the latest in a series of displays curated by Posner Center interns and funded by the Posner Fine Arts Foundation. The exhibit runs through April 30, 2012. Exhibit hours are 1 - 4 p.m., Monday - Friday.
+    </description>
+    <datetime>2012-12-03 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 17:00:00 -0500</starttime>
+    <endtime>2012-05-10 20:00:00 -0500</endtime>
+    <location>Posner Center </location>
+    <image>lastminstrel.jpg</image>
+    <categories>Arts</categories>
+  </event>
+  <event id="47">
+    <name>Holiday Concert</name>
+    <description>
+      Due to popular demand the School of Music will present two performances of its annual Holiday Concert on Friday, Dec. 9. The first performance (free admission) will be held at noon in Rangos Hall, University Center. The encore performance will be held at 8 p.m. in Carnegie Music Hall in Oakland. Tickets for the evening performance are $5 in advance and $7 at the door. To purchase tickets, go to http://www.showclix.com/event/74509
+    </description>
+    <datetime>2012-12-03 17:00:00 -0500</datetime>
+    <starttime>2012-05-09 20:00:00 -0500</starttime>
+    <endtime>2012-05-09 22:00:00 -0500</endtime>
+    <location>Carnegie Music Hall, Oakland</location>
+    <image>concert.jpg</image>
+    <categories>Arts</categories>
+  </event>
+  <event id="48">
+    <name>2012 Building Virtual Worlds Show</name>
+    <description>Carnegie Mellon's Entertainment Technology Center presents its fall celebration and exhibition of student work created in the Building Virtual Worlds class. Working in teams, students create interactive experiences, stories, games and explorations using a wide variety of technologies and platforms all presented live and in real-time.
+    </description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 16:00:00 -0500</starttime>
+    <endtime>2012-05-10 17:00:00 -0500</endtime>
+    <location>Carnegie Library Music Hall, 510 E. 10th St., Munhall, PA </location>
+    <image>poster_2aforweb.png</image>
+    <cancelled>true</cancelled>
+    <categories>Arts, Fun &amp; Games</categories>
+  </event>
+  <event id="49">
+    <name>
+      2012 Pittsburgh Biennial
+
+    </name>
+    <description>* NOTE: This is a DEMO event. The actual event happened a while ago.
+      
+The Miller Gallery's presentation of the Pittsburgh Biennial features artists who work collaboratively, building synergy from various viewpoints and experiences. The exhibition includes new sculpture, installation, printmaking, painting, video, publications and workshops.</description>
+      <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 12:00:00 -0500</starttime>
+    <endtime>2012-05-10 18:00:00 -0500</endtime>
+    <location>Miller Gallery, Purnell Center for the Arts </location>
+    <image>37.bmp</image>
+    <categories>Arts</categories>
+  </event>
+  <event id="50">
+    <name>
+      Botany and History Entwined: Rachel Hunt’s Legacy
+    </name>
+    <description>In conjunction with the Hunt Institute's 50th anniversary exhibition, "Botany and History Entwined: Rachel Hunt's Legacy," Librarian Charlotte Tancin will present a talk titled "At the center of the network: D-0500h botanist Carolus Clusius (1526-1609)."</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 17:00:00 -0500</starttime>
+    <endtime>2012-05-10 17:00:00 -0500</endtime>
+    <location>Hunt Institute, 5th floor, Hunt Library </location>
+    <image>botany.jpg</image>
+    <categories>Arts</categories>
+  </event>
+  <event id="51">
+    <name>GGFest 2012</name>
+    <description>
+      StarCraft 2!!! League of Legends!!! NERF Wars!!! Free food!!
+      
+GGFest is an annual event held to remember the dear friend and classmate, Rohan, who we lost two years ago. He may no longer be with us, but his spirit and love of fun live on at GGFest where the only requirements are to have a good time, eat lots of Poptarts and drink too much Redbull.
+    </description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 19:00:00 -0500</starttime>
+    <endtime>2012-05-10 23:00:00 -0500</endtime>
+    <location>Rashid Auditorium, Gates Center</location>
+    <image>ggfest10.jpg</image>
+    <categories>Fun &amp; Games</categories>
+  </event>
+  <event id="55">
+    <name>AB Comedy Presents: Dan Mintz</name>
+    <description>Free Comedy Show. No tickets required.</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 18:30:00 -0500</starttime>
+    <endtime>2012-05-10 20:30:00 -0500</endtime>
+    <location>DH 2315</location>
+    <image>danmintz.jpg</image>
+    <categories>Arts, Fun &amp; Games </categories>
+  </event>
+  <event id="56">
+    <name>Teudu Project Review</name>
+    <description>We worked really hard on this project. Raja is an awesome mentor.</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 16:45:00 -0500</starttime><!--16:45 17:30-->
+    <endtime>2012-05-10 17:30:00 -0500</endtime>
+    <location>IS Conference Room</location>
+    <image>raja_sooriamurthi.jpg</image>
+    <categories>Academic</categories>
+  </event>
+  <event id="60">
+    <name>Dancers' Symposium Fall 2012 Show: Synaptic Disaster</name>
+    <description>Join us for another amazing show full of all types of dance brought to you by Dancers' Symposium! Hip-hop, Contemporary, Jazz, Tap and everything in between. </description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 16:00:00 -0500</starttime>
+    <endtime>2012-05-10 17:00:00 -0500</endtime>
+    <location>UC Rangos</location>
+    <image>ds.jpg</image>
+    <categories>Arts</categories>
+  </event>
+  <event id="61">
+    <name>User Testing</name>
+    <description>Throughout the course of our project, we conducted a total of 8 user tests (4 for our web application and 4 for our Kinect application). The result of each user test was drastic improvement in usability and sensibility for both apps.</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 20:00:00 -0500</starttime>
+    <endtime>2012-05-10 2:00:00 -0500</endtime>
+    <location></location>
+    <image>Posters-01.png</image>
+    <categories>Teudu</categories>
+  </event>
+  <!--<event id="62">
+    <name>Client Relations</name>
+    <description></description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-12 20:00:00 -0500</starttime>
+    <endtime>2012-12-13 2:00:00 -0500</endtime>
+    <location></location>
+    <image>Posters-02.png</image>
+    <categories>Teudu</categories>
+  </event>-->
+  <event id="64">
+    <name>Key Interface Elements</name>
+    <description>It's harder to interface with a system through "touch" in the absense of tactile feedback. Thus, we've continually added UI elements to provide the needed feedback.</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-05-10 20:00:00 -0500</starttime>
+    <endtime>2012-05-10 2:00:00 -0500</endtime>
+    <location></location>
+    <image>Posters-04.png</image>
+    <categories>Teudu</categories>
+  </event>
+  <event id="65">
+    <name>Process Modeling</name>
+    <description>Due to restrictions on the appropriateness of postering in the University Center, events submitted into the Teudu system must be approved before they are visible to the rest of the campus community. Our team worked to construct an "approval process" that involves active moderation of the event information in the system.</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-10 20:00:00 -0500</starttime>
+    <endtime>2012-12-10 2:00:00 -0500</endtime>
+    <location></location>
+    <image>Posters-05.png</image>
+    <categories>Teudu</categories>
+  </event>
+  <event id="66">
+    <name>Kinect Application</name>
+    <description>The Kinect application showcases events happening in the next two weeks. It is an interactive info display allowing users to filter through events to attend with simple hand movements and a bit of magic.</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-10 20:00:00 -0500</starttime>
+    <endtime>2012-12-10 2:00:00 -0500</endtime>
+    <location></location>
+    <image>Posters-06.png</image>
+    <categories>Teudu</categories>
+  </event>
+  <event id="67">
+    <name>Web Application</name>
+    <description>The web application provides student organizations the ability to upload events that they plan on campus. The events are associated with specific “boards” (categories), and students and faculty can simply browse through these boards to find interesting events to attend.</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-10 20:00:00 -0500</starttime>
+    <endtime>2012-12-10 2:00:00 -0500</endtime>
+    <location></location>
+    <image>Posters-07.png</image>
+    <categories>Teudu</categories>
+  </event>
+  <event id="68">
+    <name>373 to 475</name>
+    <description>Our project began as a 67-373: Software Development Project and was continued as a 67-475: Information Systems Application project due to considerable interest amongst the campus staff.</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-10 20:00:00 -0500</starttime>
+    <endtime>2012-12-10 2:00:00 -0500</endtime>
+    <location></location>
+    <image>Posters-08.png</image>
+    <categories>Teudu</categories>
+  </event>
+  <event id="69">
+    <name>The Team</name>
+    <description>Miki Bentz (Process Modeling, Client Liaison)
+Shruti Kataria (Quality Assurance, Client Liaison)
+Harold Kim (Application Design)
+Vivek Pai (Kinect Development)
+Brian Yee (Ruby on Rails Development)</description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-10 20:00:00 -0500</starttime>
+    <endtime>2012-12-10 2:00:00 -0500</endtime>
+    <location></location>
+    <image>Posters-09.png</image>
+    <categories>Teudu</categories>
+  </event>
+  <event id="70">
+    <name>Lambda Sigma Presents Simply Service!</name>
+    <description>Lambda Sigma is the Sophomore Honors Society and is trying to increase the presence of service on campus. Want to help? Come join us on November 18th for a Late Night dedicated to service: Simply Service! </description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-10 20:00:00 -0500</starttime>
+    <endtime>2012-12-10 2:00:00 -0500</endtime>
+    <location>UC Black Chairs</location>
+    <image>service.jpg</image>
+    <categories>Service</categories>
+  </event>
+  <event id="72">
+    <name>Puzzle-Based Learning: From Huh? To Aha!</name>
+    <description>
+Join us for a fun session of mental gymnastics where we will playfully examine a sample of puzzles and games.
+    </description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-10 20:00:00 -0500</starttime>
+    <endtime>2012-12-10 2:00:00 -0500</endtime>
+    <location>McKenna, Peter, &amp; Wright Room, University Center</location>
+    <image>25_puzzle.jpg</image>
+    <categories>Academic</categories>
+  </event>
+  <event id="73">
+    <name>Pirates of the Caribbean: What have they brought us? What does it mean?</name>
+    <description>H&amp;SS professor, Roger Rouse, uses a focus on Disney's Pirates of the Caribbean series to promote debate about the politics of corporate cultural influence in the world today.
+    </description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-10 20:00:00 -0500</starttime>
+    <endtime>2012-12-10 2:00:00 -0500</endtime>
+    <location>Dowd Room, University Center</location>
+    <image>36_potc.JPG</image>
+    <categories>Academic</categories>
+  </event>
+  <event id="74">
+    <name>Scotch'n'Soda Production: "Urinetown"</name>
+    <description>Tickets are $5 for CMU students/$10 non-students and can be purchased at www.snstheatre.org, starting October 5.
+    </description>
+    <datetime>2012-12-3 17:00:00 -0500</datetime>
+    <starttime>2012-12-10 20:00:00 -0500</starttime>
+    <endtime>2012-12-10 2:00:00 -0500</endtime>
+    <location>McConomy Auditorium, University Center</location>
+    <image>06_urinetown.png</image>
+    <categories>Arts</categories>
+  </event>
+</events>

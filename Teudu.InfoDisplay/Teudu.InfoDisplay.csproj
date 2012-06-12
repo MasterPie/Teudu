@@ -397,6 +397,74 @@
   <ItemGroup>
     <Resource Include="Images\HandOutBounds.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sample Data\events.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sample Data\image_stash\06_urinetown.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Sample Data\image_stash\1.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sample Data\image_stash\25_puzzle.jpg" />
+    <Resource Include="Sample Data\image_stash\31.jpg" />
+    <Resource Include="Sample Data\image_stash\32.bmp" />
+    <Resource Include="Sample Data\image_stash\34.bmp" />
+    <Resource Include="Sample Data\image_stash\35.bmp" />
+    <Resource Include="Sample Data\image_stash\36.jpg" />
+    <Resource Include="Sample Data\image_stash\36_potc.JPG" />
+    <Resource Include="Sample Data\image_stash\37.bmp" />
+    <Resource Include="Sample Data\image_stash\38.bmp" />
+    <Resource Include="Sample Data\image_stash\40.jpg" />
+    <Resource Include="Sample Data\image_stash\41.bmp" />
+    <Resource Include="Sample Data\image_stash\42.jpg" />
+    <Resource Include="Sample Data\image_stash\bigboi.jpg" />
+    <Resource Include="Sample Data\image_stash\botany.jpg" />
+    <Resource Include="Sample Data\image_stash\cabaret.jpg" />
+    <Resource Include="Sample Data\image_stash\captainamerica.jpg" />
+    <Resource Include="Sample Data\image_stash\concert.jpg" />
+    <Resource Include="Sample Data\image_stash\danmintz.jpg" />
+    <Resource Include="Sample Data\image_stash\default.jpg" />
+    <Resource Include="Sample Data\image_stash\dg.jpg" />
+    <Resource Include="Sample Data\image_stash\ds.jpg" />
+    <Resource Include="Sample Data\image_stash\eddiegriffin.jpg" />
+    <Resource Include="Sample Data\image_stash\ggfest10.jpg" />
+    <Resource Include="Sample Data\image_stash\ironchef.jpg" />
+    <Resource Include="Sample Data\image_stash\lastminstrel.jpg" />
+    <Resource Include="Sample Data\image_stash\latenight.gif" />
+    <Resource Include="Sample Data\image_stash\League_of_Legends_LOGO.jpg" />
+    <Resource Include="Sample Data\image_stash\mbasketball.jpg" />
+    <Resource Include="Sample Data\image_stash\mgc.jpg" />
+    <Resource Include="Sample Data\image_stash\onib.jpg" />
+    <Resource Include="Sample Data\image_stash\patrickpark.jpg" />
+    <Resource Include="Sample Data\image_stash\Posters-01.png" />
+    <Resource Include="Sample Data\image_stash\Posters-02.png" />
+    <Resource Include="Sample Data\image_stash\Posters-03.png" />
+    <Resource Include="Sample Data\image_stash\Posters-04.png" />
+    <Resource Include="Sample Data\image_stash\Posters-05.png" />
+    <Resource Include="Sample Data\image_stash\Posters-06.png" />
+    <Resource Include="Sample Data\image_stash\Posters-07.png" />
+    <Resource Include="Sample Data\image_stash\Posters-08.png" />
+    <Resource Include="Sample Data\image_stash\Posters-09.png" />
+    <Resource Include="Sample Data\image_stash\poster_2aforweb.png" />
+    <Resource Include="Sample Data\image_stash\reddit.jpg" />
+    <Resource Include="Sample Data\image_stash\retrogaming.jpg" />
+    <Resource Include="Sample Data\image_stash\service.jpg" />
+    <Resource Include="Sample Data\image_stash\spirit.jpg" />
+    <Resource Include="Sample Data\image_stash\starcraft-2-logo.png" />
+    <Resource Include="Sample Data\image_stash\tsacarnivalparty.jpg" />
+    <Resource Include="Sample Data\image_stash\wbasketball.jpg" />
+    <Resource Include="Sample Data\image_stash\worldcup.jpg" />
+    <Resource Include="Sample Data\image_stash\yele.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
