@@ -69,15 +69,19 @@ namespace Teudu.InfoDisplay
 
                     if (detail.Name.LocalName.ToLower().Equals("starttime"))
                     {
-                        if (!DateTime.TryParseExact(detail.Value.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture,
-                            DateTimeStyles.AssumeLocal, out startTime))
+                        //if (!DateTime.TryParseExact(detail.Value.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss -0400", culture,
+                        //    DateTimeStyles.AssumeLocal, out startTime))
+                        //    continue;
+                        if (!DateTime.TryParse(detail.Value, out startTime))
                             continue;
                     }
 
                     if (detail.Name.LocalName.ToLower().Equals("endtime"))
                     {
-                        if (!DateTime.TryParseExact(detail.Value.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss", culture,
-                            DateTimeStyles.AssumeLocal, out endTime))
+                        //if (!DateTime.TryParseExact(detail.Value.Replace('-', '/').Replace("UTC", "").Trim(), "yyyy/MM/dd HH:mm:ss -0400", culture,
+                        //    DateTimeStyles.AssumeLocal, out endTime))
+                        //    continue;
+                        if (!DateTime.TryParse(detail.Value, out endTime))
                             continue;
                     }
 
