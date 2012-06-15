@@ -12,6 +12,10 @@ namespace Teudu.InfoDisplay
     using System.Text;
     using System.Configuration;
 
+    public enum HandsState
+    {
+        Panning, Zooming, Resting
+    }
     /// <summary>
     /// Models the interaction state of the current user
     /// </summary>
