@@ -207,7 +207,6 @@
     <Compile Include="ValueConverters\OffsetNavigatorConverter.cs" />
     <Compile Include="Models\MomentaryBoardService.cs" />
     <Compile Include="Data\FileSourceService.cs" />
-    <Compile Include="Models\HandsState.cs" />
     <Compile Include="ISourceService.cs" />
     <Compile Include="Eventing\SkeletonEventArgs.cs" />
     <Compile Include="Eventing\SourceEventArgs.cs" />
