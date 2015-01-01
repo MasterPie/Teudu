@@ -4,6 +4,8 @@ An attempt to leverage the Kinect in NUI for an interactive, metro-styled info-d
 
 It was originally a [Carnegie Mellon University Information Systems](http://www.cmu.edu/information-systems) Capstone project, and has since evolved into a public contribution. We hope the world will build new and exciting info-displays on top of this platform.
 
+![DemoScreen](http://vivekrpai.com/img/Teudu/TeuduMain.jpg)
+
 **Video of implementation:**
 [http://www.youtube.com/watch?v=nj70tTkVIXM](http://www.youtube.com/watch?v=nj70tTkVIXM)
 
